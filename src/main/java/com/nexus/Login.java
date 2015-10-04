@@ -6,11 +6,11 @@ public class Login {
 	private String password;
 	private boolean loggedIn;
 
-	public Login(String name, String newPassword, boolean logStatus)
+	public Login(String name, String newPassword, boolean loginStatus)
 	{
 		userName = name;
 		password = newPassword;
-		loggedIn = logStatus;
+		loggedIn = loginStatus;
 	}
 	
 	public String getUserName()
