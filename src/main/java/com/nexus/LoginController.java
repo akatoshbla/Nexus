@@ -7,7 +7,7 @@ public class LoginController {
 	
 	public LoginController(final LoginService loginService) {
 		
-		get("/login", (req, res) -> loginService.getAll(), json());
+		get("/login", (req, res) -> loginService.isSuccess(), json());
 		
 		post("/login", (req, res) -> loginService.createLogin(
 				req.queryParams("name"),

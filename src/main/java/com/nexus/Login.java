@@ -4,13 +4,13 @@ public class Login {
 	
 	private String userName;
 	private String password;
-	private boolean loggedIn;
+	private boolean success;
 
-	public Login(String name, String newPassword, boolean loginStatus)
+	public Login(String name, String newPassword, boolean status)
 	{
 		userName = name;
 		password = newPassword;
-		loggedIn = loginStatus;
+		success = status;
 	}
 	
 	public String getUserName()
@@ -23,8 +23,13 @@ public class Login {
 		return password;
 	}
 	
-	public boolean getLoggedIn()
+	public boolean getSuccess()
 	{
-		return loggedIn;
+		return success;
+	}
+	
+	public void setSuccess(boolean success)
+	{
+		this.success = success;
 	}
 }

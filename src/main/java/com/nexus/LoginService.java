@@ -1,11 +1,12 @@
 package com.nexus;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 public class LoginService {
 	
-	private ArrayList<Login> userLogged = new ArrayList<Login>();
+	//private ArrayList<Login> userLogged = new ArrayList<Login>();
+	Login login;
 	
 	public boolean login(String password)
 	{
@@ -20,17 +21,29 @@ public class LoginService {
 		}
 	}
 	
-	public List<Login> getAll()
+//	public List<Login> getAll()
+//	{
+//		return userLogged;
+//	}
+	public Boolean isSuccess()
 	{
-		return userLogged;
+		if (login.getSuccess())
+		{
+			login.setSuccess(false);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
-	public Login createLogin(String name, String password)
+	public boolean createLogin(String name, String password)
 	{
-		Login log = new Login(name, password, login(password));
-		userLogged.add(log);
+		login = new Login(name, password, login(password));
+		//userLogged.add(log);
 		
-		return log;
+		return login.getSuccess();
 	}
 	
 	private void failIfInvalid(String password) {
