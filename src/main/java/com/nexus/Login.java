@@ -2,34 +2,22 @@ package com.nexus;
 
 public class Login {
 	
-	private String userName;
+	private String username;
 	private String password;
-	private boolean success;
 
-	public Login(String name, String newPassword, boolean status)
+	public Login(String username, String password)
 	{
-		userName = name;
-		password = newPassword;
-		success = status;
+		this.username = username;
+		this.password = password;
 	}
 	
 	public String getUserName()
 	{
-		return userName;
+		return username;
 	}
 	
 	public String getPassword()
 	{
 		return password;
-	}
-	
-	public boolean getSuccess()
-	{
-		return success;
-	}
-	
-	public void setSuccess(boolean success)
-	{
-		this.success = success;
 	}
 }

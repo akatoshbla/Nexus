@@ -1,16 +1,16 @@
 package com.nexus;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 //import java.util.ArrayList;
 //import java.util.List;
 
 public class LoginService {
-	
-	//private ArrayList<Login> userLogged = new ArrayList<Login>();
-	Login login;
-	
+		
 	public boolean login(String password)
 	{
-		failIfInvalid(password);
+		//failIfInvalid(password);
 		if (password.equals("12345"))
 		{
 			return true;
@@ -21,34 +21,23 @@ public class LoginService {
 		}
 	}
 	
-//	public List<Login> getAll()
-//	{
-//		return userLogged;
-//	}
-	public Boolean isSuccess()
+	public String test()
 	{
-		if (login.getSuccess())
-		{
-			login.setSuccess(false);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return "This is a test!";
 	}
-	
-	public boolean createLogin(String name, String password)
-	{
-		login = new Login(name, password, login(password));
-		//userLogged.add(log);
 		
-		return login.getSuccess();
+	public JsonObject createLogin(String body)
+	{
+		Login login = new Gson().fromJson(body, Login.class);
+		JsonObject jsonobj = new JsonObject();
+		jsonobj.addProperty("result", login(login.getPassword()));
+		
+		return jsonobj;
 	}
 	
-	private void failIfInvalid(String password) {
-		if (password == null || password.isEmpty()) {
-			throw new IllegalArgumentException("Parameter 'password' cannot be empty");
-		}
-	}
+//	private void failIfInvalid(String password) {
+//		if (password == null || password.isEmpty()) {
+//			throw new IllegalArgumentException("Parameter 'password' cannot be empty");
+//		}
+//	}
 }
