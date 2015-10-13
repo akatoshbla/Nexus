@@ -4,14 +4,15 @@ package com.nexus;
 //import spark.Request;
 //import spark.Response;
 import spark.Spark;
-//import static spark.Spark.*;
+import static spark.Spark.*;
 
 public class Main {
 		
     public static void main(String[] args) throws Exception {
     		//enableCORS("*", "*", "*");
-    		
-    		Spark.options("/*", (request,response)->{
+    	staticFileLocation("/public"); 
+    	
+    	Spark.options("/*", (request,response)->{
     			 
     		    String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
     		    if (accessControlRequestHeaders != null) {
@@ -30,6 +31,7 @@ public class Main {
     		    response.header("Access-Control-Allow-Origin", "*");
     		});
         
+    		
     	   	new LoginController(new LoginService());
     }
     

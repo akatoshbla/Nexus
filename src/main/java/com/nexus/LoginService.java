@@ -8,17 +8,18 @@ import com.google.gson.JsonObject;
 
 public class LoginService {
 		
-	public boolean login(String password)
+	public boolean login(String username, String password) throws Exception
 	{
+    	
+		NexusDB db = new NexusDB();
+		password = db.hashPassword(password);
+		String hash = db.retrievePasswordHash(username);
+		
 		//failIfInvalid(password);
-		if (password.equals("12345"))
-		{
-			return true;
-		}
-	else
-		{
-			return false;
-		}
+		if (hash.equals(password) && hash!=null)
+			return true;	
+		else	
+			return false;		
 	}
 	
 	public String test()
@@ -26,12 +27,12 @@ public class LoginService {
 		return "This is a test!";
 	}
 		
-	public JsonObject createLogin(String body)
+	public JsonObject createLogin(String body) throws Exception
 	{
+
 		Login login = new Gson().fromJson(body, Login.class);
 		JsonObject jsonobj = new JsonObject();
-		jsonobj.addProperty("result", login(login.getPassword()));
-		
+		jsonobj.addProperty("result", login(login.getUsername(),login.getPassword()));
 		return jsonobj;
 	}
 	
