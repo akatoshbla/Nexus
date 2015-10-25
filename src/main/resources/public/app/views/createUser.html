@@ -1,0 +1,40 @@
+
+        <div class="modal-content">
+          
+            <div class="modal-body">
+
+                <form role="form" ng-submit="signUp(credentials)" novalidate>
+                    <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+                    <h1 CLASS="text-primary" id="headTab">Just a few questions to sign up!</h1>
+                    <br>
+                    <div class="div-padding">
+                        <div class="form-group">
+
+                            <div class="col-xs-4" id="centerStuff">
+
+
+                                <input type="text" id="username" name="username" ng-model="credentials.username" class="form-control col-sm-2" placeholder="UserName:">
+                                <br>
+
+                                <br>
+                                <input type="password" id="password" name="password1" ng-model="credentials.password" class="form-control col-sm-2" placeholder="Password:">
+                                <br>
+
+
+                                <br>
+                                <input type="password" id="password" name="password2" ng-model="credentials.password2" class="form-control col-sm-2" placeholder="Password:">
+                                <br>
+                                <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+                                <p class="text-danger">{{error}}</p>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+            </div>
+        </div>
