@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="container">
+        <h2>League of Legends</h2>
+
+        <h3>Current Free Champs</h3>
+
+        <div class="row" ng-repeat="data in champData">
+            <div class="col-xs-10">
+            <span class="pull-right">
+                <p id="textRight"> {{data.key}} </p>
+            </span>
+            </div>
+            <div class="col-xs-2">
+                <!--span class="pull-right"-->
+                <img id="league" src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/champion/{{data.image.full}}">
+                <!--</span>-->
+            </div>
+        </div>
+    </div>
+</div>
