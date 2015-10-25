@@ -37,6 +37,13 @@ public class LoginService {
 		return jsonobj;
 	}
 	
+	public String loginName(String body) throws Exception
+	{
+		User user = new Gson().fromJson(body, User.class);
+		String username = user.getUsername(); 
+		return username;
+	}
+	
 //	private void failIfInvalid(String password) {
 //		if (password == null || password.isEmpty()) {
 //			throw new IllegalArgumentException("Parameter 'password' cannot be empty");
