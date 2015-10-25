@@ -13,7 +13,7 @@ public class Main {
     	staticFileLocation("/public"); 
     	
     	Spark.options("/*", (request,response)->{
-    			 
+    			 System.out.println("test");
     		    String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
     		    if (accessControlRequestHeaders != null) {
     		        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
