@@ -33,6 +33,8 @@ public class Main {
         
     		
     	   	new LoginController(new LoginService());
+    	   	new CreateController(new CreateService());
+    	   	new DeleteController(new DeleteService());
     }
     
 //	private static void enableCORS(final String origin, final String methods, final String headers) {
