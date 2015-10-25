@@ -18,7 +18,8 @@ public class Main {
     		    if (accessControlRequestHeaders != null) {
     		        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
     		    }
-    		 
+    		  
+    		    
     		    String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
     		    if(accessControlRequestMethod != null){
     		    response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
