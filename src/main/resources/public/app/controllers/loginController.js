@@ -28,9 +28,10 @@
                 $rootScope.loginStatus = false;
                 }
 
-                $scope.logout = function (something) {
+                $rootScope.logout = function (something) {
                     $rootScope.loginStatus = false;
                     console.log($scope.loginStatus);
+                    $location.path("/login");
                 };
 
                 $scope.login = function (credentials) {
