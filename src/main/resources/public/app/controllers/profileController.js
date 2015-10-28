@@ -2,85 +2,67 @@
 
     var profileController = function ($scope) {
         $scope.profile = {
-            join: '2',
-            lastSeen: '2/2/2',
-            realName: '2',
-            forumLvl: '2',
-            shares: '2',
-            likes: '2',
-            posts: '2',
-            followers: '2',
-            description: '2',
-            favGame: '2',
-            userName: '2',
-            profilePic: '200.jpg'
+            join: 'Oct 25, 2015',
+            lastSeen: 'Oct 25, 2015',
+            realName: 'Phillip Tran',
+            forumLvl: 'Lurker',
+            shares: '88',
+            likes: '888',
+            posts: '8',
+            followers: '8',
+            description: 'Just a dude enjoying video games, dont be afraid to message me and friend me!',
+            favGame: 'Counter Strike: Global offensive',
+            userName: 'wond3rBread',
+            profilePic: '/profile/philtran.jpg'
 
         }
 
         $scope.links = [
             {
-                socialLinks: 'http://www.google.com',
-                websiteName: 'google'
+                websiteName: 'Facebook',
+                socialLinks: '#'
             },
             {
-                socialLinks: 'http://www.google.com',
-                websiteName: 'google'
-            },
-            {
-                socialLinks: 'http://www.google.com',
-                websiteName: 'google'
+
+                websiteName: 'Twitter',
+                socialLinks: '#'
             }
 
         ]
         //favgame object?....
         $scope.friends = [
             {
-                friendName: '2',
-                friendLink: 'http://www.google.com',
-                friendPic: '272x150.jpg'
+                friendName: 'Liltwix',
+                friendLink: '#',
+                friendPic: '/profile/alexhall.jpg'
+            },
+            {
+                friendName: 'akatoshbla',
+                friendLink: '#',
+                friendPic: '/profile/davidknopp.jpg'
+            },
+            {
+                friendName: 'whitenoize',
+                friendLink: '#',
+                friendPic: '/profile/bendluzak.jpg'
             }
         ]
 
         $scope.gamePlay = [
             {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
+                gameName: 'Counter Strike: Global Offensive',
+                gamePic: '/games/cs-go-logo.jpg',
+                gameForum: '#'
             },
             {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
+                gameName: 'Hearthstone',
+                gamePic: '/games/hearthstone-logo.jpg',
+                gameForum: '#'
             },
             {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
-            },
-            {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
-            },
-            {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
-            },
-            {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
-            },
-            {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
-            },
-            {
-                gameName: '2',
-                gamePic: '272x150.jpg',
-                gameForum:'http://www.google.com'
+                gameName: 'League of Legends',
+                gamePic: '/games/lol-logo.jpg',
+                gameForum: '#'
             }
         ]
 

@@ -10,6 +10,9 @@
             .when('/', {
                 controller: 'loginController',
                 templateUrl: 'app/views/login.html'
+            }).when('/login', {
+                controller: 'loginController',
+                templateUrl: 'app/views/login.html'
             })
             .when('/verify', {
                 controller: 'verifyController',

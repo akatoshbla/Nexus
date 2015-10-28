@@ -1,4 +1,4 @@
-<div class="container target" ng-controller="profileController">
+<div class="container target" ng-controller="profileController" id="userProfile">
     <div class="row">
         <div class="col-xs-10 col-sm-10">
             <h1 class="">{{ profile.userName }}</h1>
@@ -8,7 +8,7 @@
             <br>
         </div>
         <div class="col-xs-2 col-sm-2"><a href="/users" class="pull-right">
-            <img title="profile image"
+            <img id="profilePicSize" title="profile image"
                  class="img-square img-responsive"
                  src="images/{{ profile.profilePic }}"></a>
               <button type="button" class="btn btn-default" ng-click="open()">Edit</button>
@@ -97,14 +97,14 @@
                 <div class="panel-heading" contenteditable="false">Friends</div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-xs-4 col-md-4" ng-repeat="gamePlay in gamePlay">
+                        <div class="col-xs-4 col-md-4" ng-repeat="friends in friends">
                             <div class="thumbnail">
-                                <a ng-href="{{ gamePlay.gameForum }}">
-                                    <img width="272" height="150" src="images/{{gamePlay.gamePic}}"></a>
+                                <a ng-href="{{ friends.friendName}}">
+                                    <img id="friendPicSize" src="images/{{friends.friendPic}}"></a>
 
                                 <div class="caption">
                                     <h3>
-                                        {{ gamePlay.gameName }}
+                                        {{ friends.friendName}}
                                     </h3>
                                 </div>
                             </div>
