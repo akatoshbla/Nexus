@@ -25,7 +25,8 @@
                         <br>
                         <input type="email" id="email" name="email" ng-model="credentials.email" class="form-control col-sm-2" placeholder="Email:">
                         <br>
-                        <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
                         <span class="error" ng-show="emailError"> Not valid email!</span>
                         <p class="text-danger">{{error}}</p>
 
@@ -37,6 +38,6 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        
     </div>
 </div>
