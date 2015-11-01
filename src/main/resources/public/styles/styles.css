@@ -136,6 +136,13 @@ hr.small {
     top: 0;
     right: 0;
 }
+#login {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 5px 5px 5px 5px;
+}
 
 #sidebar-wrapper.active {
     right: 250px;
