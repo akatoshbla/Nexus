@@ -11,11 +11,18 @@
             posts: '8',
             followers: '8',
             description: 'Just a dude enjoying video games, dont be afraid to message me and friend me!',
-            favGame: 'Counter Strike: Global offensive',
+            //currentGame: 'Counter Strike: Global offensive',
             userName: 'wond3rBread',
             profilePic: '/profile/philtran.jpg'
 
         }
+
+        $scope.currentGame = [
+            {
+                gameName: 'Counter Strike: Global Offensive',
+                gameLinks: '#'
+            }
+        ]
 
         $scope.links = [
             {
@@ -33,17 +40,17 @@
         $scope.friends = [
             {
                 friendName: 'Liltwix',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/alexhall.jpg'
             },
             {
                 friendName: 'akatoshbla',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/davidknopp.jpg'
             },
             {
                 friendName: 'whitenoize',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/bendluzak.jpg'
             }
         ]
