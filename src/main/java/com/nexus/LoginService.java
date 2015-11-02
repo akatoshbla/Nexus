@@ -3,12 +3,22 @@ package com.nexus;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-//import java.util.ArrayList;
-//import java.util.List;
-
+/**
+ * This class has the methods to support the LoginController.
+ * @author David Kopp
+ *
+ */
 public class LoginService {
 	
-	public boolean login(String username, String password) throws Exception
+	/**
+	 * This method checks to see if the passed username and password matches
+	 * the information in the database.
+	 * @param username String
+	 * @param password String
+	 * @return boolean True - successful, False - failed.
+	 * @throws Exception if error 
+	 */
+	private boolean login(String username, String password) throws Exception
 	{
 
     	//password=password.toUpperCase();
@@ -23,11 +33,21 @@ public class LoginService {
 			return false;		
 	}
 	
+	/**
+	 * Test method
+	 * @return String
+	 */
 	public String test()
 	{
 		return "This is a test!";
 	}
-		
+	
+	/**
+	 * This method calls login and wraps the resulting boolean into a json.
+	 * @param body String
+	 * @return Json True - successful, False - failed.
+	 * @throws Exception if error
+	 */
 	public JsonObject loginResult(String body) throws Exception
 	{
 
@@ -37,6 +57,12 @@ public class LoginService {
 		return jsonobj;
 	}
 	
+	/**
+	 * This method returns the username from the user object.
+	 * @param body String
+	 * @return String username
+	 * @throws Exception if error
+	 */
 	public String loginName(String body) throws Exception
 	{
 		User user = new Gson().fromJson(body, User.class);
