@@ -3,8 +3,22 @@ package com.nexus;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+/**
+ * This class is the service methods for CreateController.
+ * @author David Kopp
+ *
+ */
 public class CreateService {
-	public boolean create(String username, String password) throws Exception
+	
+	/**
+	 * This method is used to hash the password and insert the name and hashed
+	 * password into the database. Return is passed back into the createResult.
+	 * @param username String
+	 * @param password String
+	 * @return boolean True - was successful, False - if failed
+	 * @throws Exception if error
+	 */
+	private boolean create(String username, String password) throws Exception
 	{
 		NexusDB db = new NexusDB();
 		password = db.hashPassword(password);
@@ -15,11 +29,22 @@ public class CreateService {
 		}
 	}
 	
+	/**
+	 * Test method
+	 * @return String
+	 */
 	public String test()
 	{
 		return "This is a test!";
 	}
-		
+	
+	/**
+	 * This method is used to wrap the result of the create method's return in
+	 * a json and passed back to the CreateController.
+	 * @param body String
+	 * @return Json with a boolean. True - successful, False - failed
+	 * @throws Exception if error
+	 */
 	public JsonObject createResultr(String body) throws Exception
 	{
 
