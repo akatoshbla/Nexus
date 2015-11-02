@@ -5,11 +5,17 @@ import java.security.MessageDigest;
 //import java.security.NoSuchAlgorithmException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * This class is the databse methods.
+ * @author David Kopp
+ *
+ */
 public class NexusDB {
 
 	private final String userName = "root";
@@ -21,8 +27,12 @@ public class NexusDB {
 
 
 	//private ResultSet resultSet = null;
+
 	/**
-	 *Hashes a string using SHA-256
+	 * Hashes a string using SHA-256
+	 * @param password String
+	 * @return String
+	 * @throws Exception if error
 	 */
 	@SuppressWarnings("restriction")
 	public String hashPassword(String password) throws Exception  {
@@ -37,6 +47,12 @@ public class NexusDB {
 			return null;
 		}
 	}
+	
+	/**
+	 * Connects to the database
+	 * @return Connection
+	 * @throws SQLException if error
+	 */
 	private Connection getConnection() throws SQLException {
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", this.userName);
@@ -47,8 +63,12 @@ public class NexusDB {
 				connectionProps);
 		return conn;
 	}
+
 	/**
-	 *Delete's a user from the database with the inputed name
+	 * Delete's a user from the database with the inputed name
+	 * @param name String
+	 * @return Boolean
+	 * @throws SQLException if error
 	 */
 	public Boolean deleteUser(String name) throws SQLException {
 		
@@ -71,9 +91,14 @@ public class NexusDB {
 
 		}
 	}
+
 	/**
-	 *Creates a user record in the database, with the inputed name,password pair.
-	 *Only creates a record if there isn't already a record with the same name.
+	 * Creates a user record in the database, with the inputed name,password pair.
+	 * Only creates a record if there isn't already a record with the same name.
+	 * @param name String
+	 * @param password String
+	 * @return Boolean
+	 * @throws Exception if error
 	 */
 	public Boolean createUser (String name, String password) throws Exception{
 		//password = hashPassword(password);
@@ -83,7 +108,7 @@ public class NexusDB {
 			if (recordExists(name)) 
 				return false; //already exists
 			else {
-		     String command = "INSERT into users VALUES(?,?)";
+		     String command = "INSERT into users (name, password) VALUES(?,?)";
 		     pstmt = conn.prepareStatement(command);
 		     pstmt.setString(1, name);
 		     pstmt.setString(2, password);
@@ -104,8 +129,12 @@ public class NexusDB {
 		}
 		
 	}
+
 	/**
-	 *Checks if a record already exisets in the database with the inputed name.
+	 * Checks if a record already exists in the database with the inputed name.
+	 * @param name String
+	 * @return Boolean
+	 * @throws SQLException if error
 	 */
 	public Boolean recordExists (String name) throws SQLException{
 		Connection conn=this.getConnection();
@@ -130,8 +159,12 @@ public class NexusDB {
 			}
 
 	}
+
 	/**
-	 *Updates a user's password in the database with the inputed password string.
+	 * Updates a user's password in the database with the inputed password string.
+	 * @param name String
+	 * @param password String
+	 * @throws Exception if error
 	 */
 	public void updatePassword(String name, String password) throws Exception{
 		password = hashPassword(password);
@@ -154,8 +187,12 @@ public class NexusDB {
 		}
 		
 	}
+	
 	/**
-	 *Retrieves the inputed user's hashed password from the database.
+	 * Retrieves the inputed user's hashed password from the database.
+	 * @param name String
+	 * @return String
+	 * @throws Exception if error
 	 */
 	public String retrievePassword(String name) throws Exception{
 		Connection conn=this.getConnection();
@@ -179,20 +216,148 @@ public class NexusDB {
 			finally {
 				if (pstmt!=null) pstmt.close();
 				conn.close();
-			}
+			}		
+	}
 	
-		
+	/**
+	 * This method can get the users id from the users table in the database
+	 * by the name of the user.
+	 * @param name String
+	 * @return int
+	 * @throws Exception if error
+	 */
+	private int getUserId(String name) throws Exception
+	{
+		Connection connection = this.getConnection();
+		PreparedStatement pstmt = null;
+		String query = "SELECT id FROM users WHERE name= ?";
+		try
+		{
+			pstmt = connection.prepareStatement(query);	
+			pstmt.setString(1, name);
+			ResultSet results = pstmt.executeQuery();
+				System.out.println(pstmt);
+			if (results.next())
+			{	
+				return results.getInt("id");
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return -1;
+		}
+		finally 
+		{
+			if(pstmt != null)
+			{
+				pstmt.close();
+			}
+			connection.close();
+		}
+	}
+	
+	/**
+	 * This method gets all the profile data from the database by user's name
+	 * it is used for the first time the user loads their profile after logging in
+	 * or switching back to their profile page from another page.
+	 * @param username String
+	 * @return Profile object
+	 * @throws Exception if error
+	 */
+	public Profile getProfile(String username) throws Exception
+	{
+		Connection connection = this.getConnection();
+		PreparedStatement pstmt = null;
+		Profile profile = null;
+		int userID = getUserId(username);
+		String query = "SELECT * FROM userprofile WHERE id=" +userID;
+		try
+		{
+			pstmt = connection.prepareStatement(query);
+			ResultSet results = pstmt.executeQuery();
+				System.out.println(pstmt);
+			if (results.next())
+			{
+				profile = new Profile();
+				profile.setJoined(results.getDate("joined"));
+				profile.setLastOnline(results.getDate("lastSeen"));
+				profile.setRealName(results.getString("realName"));
+				profile.setRole(results.getString("forumLvl"));
+				profile.setShares(results.getInt("shares"));
+				profile.setLikes(results.getInt("likes"));
+				profile.setPosts(results.getInt("posts"));
+				profile.setFollowers(results.getInt("followers"));
+				profile.setAboutDesc(results.getString("userDesc"));
+				Blob blob = results.getBlob("profilePic");
+				byte[] allBytesInBlob = blob.getBytes(1, (int) blob.length());
+				profile.setAvatar(allBytesInBlob);
+				profile.setCurrentGame(results.getString("currentGame"));
+				
+				ArrayList<String> socialName = new ArrayList<String>();
+				ArrayList<String> socialLinks = new ArrayList<String>();
+				ArrayList<String> gameNames = new ArrayList<String>();
+				query = "SELECT * FROM socialLinks WHERE id=" +userID;
+				try {
+					pstmt = connection.prepareStatement(query);
+					ResultSet results2 = pstmt.executeQuery();
+						System.out.println(pstmt);
+					while (results2.next())
+					{
+						socialName.add(results2.getString("socialName"));
+						socialLinks.add(results2.getString("link"));
+					}
+					profile.setSocialNames(socialName);
+					profile.setSocialLinks(socialLinks);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return profile;
+				}
+				query = "SELECT * FROM gameLinks WHERE id=" +userID;
+				try {
+					pstmt = connection.prepareStatement(query);
+					ResultSet results3 = pstmt.executeQuery();
+						System.out.println(pstmt);
+					while(results3.next())
+					{
+						gameNames.add(results3.getString("gameName"));
+					}
+					profile.setGameLinks(gameNames);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return profile;
+				}
+				
+			}
+			return profile;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return profile;
+		}
+		finally
+		{
+			if(pstmt != null)
+			{
+				pstmt.close();
+			}
+			connection.close();
+		}
 	}
 
 	/**
 	 * Connect to the DB and do some stuff
+	 * @param args standard main args
+	 * @throws Exception if error
 	 */
 	public static void main(String[] args) throws Exception{
 		NexusDB app = new NexusDB();
 		System.out.println(app.recordExists("bnc"));
-		
-		
-
-
+		//app.createUser("user007", app.hashPassword("12345"));
 	}
 }
