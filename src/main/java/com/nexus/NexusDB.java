@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 public class NexusDB {
 
 	private final String userName = "root";
-	private final String password = "1234abcd";
+	private final String password = ""; // 1234abcd
 	private final String serverName = "localhost";
 	private final int portNumber = 3306;
 	private final String dbName = "nexus";
@@ -259,6 +259,74 @@ public class NexusDB {
 			}
 			connection.close();
 		}
+	}
+	
+	//Inserting realName
+	//Call an insert, call a query
+	public Profile insertRealName(String username, String realName) throws Exception {
+		//creates connection b/w front and database
+		Connection connection = this.getConnection();
+		PreparedStatement pstmt = null;
+		Profile profile = null;
+		
+		
+		int userID = getUserId(username);
+		//updates the database with frontend username information
+		String update = "UPDATE userprofile SET realName= ? WHERE id=?";
+		
+		try
+		{
+			//preparing a statment that the update will run
+			pstmt = connection.prepareStatement(update);
+			//these are holders for the String update
+			pstmt.setString(1, realName);
+			pstmt.setInt(2, userID);
+				System.out.println(pstmt);
+			//preparing an execution for update
+			pstmt.executeUpdate();	
+		}
+		finally
+		{
+			//if the preparation doesn't equal null, then close it
+			if(pstmt != null)
+			{
+				pstmt.close();
+			}
+		}	
+		
+		//Same as above but
+		//Need to query the database for the exact insert
+		String query = "SELECT realName FROM userprofile WHERE id= ?";
+		try
+		{
+			pstmt = connection.prepareStatement(query);	
+			pstmt.setInt(1, userID);
+			//getting query results and puts it in results
+			ResultSet results = pstmt.executeQuery();
+				System.out.println(pstmt);
+			//so if results has a row (or next) then is true and sets the realName to profile obj
+			if (results.next())
+			{	
+				//taking profile object using the setter for the real name
+				profile = new Profile();
+				profile.setRealName(results.getString("realName"));
+			}
+			return profile;
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return profile;
+		}
+		finally 
+		{
+			if(pstmt != null)
+			{
+				pstmt.close();
+			}
+			connection.close();
+		}
+		
 	}
 	
 	/**

@@ -11,9 +11,10 @@ import com.google.gson.Gson;
  * @author David Kopp
  *
  */
+
 public class ProfileController 
 {
-	/**
+	/** 
 	 * The post /profile takes nothing from the frontend, but it will check for a valid session.
 	 * <p>Returns a Json with the following:
 	 * <p>"session": true,
@@ -80,5 +81,33 @@ public class ProfileController
 				return null;
 			}		
 		},json());
+		
+		//update from front end passed to middle tier to update database realName
+		
+		post("/realName", (req, res) -> {
+			//set username
+			String username;
+
+			//creating new session if username doesn't = null
+			try {
+				if (req.session().attribute("username") != null) {
+					//req.session requests username from cookie with the attribute of username
+					username = req.session().attribute("username");
+					System.out.println("Username: " + username);
+					System.out.println("Has a session id: " + req.session().id());
+				} else {
+					username = null;
+					System.out.println("Non-Session User Alert at " + req.ip());
+				}
+				//returns the result from getRealName which is in ProfileService class
+				return profileService.getRealName(username, req.body());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			//transforms json object from java to json object from frontend
+		} , json());
+		
 	}	
 }
