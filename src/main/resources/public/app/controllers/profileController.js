@@ -1,8 +1,28 @@
 (function () {
 
-    var profileController = function ($scope) {
-        $scope.realNameEdit = false;
-        $scope.aboutEdit = false;
+    var profileController = function ($scope,$http, $modal, $location, $rootScope) {
+          //allow animation for modal
+            $scope.animationsEnabled = true;
+            //function to close modal
+              $scope.cancel = function () {
+            $modalInstance.dismiss();
+        };
+            //function to open modal and assign partial and controller to it
+            $scope.editProfile = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/editProfile.html',
+                    controller: 'editProfileController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                
         
         $scope.profile = {
             join: 'Oct 25, 2015',
@@ -79,7 +99,7 @@
 
     };
 
-    profileController.$inject = ['$scope'];
+    profileController.$inject = ['$scope','$http', '$modal', '$location' , '$rootScope'];
 
     angular.module('nexusApp')
         .controller('profileController', profileController);
