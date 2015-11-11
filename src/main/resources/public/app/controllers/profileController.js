@@ -1,6 +1,9 @@
 (function () {
 
     var profileController = function ($scope) {
+        $scope.realNameEdit = false;
+        $scope.aboutEdit = false;
+        
         $scope.profile = {
             join: 'Oct 25, 2015',
             lastSeen: 'Oct 25, 2015',
