@@ -22,6 +22,20 @@
                     }
                 });
             }
+                $scope.editAbout = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/editAbout.html',
+                    controller: 'editProfileController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
                 
         
         $scope.profile = {

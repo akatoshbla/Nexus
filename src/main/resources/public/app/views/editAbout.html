@@ -2,9 +2,9 @@
 
     <div class="modal-body">
 
-        <form role="form" name = "myForm" ng-submit="realName(credentials)" novalidate>
+        <form role="form" name = "myForm" ng-submit="editAbout(summary)" novalidate>
             <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-            <h3 CLASS="text-primary" id="headTab">Change Profile Name!</h3>
+            <h3 CLASS="text-primary" id="headTab">Just a few questions to sign up!</h3>
             <br>
             <div class="div-padding">
                 <div class="form-group">
@@ -12,7 +12,7 @@
                     <div class="col-xs-4" id="centerStuff">
 
 
-                        <input type="text" id="username" name="username" ng-model="credentials.realName" class="form-control col-sm-2" placeholder="Real Name:">
+                        <textarea rows="4" cols="50" type="text" id="username" name="username" ng-model="summary" class="form-control col-sm-2" placeholder="Summary">
                         <br>
 
                

@@ -88,7 +88,7 @@
             <!--/col-3-->
             <div class="col-xs-9 col-sm-9" contenteditable="false" style="">
                 <div class="panel panel-default" ng-mouseover="aboutEdit = true" ng-mouseleave="aboutEdit = false">
-                    <div class="panel-heading">About {{ profile.userName }}<span class="pull-right" ng-show="aboutEdit">Edit</span></div>
+                    <div class="panel-heading">About {{ profile.userName }}<a class="pull-right" ng-show="aboutEdit" ng-click = "editAbout()">Edit</a></div>
                     <div class="panel-body">
                         <p>{{ profile.description }}</p>
 
