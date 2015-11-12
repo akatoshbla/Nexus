@@ -4,25 +4,21 @@
 
         <form role="form" name = "myForm" ng-submit="editAbout(summary)" novalidate>
             <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-            <h3 CLASS="text-primary" id="headTab">Just a few questions to sign up!</h3>
-            <br>
+            <h3 CLASS="text-primary" id="headTab">Add your summary!</h3>
+            
             <div class="div-padding">
                 <div class="form-group">
 
-                    <div class="col-xs-4" id="centerStuff">
+                    <div>
 
 
-                        <textarea rows="4" cols="50" type="text" id="username" name="username" ng-model="summary" class="form-control col-sm-2" placeholder="Summary">
-                        <br>
+                        <textarea rows="4" cols="50" type="text" id="username" name="username" ng-model="summary" class="form-control col-sm-2" placeholder="Summary"></textarea>
+                     
 
                
 
 
             
-                        <button type="submit" class="btn btn-dark">Submit</button>
-                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-          
-                        <p class="text-danger">{{error}}</p>
 
 
 
@@ -33,5 +29,11 @@
     </div>
     <div class="modal-footer">
         
+            
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+          
+                        <p class="text-danger">{{error}}</p>
+
     </div>
 </div>
