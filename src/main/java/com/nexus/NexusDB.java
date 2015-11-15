@@ -1,4 +1,5 @@
 package com.nexus;
+
 import java.sql.Connection;
 //import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -7,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -34,7 +34,6 @@ public class NexusDB {
 	 * @return String
 	 * @throws Exception if error
 	 */
-	@SuppressWarnings("restriction")
 	public String hashPassword(String password) throws Exception  {
 		try {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -209,7 +208,6 @@ public class NexusDB {
 					return results.getString("password");
 				else return "";
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return "";
 			}
@@ -261,25 +259,23 @@ public class NexusDB {
 		}
 	}
 	
-	//Inserting realName
-		//Call an insert, call a query
-		public Profile insertRealName(String username, String realName) throws Exception {
+	// Updates one column on the userProfile
+		public String updateUserProfile(String username, String column, String value) throws Exception {
 			//creates connection b/w front and database
 			Connection connection = this.getConnection();
 			PreparedStatement pstmt = null;
-			Profile profile = null;
+			String result = null;
 			
 			
 			int userID = getUserId(username);
-			//updates the database with frontend username information
-			String update = "UPDATE userprofile SET realName= ? WHERE id=?";
+			String update = "UPDATE userprofile SET " + column + "= ? WHERE id=?";
 			
 			try
 			{
 				//preparing a statment that the update will run
 				pstmt = connection.prepareStatement(update);
 				//these are holders for the String update
-				pstmt.setString(1, realName);
+				pstmt.setString(1, value);
 				pstmt.setInt(2, userID);
 					System.out.println(pstmt);
 				//preparing an execution for update
@@ -296,27 +292,24 @@ public class NexusDB {
 			
 			//Same as above but
 			//Need to query the database for the exact insert
-			String query = "SELECT realName FROM userprofile WHERE id= ?";
+			String query = "SELECT " + column +" FROM userprofile WHERE id= ?";
 			try
 			{
-				pstmt = connection.prepareStatement(query);	
+				pstmt = connection.prepareStatement(query);
 				pstmt.setInt(1, userID);
 				//getting query results and puts it in results
 				ResultSet results = pstmt.executeQuery();
 					System.out.println(pstmt);
-				//so if results has a row (or next) then is true and sets the realName to profile obj
 				if (results.next())
 				{	
-					//taking profile object using the setter for the real name
-					profile = new Profile();
-					profile.setRealName(results.getString("realName"));
+					result = results.getString(column);
 				}
-				return profile;
+				return result;
 			}
 			catch (Exception e) 
 			{
 				e.printStackTrace();
-				return profile;
+				return result;
 			}
 			finally 
 			{
@@ -359,16 +352,16 @@ public class NexusDB {
 				profile.setShares(results.getInt("shares"));
 				profile.setLikes(results.getInt("likes"));
 				profile.setPosts(results.getInt("posts"));
-				profile.setFollowers(results.getInt("followers"));
+				profile.setFollowers(results.getInt("friends"));
 				profile.setAboutDesc(results.getString("userDesc"));
-				Blob blob = results.getBlob("profilePic");
-				byte[] allBytesInBlob = blob.getBytes(1, (int) blob.length());
-				profile.setAvatar(allBytesInBlob);
+				profile.setAvatar(results.getString("profilePicLink"));
 				profile.setCurrentGame(results.getString("currentGame"));
 				
-				ArrayList<String> socialName = new ArrayList<String>();
+				ArrayList<String> socialNames = new ArrayList<String>();
 				ArrayList<String> socialLinks = new ArrayList<String>();
-				ArrayList<String> gameNames = new ArrayList<String>();
+				ArrayList<String> favGameNames = new ArrayList<String>();
+				ArrayList<String> favGameLinks = new ArrayList<String>();
+				ArrayList<String> supportedGames = new ArrayList<String>();
 				query = "SELECT * FROM socialLinks WHERE id=" +userID;
 				try {
 					pstmt = connection.prepareStatement(query);
@@ -376,11 +369,27 @@ public class NexusDB {
 						System.out.println(pstmt);
 					while (results2.next())
 					{
-						socialName.add(results2.getString("socialName"));
+						socialNames.add(results2.getString("socialName"));
 						socialLinks.add(results2.getString("link"));
 					}
-					profile.setSocialNames(socialName);
+					profile.setSocialNames(socialNames);
 					profile.setSocialLinks(socialLinks);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return profile;
+				}
+				query = "SELECT * FROM favGames WHERE id=" +userID;
+				try {
+					pstmt = connection.prepareStatement(query);
+					ResultSet results2 = pstmt.executeQuery();
+						System.out.println(pstmt);
+					while (results2.next())
+					{
+						favGameNames.add(results2.getString("gameName"));
+						favGameLinks.add(results2.getString("gameLink"));
+					}
+					profile.setFavGameNames(favGameNames);
+					profile.setFavGameLinks(favGameLinks);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return profile;
@@ -392,9 +401,9 @@ public class NexusDB {
 						System.out.println(pstmt);
 					while(results3.next())
 					{
-						gameNames.add(results3.getString("gameName"));
+						supportedGames.add(results3.getString("gameName"));
 					}
-					profile.setGameLinks(gameNames);
+					profile.setSupportedGames(supportedGames);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return profile;
