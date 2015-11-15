@@ -1,1 +1,6 @@
 /target/
+*.xml
+*.iml
+*.name
+*.db
+*.db

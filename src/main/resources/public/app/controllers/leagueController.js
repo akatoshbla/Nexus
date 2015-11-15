@@ -1,16 +1,17 @@
 (function () {
 
     var leagueController = function ($scope, $http) {
-
+            // url for champ including my access key
         var champListUrl = "https://na.api.pvp.net/api/lol/na/v1.2/champion?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76"
 
-
+        //function that is run at controller launch to get free champs
         $http.get(champListUrl).success(function (response) {
             $scope.champions = response.champions;
             $scope.freeChamps = [];
             $scope.imageObject = [];
             $scope.champData = [];
             $scope.combinedObject = [];
+            //add each champ to champData
             angular.forEach($scope.champions, function (champ) {
                 if (champ.freeToPlay === true) {
 

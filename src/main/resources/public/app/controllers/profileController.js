@@ -1,6 +1,43 @@
 (function () {
 
-    var profileController = function ($scope) {
+    var profileController = function ($scope,$http, $modal, $location, $rootScope) {
+          //allow animation for modal
+            $scope.animationsEnabled = true;
+            //function to close modal
+              $scope.cancel = function () {
+            $modalInstance.dismiss();
+        };
+            //function to open modal and assign partial and controller to it
+            $scope.editProfile = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/editProfile.html',
+                    controller: 'editProfileController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                $scope.editAbout = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/editAbout.html',
+                    controller: 'editProfileController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                
+        
         $scope.profile = {
             join: 'Oct 25, 2015',
             lastSeen: 'Oct 25, 2015',
@@ -11,11 +48,18 @@
             posts: '8',
             followers: '8',
             description: 'Just a dude enjoying video games, dont be afraid to message me and friend me!',
-            favGame: 'Counter Strike: Global offensive',
+            //currentGame: 'Counter Strike: Global offensive',
             userName: 'wond3rBread',
             profilePic: '/profile/philtran.jpg'
 
         }
+
+        $scope.currentGame = [
+            {
+                gameName: 'Counter Strike: Global Offensive',
+                gameLinks: '#'
+            }
+        ]
 
         $scope.links = [
             {
@@ -33,17 +77,17 @@
         $scope.friends = [
             {
                 friendName: 'Liltwix',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/alexhall.jpg'
             },
             {
                 friendName: 'akatoshbla',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/davidknopp.jpg'
             },
             {
                 friendName: 'whitenoize',
-                friendLink: '#',
+                friendLink: '',
                 friendPic: '/profile/bendluzak.jpg'
             }
         ]
@@ -69,7 +113,7 @@
 
     };
 
-    profileController.$inject = ['$scope'];
+    profileController.$inject = ['$scope','$http', '$modal', '$location' , '$rootScope'];
 
     angular.module('nexusApp')
         .controller('profileController', profileController);
