@@ -1,13 +1,9 @@
 package com.nexus;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.xml.bind.DatatypeConverter;
-
-import org.eclipse.jetty.servlet.ServletTester;
 
 /**
  * This object is used to encapsulate the queries results from the database.
@@ -28,11 +24,12 @@ public class Profile
 	private int posts;
 	private String currentGame;
 	private String aboutDesc;
-	private File avatar;
-	private String avatarPic;
+	private String avatar;
 	private ArrayList<String> socialNames;
 	private ArrayList<String> socialLinks;
-	private ArrayList<String> gameLinks;
+	private ArrayList<String> favGameNames;
+	private ArrayList<String> favGameLinks; 
+	private ArrayList<String> supportedGames;
 	
 	/**
 	 * Simple empty constructor for the Profile object.
@@ -253,91 +250,52 @@ public class Profile
 	public void setSocialLinks(ArrayList<String> socialLinks) {
 		this.socialLinks = socialLinks;
 	}
+	
+	public ArrayList<String> getFavGameNames() {
+		return favGameNames;
+	}
+	
+	public void setFavGameNames(ArrayList<String> favGameNames) {
+		this.favGameNames = favGameNames;
+	}
+	
+	public ArrayList<String> getFavGameLinks() {
+		return favGameLinks;
+	}
+	
+	public void setFavGameLinks(ArrayList<String> favGameLinks) {
+		this.favGameLinks = favGameLinks;
+	}
 
 	/**
 	 * Getter for arraylist gameLinks.
 	 * @return ArrayList Strings
 	 */
-	public ArrayList<String> getGameLinks() {
-		return gameLinks;
+	public ArrayList<String> getSupportedGames() {
+		return supportedGames;
 	}
 
 	/**
 	 * Setter for arraylist gameLinks.
 	 * @param gameLinks ArrayList Strings
 	 */
-	public void setGameLinks(ArrayList<String> gameLinks) {
-		this.gameLinks = gameLinks;
+	public void setSupportedGames(ArrayList<String> supportedGames) {
+		this.supportedGames = supportedGames;
 	}
 
 	/**
 	 * Getter for avatar for frontend request.
 	 * @return File
 	 */
-	public File getAvatar() {
+	public String getAvatar() {
 		return avatar;
-	}
-	
-	/**
-	 * Getter for avatarPic for profile reload.
-	 * @return String
-	 */
-	public String getAvatarPic() {
-		return avatarPic;
 	}
 
 	/**
 	 * Setter for avatar before going to the database.
 	 * @param avatar File
 	 */
-	public void setAvatar(File avatar) {
-//		File image = new File(path);
-//		FileInputStream fis = new FileInputStream ( image );
-//
-//		String sql="insert into imgtst (username,image) values (?, ?)";
-//		pst=con.prepareStatement(sql);
-//
-//		pst.setString(1, user);
-//		pst.setBinaryStream (2, fis, (int) file.length() );
-		
-		// Method to insert the file into database
-//	    FileInputStream fis = null;
-//	    PreparedStatement ps = null;
-//	    try {
-//	      conn.setAutoCommit(false);
-//	      File file = new File("myPhoto.png");
-//	      fis = new FileInputStream(file);
-//	      ps = conn.prepareStatement(INSERT_PICTURE);
-//	      ps.setString(1, "001");
-//	      ps.setString(2, "name");
-//	      ps.setBinaryStream(3, fis, (int) file.length());
-//	      ps.executeUpdate();
-//	      conn.commit();
+	public void setAvatar(String avatar) {
 		this.avatar = avatar;
-	}
-	
-	/**
-	 * Setter for avatarPic for the profile reload.
-	 * @param avatar byte[]
-	 */
-	public void setAvatar(byte[] avatar)
-	{
-		// JDBC Standard get blob
-//	    while (resultSet.next()) {
-//	        String name = resultSet.getString(1);
-//	        String description = resultSet.getString(2);
-//	        File image = new File("D:\\java.gif");
-//	        FileOutputStream fos = new FileOutputStream(image);
-//
-//	        byte[] buffer = new byte[1];
-//	        InputStream is = resultSet.getBinaryStream(3);
-//	        while (is.read(buffer) > 0) {
-//	          fos.write(buffer);
-//	        }
-//	        fos.close();
-		byte[] imageBytes = avatar;
-		String imageBase64 = DatatypeConverter.printBase64Binary(imageBytes);
-		System.out.println(imageBase64);
-		avatarPic = imageBase64;
 	}
 }

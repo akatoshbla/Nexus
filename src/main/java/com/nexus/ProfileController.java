@@ -2,6 +2,7 @@ package com.nexus;
 
 import static com.nexus.JsonUtility.json;
 import static spark.Spark.*;
+import com.google.gson.Gson;
 
 /**
  * This class has the posts and gets for loading and editing the
@@ -42,19 +43,19 @@ public class ProfileController
 		 * "session": true,
   		 * "joined": "10/10,/2015",
          * "lastOnline": "10/20,/2015",
-         * "realName": "John Doe",
+         * "realName": "John Doe",        (mutable)(done) 
          * "role": "Newbie",
          * "shares": 6,
          * "likes": 12,
          * "posts": 0,
          * "followers": 0,
-         * "aboutDesc": "I am a computer science student at CSUN.",
+         * "aboutDesc": "I am a computer science student at CSUN.",			(mutable)
          * "userName": "user007",
-         * "avatar": "link here"
-         * "currentGame": "League of Legends",
-         * "socialNames": "[\"Twitter\",\"Facebook\"]",
-         * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
-         * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
+         * "avatar": "link here"		(mutable)
+         * "currentGame": "League of Legends",		(mutable)
+         * "socialNames": "[\"Twitter\",\"Facebook\"]",		(mutable)
+         * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",		(mutable)
+         * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"		(mutable)
 		 */
 		get("/profile",(req,res) -> {
 			String username;
@@ -96,13 +97,51 @@ public class ProfileController
 							System.out.println("Non-Session User Alert at " + req.ip());
 						}
 						//returns the result from getRealName which is in ProfileService class
-						return profileService.getRealName(username, req.body());
+						return profileService.updateRealName(username, req.body());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						return null;
 					}
-					//transforms json object from java to json object from frontend
-				} , json());
+					// transforms json object from java to json object from frontend
+				}, json());
+				
+				post("/currentGame", (req, res) -> { 
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateCurrentGame(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/socialInfo", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateSocialGames(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
 	}	
 }

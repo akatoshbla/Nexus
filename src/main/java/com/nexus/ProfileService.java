@@ -2,14 +2,8 @@ package com.nexus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.json.JSONObject;
-
 import java.util.Collection;
-import java.util.List;
-
-import org.json.JSONArray;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -44,15 +38,19 @@ public class ProfileService
 			jsonobj.addProperty("followers", profile.getFollowers());
 			jsonobj.addProperty("aboutDesc", profile.getAboutDesc());
 			jsonobj.addProperty("userName", username);
-			jsonobj.addProperty("avatar", profile.getAvatarPic());
+			jsonobj.addProperty("avatar", profile.getAvatar());
 			jsonobj.addProperty("currentGame", profile.getCurrentGame());
 			Gson gsonContainer = new Gson();
 			Collection<String> str = profile.getSocialNames();
 			Collection<String> str2 = profile.getSocialLinks();
-			Collection<String> str3 = profile.getGameLinks();
+			Collection<String> str3 = profile.getFavGameNames();
+			Collection<String> str4 = profile.getFavGameLinks();
+			Collection<String> str5 = profile.getSupportedGames();
 			jsonobj.addProperty("socialNames", gsonContainer.toJson(str));
 			jsonobj.addProperty("socialLinks", gsonContainer.toJson(str2));
-			jsonobj.addProperty("gameNames", gsonContainer.toJson(str3));
+			jsonobj.addProperty("favGameNames", gsonContainer.toJson(str3));
+			jsonobj.addProperty("favGameLinks", gsonContainer.toJson(str4));
+			jsonobj.addProperty("gameNames", gsonContainer.toJson(str5));
 		}
 		else {
 			jsonobj.addProperty("session", false);
@@ -61,7 +59,7 @@ public class ProfileService
 	}
 	
 	//method for realName
-		public JsonObject getRealName(String username, String body) throws Exception{
+		public JsonObject updateRealName(String username, String body) throws Exception{
 			
 			//creates a new profile and matches the body to the variable
 			Profile profile = new Gson().fromJson(body, Profile.class);
@@ -72,15 +70,45 @@ public class ProfileService
 			JsonObject jsonobj = new JsonObject();
 			
 			if(username != null) {
-				//using the new profile to update it with getRealName
-				profile = db.insertRealName(username, profile.getRealName());
+				String realName = db.updateUserProfile(username, "realName", profile.getRealName());
 				//populating jsonobj with new results from the profile
 				jsonobj.addProperty("result", true);
-				jsonobj.addProperty("realName", profile.getRealName());
+				jsonobj.addProperty("realName", realName);
 			}
 			else {
 				jsonobj.addProperty("result", false);
 			}
+			return jsonobj;
+		}
+		
+		public JsonObject updateCurrentGame(String username, String body) throws Exception {
+			Profile profile = new Gson().fromJson(body, Profile.class);
+			NexusDB db = new NexusDB();
+			JsonObject jsonobj = new JsonObject();
+			
+			if (username != null) {
+				jsonobj.addProperty("result", true);
+				jsonobj.addProperty("currentGame", db.updateUserProfile(username, "currentGame", profile.getCurrentGame()));
+			}
+			else {
+				jsonobj.addProperty("result", false);
+			}
+			return jsonobj;
+		}
+		
+		public JsonObject updateSocialGames(String username, String body) throws Exception {
+			Profile profile = new Gson().fromJson(body, Profile.class);
+			NexusDB db = new NexusDB();
+			JsonObject jsonobj = new JsonObject();
+			
+			if (username != null) {
+				jsonobj.addProperty("result", true);
+				// TODO: add the two to the json 
+			}
+			else {
+				jsonobj.addProperty("result", false);
+			}
+			
 			return jsonobj;
 		}
 	
@@ -90,7 +118,7 @@ public class ProfileService
 	 * @param username String
 	 * @return Json True - successful, False - failed
 	 */
-	public JsonObject setAvatar(String username)
+	public JsonObject updateAvatar(String username)
 	{
 		NexusDB db = new NexusDB();
 		JsonObject jsonobj = new JsonObject();
