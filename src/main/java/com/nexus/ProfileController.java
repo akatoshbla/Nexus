@@ -1,9 +1,7 @@
 package com.nexus;
 
 import static com.nexus.JsonUtility.json;
-import static spark.Spark.post;
-
-import com.google.gson.Gson;
+import static spark.Spark.*;
 
 /**
  * This class has the posts and gets for loading and editing the
@@ -14,7 +12,7 @@ import com.google.gson.Gson;
 public class ProfileController 
 {
 	/**
-	 * The post /profile takes nothing from the frontend, but it will check for a valid session.
+	 * The get /profile takes nothing from the frontend, but it will check for a valid session.
 	 * <p>Returns a Json with the following:
 	 * <p>"session": true,
  	 * <p>"joined": "10/10/2015",
@@ -52,13 +50,13 @@ public class ProfileController
          * "followers": 0,
          * "aboutDesc": "I am a computer science student at CSUN.",
          * "userName": "user007",
-         * "avatar": "a base64 String"
+         * "avatar": "link here"
          * "currentGame": "League of Legends",
          * "socialNames": "[\"Twitter\",\"Facebook\"]",
          * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
          * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
 		 */
-		post("/profile",(req,res) -> {
+		get("/profile",(req,res) -> {
 			String username;
 	
 			try {
@@ -75,10 +73,9 @@ public class ProfileController
 				}
 				return profileService.getUserProfile(username);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}		
-		},json());
+		}, json());
 	}	
 }
