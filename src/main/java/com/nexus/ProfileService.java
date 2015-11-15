@@ -60,6 +60,30 @@ public class ProfileService
 		return jsonobj;
 	}
 	
+	//method for realName
+		public JsonObject getRealName(String username, String body) throws Exception{
+			
+			//creates a new profile and matches the body to the variable
+			Profile profile = new Gson().fromJson(body, Profile.class);
+			NexusDB db = new NexusDB();
+			Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+			
+			//return object
+			JsonObject jsonobj = new JsonObject();
+			
+			if(username != null) {
+				//using the new profile to update it with getRealName
+				profile = db.insertRealName(username, profile.getRealName());
+				//populating jsonobj with new results from the profile
+				jsonobj.addProperty("result", true);
+				jsonobj.addProperty("realName", profile.getRealName());
+			}
+			else {
+				jsonobj.addProperty("result", false);
+			}
+			return jsonobj;
+		}
+	
 	/**
 	 * This is a future method for taking a image object and converting 
 	 * it into a blob to insert into the database.
