@@ -352,7 +352,7 @@ public class NexusDB {
 				profile.setShares(results.getInt("shares"));
 				profile.setLikes(results.getInt("likes"));
 				profile.setPosts(results.getInt("posts"));
-				profile.setFollowers(results.getInt("friends"));
+				profile.setFriends(results.getInt("friends"));
 				profile.setAboutDesc(results.getString("userDesc"));
 				profile.setAvatar(results.getString("profilePicLink"));
 				profile.setCurrentGame(results.getString("currentGame"));
@@ -394,7 +394,7 @@ public class NexusDB {
 					e.printStackTrace();
 					return profile;
 				}
-				query = "SELECT * FROM gameLinks WHERE id=" +userID;
+				query = "SELECT * FROM gamesSupported WHERE id=" +userID;
 				try {
 					pstmt = connection.prepareStatement(query);
 					ResultSet results3 = pstmt.executeQuery();

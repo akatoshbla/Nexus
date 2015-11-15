@@ -35,7 +35,7 @@ public class ProfileService
 			jsonobj.addProperty("shares", profile.getShares());
 			jsonobj.addProperty("likes", profile.getLikes());
 			jsonobj.addProperty("posts", profile.getPosts());
-			jsonobj.addProperty("followers", profile.getFollowers());
+			jsonobj.addProperty("friends", profile.getFriends());
 			jsonobj.addProperty("aboutDesc", profile.getAboutDesc());
 			jsonobj.addProperty("userName", username);
 			jsonobj.addProperty("avatar", profile.getAvatar());
