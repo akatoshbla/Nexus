@@ -12,7 +12,7 @@ public class FriendsService {
 
 		/**
 		 * Returns a JSON object containing a list usernames of all the user's friends.
-		 * @param username String
+		 * @param username
 		 * @return JsonObject
 		 */
 		public JsonObject getFriends(String username) {
@@ -44,7 +44,7 @@ public class FriendsService {
 		 * Establishes a friend request between two users.
 		 * Input is a JSON string containing the keys "to" and "from",
 		 * 	with corresponding username values.
-		 * @param body String
+		 * @param body
 		 * @return Boolean
 		 */
 		public Boolean friendRequest(String body) {
@@ -64,7 +64,7 @@ public class FriendsService {
 		 * Confirms a pending friend request between two users.
 		 * Input is a JSON string containing the keys "to" and "from",
 		 * 	with corresponding username values.
-		 * @param body String
+		 * @param body
 		 * @return Booleans
 		 */
 		public Boolean confirmFriendRequest(String body){
@@ -85,7 +85,7 @@ public class FriendsService {
 		 * 	between two users.
 		 * Input is a JSON string containing the keys "user1" and "user2", 
 		 * 	with corresponding username values.
-		 * @param body String
+		 * @param body
 		 * @return Boolean
 		 */
 		public Boolean deleteFriend(String body){
