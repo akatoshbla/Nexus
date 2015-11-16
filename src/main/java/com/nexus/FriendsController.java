@@ -9,9 +9,9 @@ import static spark.Spark.*;
 public class FriendsController {
 	/**
 	 * <p>Summary of API calls:</p>
-	 * <p>GET /friendslist/&lt username &gt
+	 * <p>GET /friendslist/&lt;username&gt;</p>
 	 * <p>	- Returns the specified user's list of friends</p>
-	 * <p>	- Returns a JSON: {"friends":[<friends list>]}</p>
+	 * <p>	- Returns a JSON: {"friends":[&lt;friends list&gt;]}</p>
 	 * <br>
 	 * <p>POST /friendRequest</p>
 	 * 	<p>	- Sends a friend request from one user to another</p>
