@@ -231,7 +231,6 @@ public class Profile
 	 * @param socialNames ArrayList String
 	 */
 	public void setSocialNames(ArrayList<String> socialNames) {
-		System.out.println(socialNames.get(0));
 		this.socialNames = socialNames;
 	}
 
