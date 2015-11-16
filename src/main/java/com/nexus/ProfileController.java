@@ -31,6 +31,43 @@ public class ProfileController
      * <p>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
      * <p>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
 	 * @param profileService class
+	 * 
+	 * The post /realName takes a String from the frontend. Checks for a valid session, in which 
+	 * it gets the user's name from.
+	 * <p>Returns a Json with the following:
+	 * <p>"result": true,
+	 * <p>"realName": John Doe
+	 * 
+	 * The post /currentGame takes a String from the frontend. Checks for a valid session, in which
+	 * it gets the uer's name from.
+	 * <p>Returns a Json with the following:
+	 * <p>"result": true,
+	 * <p>"currentGame": Heros of the Storm
+	 * 
+	 * The post /userDesc takes a String from the frontend.
+	 * <p>Returns a Json with the following:
+	 * <p>"result": true,
+     * <p>"userDesc": "I am a computer science student at CSUN."
+	 * 
+	 * The post /socialInfo takes two arrays from the frontend.
+	 * <p>Returns a Json with the following:
+	 * <p>"result": true,
+     * <p>"socialNames": "[\"Twitter\",\"Facebook\"]",
+     * <p>"socialLinks": "[\"http:/twitter.com/johndoe\",\"http://www.facebook.com/\"]"
+     * 
+     * The post /favGames takes two arrays from the frontend.
+     * <p>Returns a Json with the following:
+     * <p>"result": true,
+     * <p>"socialNames": "[\"World of Warcraft\",\"League of Legends\"]",
+     * <p>"socialLinks": "[\"http:/www.woldofwarcraft.com/\",\"http://www.leagueoflegends.com/\"]"
+     * 
+     * The post /gamesPlayed takes one array from the frontend.
+     * <p>Returns a Json with the following:
+     * <p>"result": true,
+     * <p>"gamesPlayed": "[\"World of Warcraft\",\"League of Legends\"]"
+     * 
+     * The post /avatar will take a File from the frontend.
+     * <p>Returns a json with the following:
 	 */
 	public ProfileController(final ProfileService profileService)
 	{
@@ -78,8 +115,9 @@ public class ProfileController
 			}		
 		}, json());
 		
-		//update from front end passed to middle tier to update database realName
-		
+				/**
+				 * 
+				 */
 				post("/realName", (req, res) -> {
 					//set username
 					String username;

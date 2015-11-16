@@ -60,7 +60,13 @@ public class ProfileService
 		return jsonobj;
 	}
 	
-	//method for realName
+		/**
+		 * This method updates the realName in the userProfile.
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateRealName(String username, String body) throws Exception{
 			
 			//creates a new profile and matches the body to the variable
@@ -83,6 +89,13 @@ public class ProfileService
 			return jsonobj;
 		}
 		
+		/**
+		 * This method updates the current game played in the user Profile
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateCurrentGame(String username, String body) throws Exception {
 			Profile profile = new Gson().fromJson(body, Profile.class);
 			NexusDB db = new NexusDB();
@@ -98,6 +111,13 @@ public class ProfileService
 			return jsonobj;
 		}
 		
+		/**
+		 * This method updates the social table. Deletes all the records for the user and reinserts new ones.
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateSocialGames(String username, String body) throws Exception {
 			Profile profile = new Gson().fromJson(body, Profile.class);
 			NexusDB db = new NexusDB();
@@ -121,6 +141,13 @@ public class ProfileService
 			return jsonobj;
 		}
 		
+		/**
+		 * This method updates the favGames table. Deletes all the records for the user and reinserts new ones.
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateFavGames(String username, String body) throws Exception {
 			Profile profile = new Gson().fromJson(body, Profile.class);
 			NexusDB db = new NexusDB();
@@ -144,6 +171,13 @@ public class ProfileService
 			return jsonobj;
 		}
 		
+		/**
+		 * This method updates the gamesPlayed table. Deletes all the records for the user and reinserts new ones.
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateGamesPlayed(String username, String body) throws Exception {
 			Profile profile = new Gson().fromJson(body, Profile.class);
 			NexusDB db = new NexusDB();
@@ -164,6 +198,13 @@ public class ProfileService
 			return jsonobj;
 		}
 		
+		/**
+		 * This method updates the userDesc in the user profile table.
+		 * @param username String
+		 * @param body String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateUserDesc(String username, String body) throws Exception {
 			Profile profile = new Gson().fromJson(body, Profile.class);
 			NexusDB db = new NexusDB();
@@ -171,7 +212,7 @@ public class ProfileService
 			
 			
 			if (username != null) {
-				String result = db.updateUserDesc(username, profile.getAboutDesc());
+				String result = db.updateUserProfile(username, "userDesc", profile.getAboutDesc());
 				jsonobj.addProperty("result", true);
 				jsonobj.addProperty("userDesc", result);
 			}
@@ -183,10 +224,11 @@ public class ProfileService
 		}
 	
 	/**
-	 * This is a future method for taking a image object and converting 
-	 * it into a blob to insert into the database.
+	 * This is a future method for taking a image object and saving it to the server. Puts link in the database.
 	 * @param username String
+	 * @param body String
 	 * @return Json True - successful, False - failed
+	 * @throws Exception if error
 	 */
 	public JsonObject updateAvatar(String username, String body) throws Exception
 	{

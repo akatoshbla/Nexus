@@ -67,7 +67,7 @@ public class NexusDB {
 	 * @param name1 String
 	 * @param name2 String
 	 * @return Boolean
-	 * @throws SQLException
+	 * @throws SQLException if error
 	 */
 	public Boolean checkFriend(String name1, String name2) throws SQLException{
 		Connection conn=this.getConnection();
@@ -102,7 +102,7 @@ public class NexusDB {
 	 * @param name1 String
 	 * @param name2 String
 	 * @return Boolean
-	 * @throws SQLException
+	 * @throws SQLException if error
 	 */
 	public Boolean updateFriendStatus(String name1, String name2) throws SQLException{
 		Connection conn=this.getConnection();
@@ -137,7 +137,7 @@ public class NexusDB {
 	 * @param name1 String
 	 * @param name2 String
 	 * @return Boolean
-	 * @throws SQLException
+	 * @throws SQLException if error
 	 */
 	public Boolean deleteFriend(String name1,String name2) throws SQLException{
 		Connection conn=this.getConnection();
@@ -171,7 +171,7 @@ public class NexusDB {
 	 * @param fromUser String
 	 * @param toUser String
 	 * @return Boolean
-	 * @throws SQLException
+	 * @throws SQLException if error
 	 */
 	public Boolean  createFriendRequest(String fromUser, String toUser) throws SQLException{
 		Connection conn=this.getConnection();
@@ -216,8 +216,8 @@ public class NexusDB {
 	/**
 	 * Returns an ArrayList containing the usernames of the user's friends.
 	 * @param name String
-	 * @return ArrayList<String>
-	 * @throws Exception
+	 * @return ArrayList String
+	 * @throws Exception if error
 	 */
 	
 	public ArrayList<String> getFriendsList(String name) throws Exception{
@@ -287,6 +287,7 @@ public class NexusDB {
 	 * Only creates a record if there isn't already a record with the same name.
 	 * @param name String
 	 * @param password String
+	 * @param email String
 	 * @return Boolean
 	 * @throws Exception if error
 	 */
@@ -320,6 +321,14 @@ public class NexusDB {
 		}
 		
 	}
+	
+	/**
+	 * Creates a username with a null email.
+	 * @param name String
+	 * @param password String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
 	public Boolean createUser (String name, String password) throws Exception{
 		return this.createUser(name, password,null);	
 	}
@@ -358,6 +367,7 @@ public class NexusDB {
 	 * Updates a user's password in the database with the inputed password string.
 	 * @param name String
 	 * @param password String
+	 * @return boolean
 	 * @throws Exception if error
 	 */
 	public Boolean updatePassword(String name, String password) throws Exception{
@@ -390,7 +400,7 @@ public class NexusDB {
 	 * Retrieves the inputed user's hashed password from the database.
 	 * @param name String
 	 * @return String
-	 * @throws Exception if error
+	 * @throws SQLException if error
 	 */
 	public String retrievePassword(String name) throws SQLException{
 		Connection conn=this.getConnection();
@@ -458,7 +468,14 @@ public class NexusDB {
 		}
 	}
 	
-	// Updates one column on the userProfile
+		/**
+		 * This method updates a single wildcard column in the userProfile table.
+		 * @param username String
+		 * @param column String
+		 * @param value String
+		 * @return String
+		 * @throws Exception if error
+		 */
 		public String updateUserProfile(String username, String column, String value) throws Exception {
 			//creates connection b/w front and database
 			Connection connection = this.getConnection();
@@ -517,6 +534,18 @@ public class NexusDB {
 			return result;
 		}
 		
+		/**
+		 * This method edits tables that are one to many and return a list on query.
+		 * The wildcards are tableName and 2 columns.
+		 * @param username String
+		 * @param tableName String
+		 * @param column1 String
+		 * @param column2 String
+		 * @param names ArrayList String
+		 * @param links ArrayList String 
+		 * @return Profile Object
+		 * @throws Exception if error
+		 */
 		public Profile updateUserProfileLists(String username, String tableName, String column1, String column2,
 				ArrayList<String> names, ArrayList<String> links) throws Exception {
 			Connection connection = this.getConnection();
@@ -589,6 +618,16 @@ public class NexusDB {
 			return profile;
 		}
 		
+		/**
+		 * This method updates a table that has only one column and is a one to many relationship.
+		 * Wildcards are tableName and column.
+		 * @param username String
+		 * @param tableName String
+		 * @param column1 String
+		 * @param names ArrayList String
+		 * @return ArrayList String
+		 * @throws Exception if error
+		 */
 		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
 				ArrayList<String> names) throws Exception {
 			Connection connection = this.getConnection();
@@ -652,52 +691,6 @@ public class NexusDB {
 				connection.close();
 			}
 			return gameNames;
-		}
-		
-		public String updateUserDesc(String username, String value) throws Exception {
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			String result = null;
-			int userID = getUserId(username);
-			String update = "UPDATE userprofile SET userDesc = ? WHERE id=?";
-			try {
-				pstmt = connection.prepareStatement(update);
-				pstmt.setString(1, value);
-				pstmt.setInt(2, userID);
-					System.out.println(pstmt);
-				pstmt.executeUpdate();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-			String query = "SELECT userDesc FROM userprofile WHERE id= ?";
-			try
-			{
-				pstmt = connection.prepareStatement(query);
-				pstmt.setInt(1, userID);
-				//getting query results and puts it in results
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				if (results.next())
-				{	
-					result = results.getString("userDesc");
-				}
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-				return result;
-			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
-			return result;
 		}
 	
 	/**

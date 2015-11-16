@@ -276,7 +276,7 @@ public class Profile
 
 	/**
 	 * Setter for arraylist gameLinks.
-	 * @param gameLinks ArrayList Strings
+	 * @param supportedGames ArrayList Strings
 	 */
 	public void setSupportedGames(ArrayList<String> supportedGames) {
 		this.supportedGames = supportedGames;
@@ -284,7 +284,7 @@ public class Profile
 
 	/**
 	 * Getter for avatar for frontend request.
-	 * @return File
+	 * @return String
 	 */
 	public String getAvatar() {
 		return avatar;
@@ -292,7 +292,7 @@ public class Profile
 
 	/**
 	 * Setter for avatar before going to the database.
-	 * @param avatar File
+	 * @param avatar String
 	 */
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
