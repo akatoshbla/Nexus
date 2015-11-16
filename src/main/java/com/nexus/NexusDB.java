@@ -120,7 +120,7 @@ public class NexusDB {
 			pstmt.setInt(1, id1);
 			pstmt.setInt(2, id2);
 			pstmt.executeUpdate();
-			return true;
+			return checkFriend(name1,name2);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -216,7 +216,7 @@ public class NexusDB {
 	/**
 	 * Returns an ArrayList containing the usernames of the user's friends.
 	 * @param name String
-	 * @return ArrayList String
+	 * @return ArrayList Contains strings
 	 * @throws Exception if error
 	 */
 	
@@ -367,7 +367,7 @@ public class NexusDB {
 	 * Updates a user's password in the database with the inputed password string.
 	 * @param name String
 	 * @param password String
-	 * @return boolean
+	 * @return Boolean
 	 * @throws Exception if error
 	 */
 	public Boolean updatePassword(String name, String password) throws Exception{
@@ -805,7 +805,6 @@ public class NexusDB {
 	 */
 	public static void main(String[] args) throws Exception{
 		NexusDB app = new NexusDB();
-		System.out.println(app.recordExists("bnc"));
-		//app.createUser("user007", app.hashPassword("12345"));
+		app.createFriendRequest("AlexTest3","bob");
 	}
 }
