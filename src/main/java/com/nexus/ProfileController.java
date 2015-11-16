@@ -13,60 +13,76 @@ public class ProfileController
 {
 	/**
 	 * The get /profile takes nothing from the frontend, but it will check for a valid session.
-	 * <p>Returns a Json with the following:
-	 * <p>"session": true,
- 	 * <p>"joined": "10/10/2015",
-     * <p>"lastOnline": "10/20/2015",
-     * <p>"realName": "John Doe",
-     * <p>"role": "Newbie",
-     * <p>"shares": 6,
-     * <p>"likes": 12,
-     * <p>"posts": 0,
-     * <p>"followers": 0,
-     * <p>"aboutDesc": "I am a computer science student at CSUN.",
-     * <p>"userName": "user007",
-     * <p>"avatar": "a base64 String"
-     * <p>"currentGame": "League of Legends",
-     * <p>"socialNames": "[\"Twitter\",\"Facebook\"]",
-     * <p>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
-     * <p>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
-	 * 
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"session": true,
+ 	 * <li>"joined": "10/10/2015",
+     * <li>"lastOnline": "10/20/2015",
+     * <li>"realName": "John Doe",
+     * <li>"role": "Newbie",
+     * <li>"shares": 6,
+     * <li>"likes": 12,
+     * <li>"posts": 0,
+     * <li>"followers": 0,
+     * <li>"aboutDesc": "I am a computer science student at CSUN.",
+     * <li>"userName": "user007",
+     * <li>"avatar": "a base64 String"
+     * <li>"currentGame": "League of Legends",
+     * <li>"socialNames": "[\"Twitter\",\"Facebook\"]",
+     * <li>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
+     * <li>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
+	 * </ul>
+	 * <p>
 	 * The post /realName takes a String from the frontend. Checks for a valid session, in which 
 	 * it gets the user's name from.
-	 * <p>Returns a Json with the following:
-	 * <p>"result": true,
-	 * <p>"realName": John Doe
-	 * 
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+	 * <li>"realName": John Doe
+	 * </ul>
+	 * <p>
 	 * The post /currentGame takes a String from the frontend. Checks for a valid session, in which
 	 * it gets the uer's name from.
-	 * <p>Returns a Json with the following:
-	 * <p>"result": true,
-	 * <p>"currentGame": Heros of the Storm
-	 * 
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+	 * <li>"currentGame": Heros of the Storm
+	 * </ul>
+	 * <p>
 	 * The post /userDesc takes a String from the frontend.
-	 * <p>Returns a Json with the following:
-	 * <p>"result": true,
-     * <p>"userDesc": "I am a computer science student at CSUN."
-	 * 
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+     * <li>"userDesc": "I am a computer science student at CSUN."
+	 * </ul>
+	 * <p>
 	 * The post /socialInfo takes two arrays from the frontend.
-	 * <p>Returns a Json with the following:
-	 * <p>"result": true,
-     * <p>"socialNames": "[\"Twitter\",\"Facebook\"]",
-     * <p>"socialLinks": "[\"http:/twitter.com/johndoe\",\"http://www.facebook.com/\"]"
-     * 
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+     * <li>"socialNames": "[\"Twitter\",\"Facebook\"]",
+     * <li>"socialLinks": "[\"http:/twitter.com/johndoe\",\"http://www.facebook.com/\"]"
+     * </ul>
+     * <p>
      * The post /favGames takes two arrays from the frontend.
-     * <p>Returns a Json with the following:
-     * <p>"result": true,
-     * <p>"socialNames": "[\"World of Warcraft\",\"League of Legends\"]",
-     * <p>"socialLinks": "[\"http:/www.woldofwarcraft.com/\",\"http://www.leagueoflegends.com/\"]"
-     * 
+     * <ul>
+     * <li>Returns a Json with the following:
+     * <li>"result": true,
+     * <li>"socialNames": "[\"World of Warcraft\",\"League of Legends\"]",
+     * <li>"socialLinks": "[\"http:/www.woldofwarcraft.com/\",\"http://www.leagueoflegends.com/\"]"
+     * </ul>
+     * <p>
      * The post /gamesPlayed takes one array from the frontend.
-     * <p>Returns a Json with the following:
-     * <p>"result": true,
-     * <p>"gamesPlayed": "[\"World of Warcraft\",\"League of Legends\"]"
-     * 
+     * <ul>
+     * <li>Returns a Json with the following:
+     * <li>"result": true,
+     * <li>"gamesPlayed": "[\"World of Warcraft\",\"League of Legends\"]"
+     * </ul>
+     * <p>
      * The post /avatar will take a File from the frontend.
-     * <p>Returns a json with the following:
+     * <ul>
+     * <li>Returns a json with the following:
+     * </ul>
      * @param profileService class
 	 */
 	public ProfileController(final ProfileService profileService)
