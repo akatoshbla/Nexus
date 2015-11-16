@@ -30,7 +30,6 @@ public class ProfileController
      * <p>"socialNames": "[\"Twitter\",\"Facebook\"]",
      * <p>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
      * <p>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
-	 * @param profileService class
 	 * 
 	 * The post /realName takes a String from the frontend. Checks for a valid session, in which 
 	 * it gets the user's name from.
@@ -68,6 +67,7 @@ public class ProfileController
      * 
      * The post /avatar will take a File from the frontend.
      * <p>Returns a json with the following:
+     * @param profileService class
 	 */
 	public ProfileController(final ProfileService profileService)
 	{
