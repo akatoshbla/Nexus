@@ -2,7 +2,6 @@ package com.nexus;
 
 import static com.nexus.JsonUtility.json;
 import static spark.Spark.*;
-import com.google.gson.Gson;
 
 /**
  * This class has the posts and gets for loading and editing the
@@ -99,7 +98,6 @@ public class ProfileController
 						//returns the result from getRealName which is in ProfileService class
 						return profileService.updateRealName(username, req.body());
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						return null;
 					}
@@ -138,6 +136,82 @@ public class ProfileController
 							System.out.println("Non-Session User Alert at " + req.ip());	
 						}
 						return profileService.updateSocialGames(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/favGames", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateFavGames(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("gamesPlayed", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateGamesPlayed(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/userDesc", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateUserDesc(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/avatar", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateAvatar(username, req.body());
 					} catch (Exception e) {
 						e.printStackTrace();
 						return null;

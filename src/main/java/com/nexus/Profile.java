@@ -20,7 +20,7 @@ public class Profile
 	private String role;
 	private int likes;
 	private	int shares;
-	private int followers;
+	private int friends;
 	private int posts;
 	private String currentGame;
 	private String aboutDesc;
@@ -158,16 +158,16 @@ public class Profile
 	 * Getter for followers
 	 * @return int
 	 */
-	public int getFollowers() {
-		return followers;
+	public int getFriends() {
+		return friends;
 	}
 
 	/**
 	 * Setter for followers
 	 * @param followers int
 	 */
-	public void setFollowers(int followers) {
-		this.followers = followers;
+	public void setFriends(int followers) {
+		this.friends = followers;
 	}
 
 	/**
@@ -231,7 +231,6 @@ public class Profile
 	 * @param socialNames ArrayList String
 	 */
 	public void setSocialNames(ArrayList<String> socialNames) {
-		System.out.println(socialNames.get(0));
 		this.socialNames = socialNames;
 	}
 

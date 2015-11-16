@@ -480,13 +480,10 @@ public class NexusDB {
 				//preparing an execution for update
 				pstmt.executeUpdate();	
 			}
-			finally
+			catch (Exception e)
 			{
-				//if the preparation doesn't equal null, then close it
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
+				e.printStackTrace();
+				return result;
 			}	
 			
 			//Same as above but
@@ -503,7 +500,6 @@ public class NexusDB {
 				{	
 					result = results.getString(column);
 				}
-				return result;
 			}
 			catch (Exception e) 
 			{
@@ -518,7 +514,190 @@ public class NexusDB {
 				}
 				connection.close();
 			}
+			return result;
+		}
+		
+		public Profile updateUserProfileLists(String username, String tableName, String column1, String column2,
+				ArrayList<String> names, ArrayList<String> links) throws Exception {
+			Connection connection = this.getConnection();
+			PreparedStatement pstmt = null;
+			Profile profile = null;
+			ArrayList<String> socialNames = new ArrayList<String>();
+			ArrayList<String> socialLinks = new ArrayList<String>();
 			
+			
+			int userID = getUserId(username);
+			String delete = "DELETE FROM " + tableName + " WHERE id=?";
+			String insert = "INSERT INTO " + tableName + "(id," + column1 + "," + column2 + ") VALUES (?,?,?)";
+			
+			try
+			{
+				pstmt = connection.prepareStatement(delete);
+				pstmt.setInt(1, userID);
+					System.out.println(pstmt);
+				pstmt.executeUpdate();		
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			try
+			{
+				//preparing a statment that the update will run
+				pstmt = connection.prepareStatement(insert);
+				//these are holders for the String update
+				for (int i = 0; i < names.size(); i++)
+				{
+					pstmt.setInt(1, userID);
+					pstmt.setString(2, names.get(i));
+					pstmt.setString(3, links.get(i));
+					pstmt.executeUpdate();
+					System.out.println(pstmt);
+				}	
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return profile;
+			}	
+			
+			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
+			try {
+				profile = new Profile();
+				pstmt = connection.prepareStatement(query);
+				ResultSet results = pstmt.executeQuery();
+					System.out.println(pstmt);
+				while (results.next())
+				{
+					socialNames.add(results.getString(column1));
+					socialLinks.add(results.getString(column2));
+				}
+				profile.setSocialNames(socialNames);
+				profile.setSocialLinks(socialLinks);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return profile;
+			}
+			finally 
+			{
+				if(pstmt != null)
+				{
+					pstmt.close();
+				}
+				connection.close();
+			}
+			return profile;
+		}
+		
+		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
+				ArrayList<String> names) throws Exception {
+			Connection connection = this.getConnection();
+			PreparedStatement pstmt = null;
+			ArrayList<String> gameNames = new ArrayList<String>();
+			
+			
+			int userID = getUserId(username);
+			String delete = "DELETE FROM " + tableName + " WHERE id=?";
+			String insert = "INSERT INTO " + tableName + "(id," + column1 + ") VALUES (?,?)";
+			
+			try
+			{
+				pstmt = connection.prepareStatement(delete);
+				pstmt.setInt(1, userID);
+					System.out.println(pstmt);
+				pstmt.executeUpdate();		
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			try
+			{
+				//preparing a statment that the update will run
+				pstmt = connection.prepareStatement(insert);
+				//these are holders for the String update
+				for (int i = 0; i < names.size(); i++)
+				{
+					pstmt.setInt(1, userID);
+					pstmt.setString(2, names.get(i));
+					pstmt.executeUpdate();
+					System.out.println(pstmt);
+				}	
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}	
+			
+			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
+			try {
+				pstmt = connection.prepareStatement(query);
+				ResultSet results = pstmt.executeQuery();
+					System.out.println(pstmt);
+				while (results.next())
+				{
+					gameNames.add(results.getString(column1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			finally 
+			{
+				if(pstmt != null)
+				{
+					pstmt.close();
+				}
+				connection.close();
+			}
+			return gameNames;
+		}
+		
+		public String updateUserDesc(String username, String value) throws Exception {
+			Connection connection = this.getConnection();
+			PreparedStatement pstmt = null;
+			String result = null;
+			int userID = getUserId(username);
+			String update = "UPDATE userprofile SET userDesc = ? WHERE id=?";
+			try {
+				pstmt = connection.prepareStatement(update);
+				pstmt.setString(1, value);
+				pstmt.setInt(2, userID);
+					System.out.println(pstmt);
+				pstmt.executeUpdate();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			String query = "SELECT userDesc FROM userprofile WHERE id= ?";
+			try
+			{
+				pstmt = connection.prepareStatement(query);
+				pstmt.setInt(1, userID);
+				//getting query results and puts it in results
+				ResultSet results = pstmt.executeQuery();
+					System.out.println(pstmt);
+				if (results.next())
+				{	
+					result = results.getString("userDesc");
+				}
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+				return result;
+			}
+			finally 
+			{
+				if(pstmt != null)
+				{
+					pstmt.close();
+				}
+				connection.close();
+			}
+			return result;
 		}
 	
 	/**
@@ -551,7 +730,7 @@ public class NexusDB {
 				profile.setShares(results.getInt("shares"));
 				profile.setLikes(results.getInt("likes"));
 				profile.setPosts(results.getInt("posts"));
-				profile.setFollowers(results.getInt("friends"));
+				profile.setFriends(results.getInt("friends"));
 				profile.setAboutDesc(results.getString("userDesc"));
 				profile.setAvatar(results.getString("profilePicLink"));
 				profile.setCurrentGame(results.getString("currentGame"));
@@ -593,7 +772,7 @@ public class NexusDB {
 					e.printStackTrace();
 					return profile;
 				}
-				query = "SELECT * FROM gameLinks WHERE id=" +userID;
+				query = "SELECT * FROM gamesSupported WHERE id=" +userID;
 				try {
 					pstmt = connection.prepareStatement(query);
 					ResultSet results3 = pstmt.executeQuery();
@@ -609,7 +788,6 @@ public class NexusDB {
 				}
 				
 			}
-			return profile;
 		}
 		catch(Exception e)
 		{
@@ -624,6 +802,7 @@ public class NexusDB {
 			}
 			connection.close();
 		}
+		return profile;
 	}
 
 	/**
