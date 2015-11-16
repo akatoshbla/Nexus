@@ -1,44 +1,46 @@
 (function () {
 
-    var profileController = function ($scope,$http, $modal, $location, $rootScope) {
-          //allow animation for modal
-            $scope.animationsEnabled = true;
-            //function to close modal
-              $scope.cancel = function () {
+    var profileController = function ($rootScope, $scope, $http, $modal, $location) {
+        //allow animation for modal
+        $scope.animationsEnabled = true;
+        //function to close modal
+        $scope.cancel = function () {
             $modalInstance.dismiss();
         };
-            //function to open modal and assign partial and controller to it
-            $scope.editProfile = function (size) {
+       
 
-                var modalInstance = $modal.open({
-                    animation: $scope.animationsEnabled,
-                    templateUrl: 'app/views/editProfile.html',
-                    controller: 'editProfileController',
-                    size: size,
-                    resolve: {
-                        items: function () {
-                            return $scope.items;
-                        }
-                    }
-                });
-            }
-                $scope.editAbout = function (size) {
+        //function to open modal and assign partial and controller to it
+        $rootScope.editProfile = function (size) {
 
-                var modalInstance = $modal.open({
-                    animation: $scope.animationsEnabled,
-                    templateUrl: 'app/views/editAbout.html',
-                    controller: 'editProfileController',
-                    size: size,
-                    resolve: {
-                        items: function () {
-                            return $scope.items;
-                        }
+            var modalInstance = $modal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: 'app/views/editProfile.html',
+                controller: 'editProfileController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
                     }
-                });
-            }
-                
-        
-        $scope.profile = {
+                }
+            });
+        }
+        $scope.editAbout = function (size) {
+
+            var modalInstance = $modal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: 'app/views/editAbout.html',
+                controller: 'editProfileController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+        }
+
+
+        $rootScope.profile = {
             join: 'Oct 25, 2015',
             lastSeen: 'Oct 25, 2015',
             realName: 'Phillip Tran',
@@ -62,18 +64,18 @@
         ]
 
         $scope.links = [
-            {
-                websiteName: 'Facebook',
-                socialLinks: '#'
+                {
+                    websiteName: 'Facebook',
+                    socialLinks: '#'
             },
-            {
+                {
 
-                websiteName: 'Twitter',
-                socialLinks: '#'
+                    websiteName: 'Twitter',
+                    socialLinks: '#'
             }
 
         ]
-        //favgame object?....
+            //favgame object?....
         $scope.friends = [
             {
                 friendName: 'Liltwix',
@@ -113,7 +115,7 @@
 
     };
 
-    profileController.$inject = ['$scope','$http', '$modal', '$location' , '$rootScope'];
+    profileController.$inject = ['$rootScope', '$scope', '$http', '$modal', '$location'];
 
     angular.module('nexusApp')
         .controller('profileController', profileController);
