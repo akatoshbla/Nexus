@@ -32,6 +32,8 @@ public class FriendsController {
 	 * <p> 		with the corresponding values being valid usernames.</p>
 	 * <p> 	- Returns a boolean denoting the success of hte operation, </p>
 	 *  <p>		or null in the case of an error.</p>
+	 *  @param friendsService Contains methods to aid the FriendsController
+	 *  @throws Exception if error
 	 */
 	public FriendsController(final FriendsService friendsService) throws Exception{
 
