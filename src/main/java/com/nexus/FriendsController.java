@@ -9,9 +9,9 @@ import static spark.Spark.*;
 public class FriendsController {
 	/**
 	 * <p>Summary of API calls:</p>
-	 * <p>GET /friendslist/&lt username &gt
+	 * <p>GET /friendslist/:username
 	 * <p>	- Returns the specified user's list of friends</p>
-	 * <p>	- Returns a JSON: {"friends":[<friends list>]}</p>
+	 * <p>	- Returns a JSON: {"friends":[friends list]}</p>
 	 * <br>
 	 * <p>POST /friendRequest</p>
 	 * 	<p>	- Sends a friend request from one user to another</p>
@@ -31,7 +31,9 @@ public class FriendsController {
 	 * <p> 	- Request body is a JSON with keys "user1" and "user2", </p>
 	 * <p> 		with the corresponding values being valid usernames.</p>
 	 * <p> 	- Returns a boolean denoting the success of hte operation, </p>
-	 *  <p>		or null in the case of an error.</p>
+	 * <p>		or null in the case of an error.</p>
+	 * @param friendsService class 
+	 * @throws Exception if error
 	 */
 	public FriendsController(final FriendsService friendsService) throws Exception{
 
