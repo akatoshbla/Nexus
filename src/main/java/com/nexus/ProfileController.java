@@ -13,24 +13,77 @@ public class ProfileController
 {
 	/**
 	 * The get /profile takes nothing from the frontend, but it will check for a valid session.
-	 * <p>Returns a Json with the following:
-	 * <p>"session": true,
- 	 * <p>"joined": "10/10/2015",
-     * <p>"lastOnline": "10/20/2015",
-     * <p>"realName": "John Doe",
-     * <p>"role": "Newbie",
-     * <p>"shares": 6,
-     * <p>"likes": 12,
-     * <p>"posts": 0,
-     * <p>"followers": 0,
-     * <p>"aboutDesc": "I am a computer science student at CSUN.",
-     * <p>"userName": "user007",
-     * <p>"avatar": "a base64 String"
-     * <p>"currentGame": "League of Legends",
-     * <p>"socialNames": "[\"Twitter\",\"Facebook\"]",
-     * <p>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
-     * <p>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
-	 * @param profileService class
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"session": true,
+ 	 * <li>"joined": "10/10/2015",
+     * <li>"lastOnline": "10/20/2015",
+     * <li>"realName": "John Doe",
+     * <li>"role": "Newbie",
+     * <li>"shares": 6,
+     * <li>"likes": 12,
+     * <li>"posts": 0,
+     * <li>"followers": 0,
+     * <li>"aboutDesc": "I am a computer science student at CSUN.",
+     * <li>"userName": "user007",
+     * <li>"avatar": "a base64 String"
+     * <li>"currentGame": "League of Legends",
+     * <li>"socialNames": "[\"Twitter\",\"Facebook\"]",
+     * <li>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
+     * <li>"gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
+	 * </ul>
+	 * <p>
+	 * The post /realName takes a String from the frontend. Checks for a valid session, in which 
+	 * it gets the user's name from.
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+	 * <li>"realName": John Doe
+	 * </ul>
+	 * <p>
+	 * The post /currentGame takes a String from the frontend. Checks for a valid session, in which
+	 * it gets the uer's name from.
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+	 * <li>"currentGame": Heros of the Storm
+	 * </ul>
+	 * <p>
+	 * The post /userDesc takes a String from the frontend.
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+     * <li>"userDesc": "I am a computer science student at CSUN."
+	 * </ul>
+	 * <p>
+	 * The post /socialInfo takes two arrays from the frontend.
+	 * <ul>
+	 * <li>Returns a Json with the following:
+	 * <li>"result": true,
+     * <li>"socialNames": "[\"Twitter\",\"Facebook\"]",
+     * <li>"socialLinks": "[\"http:/twitter.com/johndoe\",\"http://www.facebook.com/\"]"
+     * </ul>
+     * <p>
+     * The post /favGames takes two arrays from the frontend.
+     * <ul>
+     * <li>Returns a Json with the following:
+     * <li>"result": true,
+     * <li>"socialNames": "[\"World of Warcraft\",\"League of Legends\"]",
+     * <li>"socialLinks": "[\"http:/www.woldofwarcraft.com/\",\"http://www.leagueoflegends.com/\"]"
+     * </ul>
+     * <p>
+     * The post /gamesPlayed takes one array from the frontend.
+     * <ul>
+     * <li>Returns a Json with the following:
+     * <li>"result": true,
+     * <li>"gamesPlayed": "[\"World of Warcraft\",\"League of Legends\"]"
+     * </ul>
+     * <p>
+     * The post /avatar will take a File from the frontend.
+     * <ul>
+     * <li>Returns a json with the following:
+     * </ul>
+     * @param profileService class
 	 */
 	public ProfileController(final ProfileService profileService)
 	{
@@ -42,19 +95,19 @@ public class ProfileController
 		 * "session": true,
   		 * "joined": "10/10,/2015",
          * "lastOnline": "10/20,/2015",
-         * "realName": "John Doe",
+         * "realName": "John Doe",        (mutable)(done) 
          * "role": "Newbie",
          * "shares": 6,
          * "likes": 12,
          * "posts": 0,
          * "followers": 0,
-         * "aboutDesc": "I am a computer science student at CSUN.",
+         * "aboutDesc": "I am a computer science student at CSUN.",			(mutable)
          * "userName": "user007",
-         * "avatar": "link here"
-         * "currentGame": "League of Legends",
-         * "socialNames": "[\"Twitter\",\"Facebook\"]",
-         * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
-         * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"
+         * "avatar": "link here"		(mutable)
+         * "currentGame": "League of Legends",		(mutable)
+         * "socialNames": "[\"Twitter\",\"Facebook\"]",		(mutable)
+         * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",		(mutable)
+         * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"		(mutable)
 		 */
 		get("/profile",(req,res) -> {
 			String username;
@@ -78,8 +131,9 @@ public class ProfileController
 			}		
 		}, json());
 		
-		//update from front end passed to middle tier to update database realName
-		
+				/**
+				 * 
+				 */
 				post("/realName", (req, res) -> {
 					//set username
 					String username;
@@ -96,13 +150,126 @@ public class ProfileController
 							System.out.println("Non-Session User Alert at " + req.ip());
 						}
 						//returns the result from getRealName which is in ProfileService class
-						return profileService.getRealName(username, req.body());
+						return profileService.updateRealName(username, req.body());
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						return null;
 					}
-					//transforms json object from java to json object from frontend
-				} , json());
+					// transforms json object from java to json object from frontend
+				}, json());
+				
+				post("/currentGame", (req, res) -> { 
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateCurrentGame(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/socialInfo", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateSocialGames(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/favGames", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateFavGames(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("gamesPlayed", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateGamesPlayed(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/userDesc", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateUserDesc(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
+				
+				post("/avatar", (req, res) -> {
+					String username;
+					
+					try {
+						if (req.session().attribute("username") != null) {
+							username = req.session().attribute("username");
+							System.out.println("Username: " + username);
+							System.out.println("Has a session id: " + req.session().id());
+						} else {
+							username = null;
+							System.out.println("Non-Session User Alert at " + req.ip());	
+						}
+						return profileService.updateAvatar(username, req.body());
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+				}, json());
 	}	
 }
