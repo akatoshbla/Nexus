@@ -91,23 +91,6 @@ public class ProfileController
 		/**
 		 * This method reloads the whole profile page on login or when switching
 		 * back to the profile back. Takes no input, but does take a valid session.
-		 * Return is a Json with the following as an example:
-		 * "session": true,
-  		 * "joined": "10/10,/2015",
-         * "lastOnline": "10/20,/2015",
-         * "realName": "John Doe",        (mutable)(done) 
-         * "role": "Newbie",
-         * "shares": 6,
-         * "likes": 12,
-         * "posts": 0,
-         * "followers": 0,
-         * "aboutDesc": "I am a computer science student at CSUN.",			(mutable)
-         * "userName": "user007",
-         * "avatar": "link here"		(mutable)
-         * "currentGame": "League of Legends",		(mutable)
-         * "socialNames": "[\"Twitter\",\"Facebook\"]",		(mutable)
-         * "socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",		(mutable)
-         * "gameNames": "[\"League of Legends\",\"World of Warcraft\"]"		(mutable)
 		 */
 		get("/profile",(req,res) -> {
 			String username;

@@ -15,17 +15,25 @@ public class CreateService {
 	 * password into the database. Return is passed back into the createResult.
 	 * @param username String
 	 * @param password String
+	 * @param email String
 	 * @return boolean True - was successful, False - if failed
 	 * @throws Exception if error
 	 */
-	private boolean create(String username, String password) throws Exception
+	private boolean create(String username, String password, String email) throws Exception
 	{
 		NexusDB db = new NexusDB();
 		password = db.hashPassword(password);
 		if (db.recordExists(username))
 			return false;
 		else {
-			return db.createUser(username, password);
+			if (email != null)
+			{
+				return db.createUser(username, password, email);
+			}
+			else
+			{
+				return db.createUser(username, password);
+			}
 		}
 	}
 	
@@ -50,7 +58,8 @@ public class CreateService {
 
 		User user = new Gson().fromJson(body, User.class);
 		JsonObject jsonobj = new JsonObject();
-		jsonobj.addProperty("result", create(user.getUsername(),user.getPassword()));
+		jsonobj.addProperty("result", create(user.getUsername(),user.getPassword(), 
+				user.getEmail()));
 		return jsonobj;
 	}
 }
