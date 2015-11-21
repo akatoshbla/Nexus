@@ -7,7 +7,11 @@ import java.security.MessageDigest;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
+
+import org.omg.CORBA.ULongLongSeqHelper;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -307,19 +311,77 @@ public class NexusDB {
 		     pstmt.executeUpdate(); 
 		     
 		     System.out.println(pstmt);
-		     return recordExists(name);
+		     //return recordExists(name);
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			return null;
 		}
+		int userID = getUserId(name);
+		try {
+			String statement = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
+					+ ", likes, posts, friends, userDesc, profilePicLink, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(statement);
+			pstmt.setInt(1, userID);
+			pstmt.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now()));
+			pstmt.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
+			pstmt.setString(4, "Anonymous");
+			pstmt.setString(5, "Newbie");
+			pstmt.setInt(6, 0);
+			pstmt.setInt(7, 0);
+			pstmt.setInt(8, 0);
+			pstmt.setInt(9, 0);
+			pstmt.setString(10, "Insert your user description here!");
+			pstmt.setString(11, "images/UserAvatars/defaultAvatar.png");
+			pstmt.setString(12, "Insert the current game your are playing here!");
+			pstmt.executeUpdate();
+			// TODO: Finish the default profile on create new user.
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		try {
+			String statement = "INSERT into socialLinks (id, socialName, link) VALUES(?,?,?)";
+			pstmt = conn.prepareStatement(statement);
+			pstmt.setInt(1, userID);
+			pstmt.setString(2, "Insert a social sites name here.");
+			pstmt.setString(3, "Link here");
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		try {
+			String statement = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
+			pstmt = conn.prepareStatement(statement);
+			pstmt.setInt(1, userID);
+			pstmt.setString(2, "Insert a game name here.");
+			pstmt.setString(3, "Link here");
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		try {
+			String statement = "INSERT into gamesSupported (id, gameName) VALUES(?,?)";
+			pstmt = conn.prepareStatement(statement);
+			pstmt.setInt(1, userID);
+			pstmt.setString(2, "Insert Nexus supported game name here.");
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		finally {
 			if (pstmt!=null) pstmt.close();
 			conn.close();
-			
 		}
-		
+		return recordExists(name);
 	}
 	
 	/**
@@ -329,8 +391,8 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws Exception if error
 	 */
-	public Boolean createUser (String name, String password) throws Exception{
-		return this.createUser(name, password,null);	
+	public Boolean createUser(String name, String password) throws Exception {
+		return this.createUser(name, password, null);	
 	}
 	
 	/**

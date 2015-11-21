@@ -10,16 +10,19 @@ public class User {
 	
 	private String username;
 	private String password;
+	private String email;
 	
 	/**
 	 * This is the user object contructor.
 	 * @param username String
 	 * @param password String
+	 * @param email String
 	 */
-	public User(String username, String password)
+	public User(String username, String password, String email)
 	{
 			this.username = username;
 			this.password = password;
+			this.email = email;
 	}
 	
 	/**
@@ -38,5 +41,14 @@ public class User {
 	public String getPassword()
 	{
 		return password;
+	}
+	
+	/**
+	 * Getter for email.
+	 * @return String
+	 */
+	public String getEmail() 
+	{
+		return email;
 	}
 }
