@@ -25,7 +25,7 @@
         };
         $scope.editAboutUser = function() {
            var jsonObject = {
-          userDesc: $scope.newRealName
+          userDesc: $scope.summary
        }
             $http.post('http://comp490.duckdns.org/userDesc', jsonObject).success(function(response){
                 $rootScope.profile.description = $scope.summary;
