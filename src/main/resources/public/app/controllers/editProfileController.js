@@ -17,7 +17,7 @@
        var jsonObject = {
           realName: $scope.newRealName
        }
-            $http.post('http://comp490.duckdns.org/realName', $scope.jsonObject).success(function(response){
+            $http.post('http://comp490.duckdns.org/realName', jsonObject).success(function(response){
                 $rootScope.profile.realName = $scope.newRealName;
                 console.log(response);
                 $scope.close();

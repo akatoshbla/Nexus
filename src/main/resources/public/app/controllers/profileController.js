@@ -69,7 +69,7 @@
                             likes: response.likes,
                             posts: response.posts,
                             followers: response.followers,
-                            description: response.aboutDesc,
+                            description: response.userDesc,
                             //currentGame: 'Counter Strike: Global offensive',
                             userName: response.userName,
                             profilePic: '/profile/philtran.jpg'
