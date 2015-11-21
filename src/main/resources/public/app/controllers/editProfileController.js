@@ -14,16 +14,20 @@
         }
         
         $scope.editRealName = function() {
-      
-            $http.post('http://comp490.duckdns.org/realName', $scope.newRealName).success(function(response){
+       var jsonObject = {
+          realName: $scope.newRealName
+       }
+            $http.post('http://comp490.duckdns.org/realName', $scope.jsonObject).success(function(response){
                 $rootScope.profile.realName = $scope.newRealName;
                 console.log(response);
                 $scope.close();
             })
         };
         $scope.editAboutUser = function() {
-          
-            $http.post('http://comp490.duckdns.org/userDesc', $scope.summary).success(function(response){
+           var jsonObject = {
+          userDesc: $scope.newRealName
+       }
+            $http.post('http://comp490.duckdns.org/userDesc', jsonObject).success(function(response){
                 $rootScope.profile.description = $scope.summary;
                 console.log(response);
                 $scope.close();
