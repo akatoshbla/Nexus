@@ -284,3 +284,18 @@ footer {
     margin-bottom: 10px;
     
 }
+.profile-pic {
+	display: block;
+}
+
+.edit {
+	padding-top: 7px;	
+	margin-right: 18px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	
+}
+
+
+}

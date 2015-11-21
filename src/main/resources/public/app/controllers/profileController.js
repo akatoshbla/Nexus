@@ -24,6 +24,21 @@
                 }
             });
         }
+         //function to open modal and assign partial and controller to it
+        $rootScope.editProfilePic = function (size) {
+
+            var modalInstance = $modal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: 'app/views/editProfilePic.html',
+                controller: 'editProfileController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+        }
         $scope.editAbout = function (size) {
 
             var modalInstance = $modal.open({
