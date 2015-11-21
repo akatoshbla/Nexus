@@ -1,7 +1,7 @@
 (function () {
 
         var profileController = function ($rootScope, $scope, $http, $modal, $location) {
-              $scopeLoadProfile();
+             
             //allow animation for modal
             $scope.animationsEnabled = true;
             //function to close modal
@@ -54,7 +54,7 @@
                     }
                 });
             }
-            $scopeLoadProfile = function () {
+            $scope.LoadProfile = function () {
                 //function that is run at controller launch to get profile data
                 $http.get('http://comp490.duckdns.org/profile').success(function (response) {
 
@@ -75,7 +75,7 @@
 
                         }
                     }
-                };
+                )}();
 
                 $scope.currentGame = [
                     {
