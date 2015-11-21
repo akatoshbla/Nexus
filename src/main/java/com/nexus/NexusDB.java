@@ -786,7 +786,7 @@ public class NexusDB {
 				profile.setLikes(results.getInt("likes"));
 				profile.setPosts(results.getInt("posts"));
 				profile.setFriends(results.getInt("friends"));
-				profile.setAboutDesc(results.getString("userDesc"));
+				profile.setUserDesc(results.getString("userDesc"));
 				profile.setAvatar(results.getString("profilePicLink"));
 				profile.setCurrentGame(results.getString("currentGame"));
 				
