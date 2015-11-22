@@ -212,7 +212,7 @@ public class Profile
 
 	/**
 	 * Setter for aboutDesc.
-	 * @param aboutDesc String
+	 * @param userDesc String
 	 */
 	public void setUserDesc(String userDesc) {
 		this.userDesc = userDesc;

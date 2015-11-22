@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class contains the methods to support the FriendsController
  *
@@ -24,13 +26,16 @@ public class FriendsService {
 					jsonobj.addProperty("error", "User doesnt exist.");
 				
 				else {
+					
 					JsonArray friendsArray = new JsonArray();
-					
-					ArrayList<String> friends = db.getFriendsList(username);
-					
+					JsonArray pendingArray = new JsonArray();
+					List<String> friends = db.getFriendsList(username);
+					List<String> pending = db.getPendingFriendsList(username);
 					for(String s: friends)
 							friendsArray.add(new JsonPrimitive(s));
-					
+					for(String s: pending)
+						pendingArray.add(new JsonPrimitive(s));
+					jsonobj.add("pending", pendingArray);
 					jsonobj.add("friends", friendsArray);
 				}
 				return jsonobj;

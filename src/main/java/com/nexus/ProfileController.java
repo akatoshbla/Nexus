@@ -3,6 +3,9 @@ package com.nexus;
 import static com.nexus.JsonUtility.json;
 import static spark.Spark.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 /**
  * This class has the posts and gets for loading and editing the
  * profile page of a valid user. 
@@ -92,16 +95,24 @@ public class ProfileController
 		 * This method reloads the whole profile page on login or when switching
 		 * back to the profile back. Takes no input, but does take a valid session.
 		 */
-		get("/profile",(req,res) -> {
+		get("/profile/:username",(req,res) -> {
 			String username;
-	
+		
 			try {
+				String name = req.params(":username");
+				
 				if (req.session().attribute("username") != null)
+					
 				{
 					username = req.session().attribute("username");
 					System.out.println("Username: " + username);
 					System.out.println("Has a session id: " + req.session().id());
 				}
+				else if (name != null){
+					username=name;
+					System.out.println("body username:" + name);
+				}
+				
 				else
 				{
 					username = null;
