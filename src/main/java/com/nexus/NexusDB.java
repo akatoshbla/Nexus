@@ -1,25 +1,23 @@
 package com.nexus;
 
-import java.sql.Connection;
+import java.sql.*;
 //import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 //import java.security.NoSuchAlgorithmException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import static java.util.Arrays.asList;
 import java.util.Date;
 import java.util.Properties;
-
+import java.util.HashMap;
 import org.omg.CORBA.ULongLongSeqHelper;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * This class contains the database methods.
  * @author David Kopp
  *
  */
+@SuppressWarnings("all")
 public class NexusDB {
 
 	private final String userName = "root";
@@ -39,11 +37,12 @@ public class NexusDB {
 	 * @throws Exception if error
 	 */
 	public String hashPassword(String password) throws Exception  {
-		try {
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes("UTF-8"));
-		byte[] digest = md.digest();
-		return javax.xml.bind.DatatypeConverter.printHexBinary(digest).toString(); //converts byte array to hex string
+		try 
+		{
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(password.getBytes("UTF-8"));
+			byte[] digest = md.digest();
+			return javax.xml.bind.DatatypeConverter.printHexBinary(digest).toString(); //converts byte array to hex string
 		}
 		catch (Exception e) {
 			System.out.println(e);
@@ -56,7 +55,8 @@ public class NexusDB {
 	 * @return Connection
 	 * @throws SQLException if error
 	 */
-	private Connection getConnection() throws SQLException {
+	private Connection getConnection() throws SQLException
+	{
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", this.userName);
 		connectionProps.put("password", this.password);
@@ -67,39 +67,53 @@ public class NexusDB {
 		return conn;
 	}
 	/**
+	 * Checks if there's a pending friend request
+	 * 	from one user to another.
+	 * @param fromUser String
+	 * @param toUser String
+	 * @return Boolean
+	 * @throws SQLException if error
+	 */
+	
+	public Boolean checkFriendRequest(String fromUser, String toUser) throws Exception
+	{
+		int id1= getUserId(fromUser);
+		int id2= getUserId(toUser);
+		if (id1 == -1 || id2 == -1)
+				return null; 
+		String query = "SELECT id FROM friends WHERE reqFrom=? AND "
+				+ "reqTo=?";
+		List params = asList(id1,id2);
+		List result = queryHelper(query, params);
+		return (result==null)? null : (result.size()>0);
+	}
+	/**
 	 * Checks if two users are friends.
 	 * @param name1 String
 	 * @param name2 String
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	public Boolean checkFriend(String name1, String name2) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			int id1= getUserId(name1);
-			int id2= getUserId(name2);
-			if (id1 > id2){
-				int tmp = id1;
-				id1 = id2;
-				id2 = tmp;
-			}
-			String query = "SELECT id,friendId FROM friends WHERE id=? AND "
-					+ "friendId=? AND reqFrom IS NULL AND reqTo IS NULL";
-			pstmt=conn.prepareStatement(query);
-			pstmt.setInt(1, id1);
-			pstmt.setInt(2, id2);
-			ResultSet result = pstmt.executeQuery();
-			return result.next();
+	
+	public Boolean checkFriend(String name1, String name2) throws Exception
+	{
+		int id1= getUserId(name1);
+		int id2= getUserId(name2);
+		if (id1 == -1 || id2 == -1)
+				return null; 
+		if (id1 > id2)
+		{
+			int tmp = id1;
+			id1 = id2;
+			id2 = tmp;
 		}
-		catch (Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
+		String query = "SELECT id,friendId FROM friends WHERE id=? AND "
+				+ "friendId=? AND reqFrom IS NULL AND reqTo IS NULL";
+		
+		List params = asList(id1,id2);
+		List result = queryHelper(query, params);
+		return (result==null)? null : (result.size()>0);
+
 	}
 	/**
 	 * Updates two users' friend status from pending to friends.
@@ -108,68 +122,51 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	public Boolean updateFriendStatus(String name1, String name2) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			int id1= getUserId(name1);
-			int id2= getUserId(name2);
-			if (id1 > id2){
-				int tmp = id1;
-				id1 = id2;
-				id2 = tmp;
-			}
-			String command = "UPDATE friends SET reqFrom=NULL,reqTo=NULL where id=? AND friendId=?";
-			pstmt= conn.prepareStatement(command);
-			pstmt.setInt(1, id1);
-			pstmt.setInt(2, id2);
-			pstmt.executeUpdate();
-			return checkFriend(name1,name2);
-		}
-		catch(Exception e){
-			e.printStackTrace();
+	
+	public Boolean updateFriendStatus(String name1, String name2) throws Exception
+	{
+		String statement = "UPDATE friends SET reqFrom=NULL,reqTo=NULL where id=? AND friendId=?";
+		int id1= getUserId(name1);
+		int id2= getUserId(name2);
+		if (id1 == -1 || id2 == -1)
 			return null;
+		if (id1 > id2)
+		{
+			int tmp = id1;
+			id1 = id2;
+			id2 = tmp;
 		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
-		
+		List params = asList(id1,id2);
+		updateHelper(statement,params);
+		return checkFriend(name1,name2);		
 	}
 	/**
 	 * Deletes a friend relationship between two users.
+	 * Works with friends or pending friends.
 	 * @param name1 String
 	 * @param name2 String
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	public Boolean deleteFriend(String name1,String name2) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			int id1= getUserId(name1);
-			int id2= getUserId(name2);
-			if (id1 > id2){
-				int tmp = id1;
-				id1 = id2;
-				id2 = tmp;
-			}
-			String command = "DELETE FROM friends WHERE id=? AND friendId=?";
-			pstmt = conn.prepareStatement(command);
-			pstmt.setInt(1, id1);
-			pstmt.setInt(2, id2);
-			pstmt.executeUpdate();
-			return !checkFriend(name1,name2);
-		}
-		catch (Exception e){
-			e.printStackTrace();
+	
+	public Boolean deleteFriend(String name1,String name2) throws Exception
+	{
+		int id1= getUserId(name1);
+		int id2= getUserId(name2);
+		if(id1 == -1 || id2 == -1)	
 			return null;
+		if (id1 > id2)
+		{
+			int tmp = id1;
+			id1 = id2;
+			id2 = tmp;
 		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
+		String statement = "DELETE FROM friends WHERE id=? AND friendId=?";
+		List params = asList(id1,id2);
+		updateHelper(statement,params);
+		return !checkFriend(name1,name2);
 	}
+
 	/**
 	 * Updates the database to indicate a pending friend request from one user to another.
 	 * @param fromUser String
@@ -177,115 +174,76 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	public Boolean  createFriendRequest(String fromUser, String toUser) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			
-			String command = "INSERT into friends VALUES(?,?,?,?)";
-			pstmt=conn.prepareStatement(command);
-			int fromId = getUserId(fromUser);
-			int toId = getUserId(toUser);
-			int lowerId,higherId;
-			if (fromId<toId){
-				lowerId=fromId;
-				higherId=toId;
-			}
-			else {
-				lowerId=toId;
-				higherId=fromId;
-			}
-			pstmt.setInt(1, lowerId);
-			pstmt.setInt(2, higherId);
-			pstmt.setInt(3, fromId);
-			pstmt.setInt(4, toId);
-
-
-			pstmt.executeUpdate();
-			System.out.println(pstmt);
-			return true;
-			
+	
+	public Boolean  createFriendRequest(String fromUser, String toUser) throws Exception
+	{
+		String statement = "INSERT into friends VALUES(?,?,?,?)";
+		int fromId = getUserId(fromUser);
+		int toId = getUserId(toUser);
+		if (fromId == -1 || toId == -1)
+				return null;
+		int lowerId,higherId;
+		if (fromId<toId)
+		{
+			lowerId=fromId;
+			higherId=toId;
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
+		else 
+		{
+			lowerId=toId;
+			higherId=fromId;
 		}
-		finally {
-			
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-
-		}	
+		List params = asList(lowerId,higherId,fromId,toId);
+		updateHelper(statement, params);
+		return checkFriendRequest(fromUser,toUser);
 	}
 	/**
-	 * Returns an ArrayList containing the usernames of the user's friends.
+	 * Returns an List containing the usernames of the user's 
+	 * 	received friend requests..
 	 * @param name String
-	 * @return ArrayList Contains strings
+	 * @return List Contains strings
 	 * @throws Exception if error
 	 */
 	
-	public ArrayList<String> getFriendsList(String name) throws Exception{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			String query = "select name from users where id in "
-				+ "(select friendId from friends where id=? "
-				+ "union select id from friends where friendId=?)";
-		pstmt = conn.prepareStatement(query);
+	public List<String> getPendingFriendsList(String name) throws Exception
+	{
+		String query = "SELECT name FROM users WHERE id IN "
+				+ "(SELECT friendId FROM friends WHERE (id=? AND "
+				+ "reqTo = ?) UNION SELECT id FROM "
+				+ "friends WHERE (friendId=? AND reqTo = ?)) "
+				+ "ORDER BY name";
 		int id = getUserId(name);
-		pstmt.setInt(1, id);
-		pstmt.setInt(2, id);
-		ResultSet result = pstmt.executeQuery();
-		System.out.println(pstmt);
-		ArrayList<String> friends = new ArrayList<String>();
-		while(result.next())
-			friends.add(result.getString(1));
- 
-		return friends;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
-		
+		List params = asList(id,id,id,id);
+	
+		List result= queryHelper(query,params);
+		int i = 0;
+		for (HashMap obj: (ArrayList<HashMap>)result)
+				result.set(i++, obj.get("name"));
+		return result;
+	}
+	/**
+	 * Returns an List containing the usernames of the user's friends.
+	 * @param name String
+	 * @return List Contains strings
+	 * @throws Exception if error
+	 */
+	
+	public List<String> getFriendsList(String name) throws Exception
+	{
+		String query = "SELECT name FROM users WHERE id IN "
+				+ "(SELECT friendId FROM friends WHERE (id=? AND "
+				+ "reqFrom IS NULL) UNION SELECT id FROM "
+				+ "friends WHERE (friendId=? AND reqFrom IS NULL)) "
+				+ " and active=1 ORDER BY name";
+		int id = getUserId(name);
+		List params = asList(id,id);
+		List result= queryHelper(query,params);
+		int i = 0;
+		for (HashMap obj: (ArrayList<HashMap>)result)
+				result.set(i++, obj.get("name"));
+		return result;		
 	}
 	
-	/**
-	 * Delete's a user from the database with the inputed name
-	 * @param name String
-	 * @return Boolean
-	 * @throws SQLException if error
-	 */
-	public Boolean deleteUser(String name) throws SQLException {
-		
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			
-			String command = "DELETE from users WHERE name = ?";
-			pstmt=conn.prepareStatement(command);
-			pstmt.setString(1, name);
-			pstmt.executeUpdate();
-			System.out.println(pstmt);
-			return !recordExists(name);
-			
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		finally {
-			
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-
-		}
-	}
-
 	/**
 	 * Creates a user record in the database, with the inputed name,password (and/or email) pair.
 	 * Only creates a record if there isn't already a record with the same name.
@@ -295,7 +253,8 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws Exception if error
 	 */
-	public Boolean createUser(String name, String password, String email) throws Exception {
+	public Boolean createUser(String name, String password, String email) throws Exception
+	{
 
 		Connection conn=this.getConnection();
 		PreparedStatement pstmt=null;
@@ -391,38 +350,70 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws Exception if error
 	 */
-	public Boolean createUser(String name, String password) throws Exception {
+	public Boolean createUser(String name, String password) throws Exception
+	{
 		return this.createUser(name, password, null);	
 	}
+	/**
+	 * Checks if the user's account is set to active.
+	 * @param name String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
 	
+	public Boolean isActive(String name) throws Exception
+	{
+		String query = "SELECT active FROM users WHERE name = ?";
+		List params = asList(name);
+		List results = queryHelper(query,params);
+		if (results==null || results.size()==0)
+				return null;
+		else {
+			return (int)((HashMap)results.get(0)).get("active")==1;
+		}	
+	}
+	/**
+	 * Deactivates a user's account.
+	 * @param name String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
+	
+	public Boolean deactivateUser(String name) throws Exception
+	{
+		String statement = "UPDATE USERS SET active = 0 WHERE name = ?";
+		List params = asList(name);
+		updateHelper(statement,params);
+		return !isActive(name);
+	}
+	
+	/**
+	 * Activates a user's account.
+	 * @param name String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
+	
+	public Boolean activateUser(String name) throws Exception
+	{
+		String statement = "UPDATE USERS SET active = 1 WHERE name = ?";
+		List params = asList(name);
+		updateHelper(statement,params);
+		return isActive(name); 
+	}
 	/**
 	 * Checks if a record already exists in the database with the inputed name.
 	 * @param name String
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	public Boolean recordExists (String name) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-			try {
-				String query = "SELECT name FROM users WHERE name= ?";
-				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, name);
-				ResultSet results = pstmt.executeQuery();
-
-				if (results.next())
-					return true;
-				else return false;
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-				return null;
-			}
-			finally {
-				if (pstmt!=null) pstmt.close();
-				conn.close();
-			}
-
+	
+	public Boolean recordExists (String name) throws SQLException
+	{
+		String query = "SELECT name FROM users WHERE name= ?";
+		List params = asList(name);
+		List results = queryHelper(query,params);
+		return (results==null)? null : (results.size() > 0);
 	}
 
 	/**
@@ -432,30 +423,14 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws Exception if error
 	 */
-	public Boolean updatePassword(String name, String password) throws Exception{
+	
+	public Boolean updatePassword(String name, String password) throws Exception
+	{
 		password = hashPassword(password);
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			
-			String statement = "UPDATE users SET password = ? WHERE name = ?";
-			pstmt=conn.prepareStatement(statement);
-			pstmt.setString(1, password);
-			pstmt.setString(2, name);
-			
-					System.out.println(pstmt);
-			pstmt.executeUpdate();
-			return retrievePassword(name).equals(password);
-		}
-		catch (Exception e){
-			e.printStackTrace();
-			return null;			
-		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
-		
+		String statement = "UPDATE users SET password = ? WHERE name = ?";
+		List params = asList(password,name);
+		updateHelper(statement,params);
+		return retrievePassword(name).equals(password);		
 	}
 	
 	/**
@@ -464,28 +439,17 @@ public class NexusDB {
 	 * @return String
 	 * @throws SQLException if error
 	 */
-	public String retrievePassword(String name) throws SQLException{
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-			try {
-				String query = "SELECT password FROM users WHERE name= ?";
-				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, name);
-				ResultSet results = pstmt.executeQuery();
-				
-						System.out.println(pstmt);
-				
-				if (results.next())
-					return results.getString("password");
-				else return "";
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "";
-			}
-			finally {
-				if (pstmt!=null) pstmt.close();
-				conn.close();
-			}		
+	
+	public String retrievePassword(String name) throws SQLException
+	{
+		String query = "SELECT password FROM users WHERE name= ?";
+		List params = asList(name);
+		List results = queryHelper(query,params);
+		if(results == null || results.size()==0)
+			return null;
+		else{
+			return (String)(((HashMap)results.get(0)).get("password"));
+		}
 	}
 	
 	/**
@@ -495,39 +459,16 @@ public class NexusDB {
 	 * @return int
 	 * @throws Exception if error
 	 */
+	
 	private int getUserId(String name) throws Exception
 	{
-		Connection connection = this.getConnection();
-		PreparedStatement pstmt = null;
 		String query = "SELECT id FROM users WHERE name= ?";
-		try
-		{
-			pstmt = connection.prepareStatement(query);	
-			pstmt.setString(1, name);
-			ResultSet results = pstmt.executeQuery();
-				System.out.println(pstmt);
-			if (results.next())
-			{	
-				return results.getInt("id");
-			}
-			else
-			{
-				return -1;
-			}
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
+		List params = asList(name);
+		List results = queryHelper(query,params);
+		if(results == null || results.size() == 0)
 			return -1;
-		}
-		finally 
-		{
-			if(pstmt != null)
-			{
-				pstmt.close();
-			}
-			connection.close();
-		}
+		else 
+			return (int)((HashMap)(results.get(0))).get("id");
 	}
 	
 		/**
@@ -538,7 +479,8 @@ public class NexusDB {
 		 * @return String
 		 * @throws Exception if error
 		 */
-		public String updateUserProfile(String username, String column, String value) throws Exception {
+		public String updateUserProfile(String username, String column, String value) throws Exception
+	{
 			//creates connection b/w front and database
 			Connection connection = this.getConnection();
 			PreparedStatement pstmt = null;
@@ -609,7 +551,8 @@ public class NexusDB {
 		 * @throws Exception if error
 		 */
 		public Profile updateUserProfileLists(String username, String tableName, String column1, String column2,
-				ArrayList<String> names, ArrayList<String> links) throws Exception {
+				ArrayList<String> names, ArrayList<String> links) throws Exception
+		{
 			Connection connection = this.getConnection();
 			PreparedStatement pstmt = null;
 			Profile profile = null;
@@ -691,7 +634,8 @@ public class NexusDB {
 		 * @throws Exception if error
 		 */
 		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
-				ArrayList<String> names) throws Exception {
+				ArrayList<String> names) throws Exception
+		{
 			Connection connection = this.getConnection();
 			PreparedStatement pstmt = null;
 			ArrayList<String> gameNames = new ArrayList<String>();
@@ -859,14 +803,99 @@ public class NexusDB {
 		}
 		return profile;
 	}
-
+	/**
+	 * Takes in a database statement and a list of PreparedStatement
+	 * 	 parameters for the statement
+	 * @param statement String
+	 * @param params List&lt;Object&gt;
+	 * @return int -1 if error, 0 if update failed, 1 if updated succeeded.
+	 * @throws SQLException if error
+	 */
+	private int updateHelper(String statement, List<Object> params) throws SQLException
+	{
+		Connection conn=this.getConnection();
+		PreparedStatement pstmt=null;
+		try
+		{
+			pstmt = conn.prepareStatement(statement);
+			int i = 1;
+			for(Object obj: params)
+			{
+				if (obj instanceof String)
+					pstmt.setString(i++, (String) obj);					
+				else if (obj instanceof Integer)
+					pstmt.setInt(i++, (int) obj);
+				else if (obj instanceof java.sql.Date)
+					pstmt.setDate(i++, (java.sql.Date) obj);
+				else return -1;    /* If you need something other than setString or setInt
+				 					    add it to another else if, following the form*/
+			}
+			System.out.println(pstmt);
+			return pstmt.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	/**
+	 * Takes in a database query and a list of PreparedStatement
+	 * 	 parameters for the query.
+	 * @param query String
+	 * @param params List&lt;Object&gt;
+	 * @return List&lt;HashMap&gt; Returned database table.
+	 * @throws SQLException if error
+	 */
+	private List<HashMap<String,Object>> queryHelper(String query, List<Object> params) throws SQLException
+	{
+		Connection conn=this.getConnection();
+		PreparedStatement pstmt=null;
+		try 
+		{
+			pstmt = conn.prepareStatement(query);
+			int i = 1;
+			for (Object obj: params)
+			{
+				if (obj instanceof String)
+					pstmt.setString(i++, (String) obj);					
+				else if (obj instanceof Integer)
+					pstmt.setInt(i++, (int) obj);
+				else if (obj instanceof java.sql.Date)
+					pstmt.setDate(i++, (java.sql.Date) obj);
+				else return null;    /* If you need something other than setString or setInt
+				 					    add it to another else if, following the form*/
+			}
+			ResultSet result = pstmt.executeQuery();
+			System.out.println(pstmt);
+			ResultSetMetaData md = result.getMetaData();
+			int colCount = md.getColumnCount();
+			List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
+			while(result.next()){
+				HashMap<String,Object> row = new HashMap<String,Object>(colCount);
+				for(i = 1; i<=colCount; i++) {
+					row.put(md.getColumnName(i), result.getObject(i));
+				}
+				resultList.add(row);
+			}
+			return resultList;		
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		finally {
+			if (pstmt!=null) pstmt.close();
+			conn.close();		
+		}
+	}
 	/**
 	 * Connect to the DB and do some stuff
 	 * @param args standard main args
 	 * @throws Exception if error
 	 */
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception
+	{
 		NexusDB app = new NexusDB();
-		app.createFriendRequest("AlexTest3","bob");
 	}
 }
