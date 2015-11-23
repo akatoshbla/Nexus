@@ -30,7 +30,7 @@ public class ProfileController
      * <li>"followers": 0,
      * <li>"aboutDesc": "I am a computer science student at CSUN.",
      * <li>"userName": "user007",
-     * <li>"avatar": "a base64 String"
+     * <li>"avatar": "images/UserAvatars/defaultAvatar.png"
      * <li>"currentGame": "League of Legends",
      * <li>"socialNames": "[\"Twitter\",\"Facebook\"]",
      * <li>"socialLinks": "[\"https://twitter.com/johndoe\",\"http://www.facebook.com/\"]",
