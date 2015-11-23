@@ -53,11 +53,11 @@
                 </div>
 
                 <div class="panel panel-default" ng-mouseover="currentGamesEdit = true" ng-mouseleave="currentGamesEdit = false">
-                    <div class="panel-heading">Current Games<span class="pull-right" ng-show="currentGamesEdit">Edit</span>
+                    <div class="panel-heading">Current Games<span class="pull-right" ng-show="currentGamesEdit" ng-click="editCurrentGames()">Edit</span>
                     </div>
                     <div class="panel-body" ng-repeat="currGame in gamePlay"><i style="color:green" class="fa fa-check-square"></i>
                         <a href="{{currGame.gameLinks}}"> {{currGame.gameName}}</a>
-2
+
                     </div>
                 </div>
                 <ul class="list-group">

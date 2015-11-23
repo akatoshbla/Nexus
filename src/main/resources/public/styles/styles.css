@@ -284,6 +284,9 @@ footer {
     margin-bottom: 10px;
     
 }
+.addLargeMargin{
+ margin-bottom: 150px;   
+}
 .profile-pic {
 	display: block;
 }
