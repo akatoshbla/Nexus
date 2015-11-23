@@ -16,6 +16,7 @@ public class ProfileController
 {
 	/**
 	 * The get /profile takes nothing from the frontend, but it will check for a valid session.
+	 * Note: Profile get also works with /profile/&lt;username&gt; to bypass session checking (for testing).
 	 * <ul>
 	 * <li>Returns a Json with the following:
 	 * <li>"session": true,
@@ -90,6 +91,30 @@ public class ProfileController
 	 */
 	public ProfileController(final ProfileService profileService)
 	{
+		get("/profile",(req,res) -> {
+			String username;
+		
+			try {
+				
+				if (req.session().attribute("username") != null)
+					
+				{
+					username = req.session().attribute("username");
+					System.out.println("Username: " + username);
+					System.out.println("Has a session id: " + req.session().id());
+				}
+			
+				else
+				{
+					username = null;
+					System.out.println("Non-Session User Alert at " +req.ip());
+				}
+				return profileService.getUserProfile(username);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}		
+		}, json());
 		
 		/**
 		 * This method reloads the whole profile page on login or when switching
