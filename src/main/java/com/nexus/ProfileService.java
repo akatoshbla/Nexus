@@ -38,7 +38,7 @@ public class ProfileService
 			jsonobj.addProperty("likes", profile.getLikes());
 			jsonobj.addProperty("posts", profile.getPosts());
 			jsonobj.addProperty("friends", profile.getFriends());
-			jsonobj.addProperty("aboutDesc", profile.getAboutDesc());
+			jsonobj.addProperty("userDesc", profile.getUserDesc());
 			jsonobj.addProperty("userName", username);
 			jsonobj.addProperty("avatar", profile.getAvatar());
 			jsonobj.addProperty("currentGame", profile.getCurrentGame());
@@ -212,7 +212,7 @@ public class ProfileService
 			
 			
 			if (username != null) {
-				String result = db.updateUserProfile(username, "userDesc", profile.getAboutDesc());
+				String result = db.updateUserProfile(username, "userDesc", profile.getUserDesc());
 				jsonobj.addProperty("result", true);
 				jsonobj.addProperty("userDesc", result);
 			}

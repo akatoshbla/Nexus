@@ -1,6 +1,6 @@
 (function () {
 
-    var editProfileController = function ($scope, $http, $modalInstance, $location) {
+    var editProfileController = function ($rootScope,$scope, $http, $modalInstance, $location) {
         //start by having the modal not shown
         this.showModal = false;
 
@@ -11,10 +11,32 @@
         $scope.toggleDialog = function () {
 
             this.showModal = !this.showModal;
-
         }
+        
+        $scope.editRealName = function() {
+       var jsonObject = {
+          realName: $scope.newRealName
+       }
+            $http.post('http://comp490.duckdns.org/realName', jsonObject).success(function(response){
+                $rootScope.profile.realName = $scope.newRealName;
+                console.log(response);
+                $scope.close();
+            })
+        };
+        $scope.editAboutUser = function() {
+           var jsonObject = {
+          userDesc: $scope.summary
+       }
+            $http.post('http://comp490.duckdns.org/userDesc', jsonObject).success(function(response){
+                $rootScope.profile.description = $scope.summary;
+                console.log(response);
+                $scope.close();
+            })
+        };
+        
         //close the modal instance
         $scope.close = function () {
+            console.log('closed');
             $modalInstance.dismiss('cancel');
         };
     
@@ -37,7 +59,7 @@
       
     }
 
-    editProfileController.$inject = ['$scope', '$http', '$modalInstance', '$location'];
+    editProfileController.$inject = ['$rootScope','$scope', '$http', '$modalInstance', '$location'];
 
     angular.module('nexusApp')
         .controller('editProfileController', editProfileController);
