@@ -86,6 +86,7 @@ public class ProfileController
      * The post /avatar will take a File from the frontend.
      * <ul>
      * <li>Returns a json with the following:
+     * <li>"avatar": "images/UserAvatars/defaultAvatar.png"
      * </ul>
      * @param profileService class
 	 */
