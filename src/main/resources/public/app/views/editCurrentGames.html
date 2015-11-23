@@ -11,28 +11,57 @@
 
 
                     <div class="col-xs-4">
+                        <div class="addMargin">
+                            <select class="form-control" ng-model="currentGames[0]">
+                                <option value="World of Warcraft" ng-show="currentGames[1] !== 'World of Warcraft' && currentGames[2] !== 'World of Warcraft'">World of Warcraft</option>
+                                <option value="League of Legends" ng-show="currentGames[1] !== 'League of Legends' && currentGames[2] !== 'League of Legends'">League of Legends</option>
+                                <option value="CS:GO" ng-show="currentGames[1] !== 'CS:GO' && currentGames[2] !== 'CS:GO'">CS:GO</option>
+                                <option value="HearthStone" ng-show="currentGames[1] !== 'HearthStone' && currentGames[2] !== 'HearthStone'">HearthStone</option>
+                            </select>
+                            <div ng-show="currentGames[0] === 'World of Warcraft'">
+                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                            </div>
+                            <div ng-show="currentGames[0] === 'League of Legends'">
+                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
 
-                        <select class="form-control addMargin" ng-model="currentGames[0]">
-                            <option value="World of Warcraft">World of Warcraft</option>
-                            <option value="League of Legends">League of Legends</option>
-                            <option value="CS:GO">CS:GO</option>
-                            <option value="HearthStone">HearthStone</option>
+                            </div>
+                        </div>
+                        <div class="addMargin">
+                            <select class="form-control" ng-model="currentGames[1]">
+                                <option value="World of Warcraft" ng-show="currentGames[0] !== 'World of Warcraft' && currentGames[2] !== 'World of Warcraft'">World of Warcraft</option>
+                                <option value="League of Legends" ng-show="currentGames[0] !== 'League of Legends' && currentGames[2] !== 'League of Legends'">League of Legends</option>
+                                <option value="CS:GO" ng-show="currentGames[0] !== 'CS:GO' && currentGames[2] !== 'CS:GO'">CS:GO</option>
+                                <option value="HearthStone" ng-show="currentGames[0] !== 'HearthStone' && currentGames[2] !== 'HearthStone'">HearthStone</option>
 
-                        </select>
-                        <select class="form-control addMargin" ng-model="currentGames[1]">
-                            <option value="World of Warcraft">World of Warcraft</option>
-                            <option value="League of Legends">League of Legends</option>
-                            <option value="CS:GO">CS:GO</option>
-                            <option value="HearthStone">HearthStone</option>
+                            </select>
+                            <div ng-show="currentGames[1] === 'World of Warcraft'">
+                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                            </div>
+                            <div ng-show="currentGames[1] === 'League of Legends'">
+                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
 
-                        </select>
-                        <select class="form-control addMargin" ng-model="currentGames[2]">
-                            <option value="World of Warcraft">World of Warcraft</option>
-                            <option value="League of Legends">League of Legends</option>
-                            <option value="CS:GO">CS:GO</option>
-                            <option value="HearthStone">HearthStone</option>
+                            </div>
+                        </div>
 
-                        </select>
+                        <div class=a ddMargin>
+                            <select class="form-control addMargin" ng-model="currentGames[2]">
+                                <option value="World of Warcraft" ng-show="currentGames[0] !== 'World of Warcraft' && currentGames[1] !== 'World of Warcraft'">World of Warcraft</option>
+                                <option value="League of Legends" ng-show="currentGames[0] !== 'League of Legends' && currentGames[1] !== 'League of Legends'">League of Legends</option>
+                                <option value="CS:GO" ng-show="currentGames[1] !== 'CS:GO' && currentGames[0] !== 'CS:GO'">CS:GO</option>
+                                <option value="HearthStone" ng-show="currentGames[1] !== 'HearthStone' && currentGames[0] !== 'HearthStone'">HearthStone</option>
+
+                            </select>
+                            <div ng-show="currentGames[2] === 'World of Warcraft'">
+                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                            </div>
+                            <div ng-show="currentGames[2] === 'League of Legends'">
+                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
+
+                            </div>
+                        </div>
 
 
 
