@@ -19,11 +19,11 @@
                                 <option value="HearthStone" ng-show="currentGames[1] !== 'HearthStone' && currentGames[2] !== 'HearthStone'">HearthStone</option>
                             </select>
                             <div ng-show="currentGames[0] === 'World of Warcraft'">
-                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
-                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                                <input type="text" class="form-control" ng-model="currentGame[0].warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="currentGame[0].warcraftRealm" placeholder="Realm">
                             </div>
                             <div ng-show="currentGames[0] === 'League of Legends'">
-                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
+                                <input type="text" class="form-control" ng-model="currentGame[0].leagueSummoner" placeholder="Summoner Name">
 
                             </div>
                         </div>
@@ -36,11 +36,11 @@
 
                             </select>
                             <div ng-show="currentGames[1] === 'World of Warcraft'">
-                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
-                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                                <input type="text" class="form-control" ng-model="currentGame[1].warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="currentGame[1].warcraftRealm" placeholder="Realm">
                             </div>
                             <div ng-show="currentGames[1] === 'League of Legends'">
-                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
+                                <input type="text" class="form-control" ng-model="currentGame[1].leagueSummoner" placeholder="Summoner Name">
 
                             </div>
                         </div>
@@ -54,23 +54,14 @@
 
                             </select>
                             <div ng-show="currentGames[2] === 'World of Warcraft'">
-                                <input type="text" class="form-control" ng-model="warcraftCharacter" placeholder="Character Name">
-                                <input type="text" class="form-control" ng-model="warcraftRealm" placeholder="Realm">
+                                <input type="text" class="form-control" ng-model="currentGame[2].warcraftCharacter" placeholder="Character Name">
+                                <input type="text" class="form-control" ng-model="currentGame[2].warcraftRealm" placeholder="Realm">
                             </div>
                             <div ng-show="currentGames[2] === 'League of Legends'">
-                                <input type="text" class="form-control" ng-model="leagueSummoner" placeholder="Summoner Name">
+                                <input type="text" class="form-control" ng-model="currentGame[2].leagueSummoner" placeholder="Summoner Name">
 
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
 
                         <p class="text-danger">{{error}}</p>
 
@@ -82,7 +73,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>
+            <button type="button" ng-click="editCurrentGames()" class="btn btn-dark">Submit</button>
             <button type="button" class="btn btn-default" ng-click="close()">Close</button>
         </div>
     </div>
