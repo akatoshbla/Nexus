@@ -23,7 +23,7 @@ public class Profile
 	private int friends;
 	private int posts;
 	private String currentGame;
-	private String aboutDesc;
+	private String userDesc;
 	private String avatar;
 	private ArrayList<String> socialNames;
 	private ArrayList<String> socialLinks;
@@ -206,16 +206,16 @@ public class Profile
 	 * Getter for aboutDesc.
 	 * @return String
 	 */
-	public String getAboutDesc() {
-		return aboutDesc;
+	public String getUserDesc() {
+		return userDesc;
 	}
 
 	/**
 	 * Setter for aboutDesc.
-	 * @param aboutDesc String
+	 * @param userDesc String
 	 */
-	public void setAboutDesc(String aboutDesc) {
-		this.aboutDesc = aboutDesc;
+	public void setUserDesc(String userDesc) {
+		this.userDesc = userDesc;
 	}
 	
 	/**

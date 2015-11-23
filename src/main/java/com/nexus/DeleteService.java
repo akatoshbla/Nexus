@@ -16,13 +16,17 @@ public class DeleteService {
 	 * @return boolean True - successful, False - failed
 	 * @throws Exception if error
 	 */
-	private boolean delete(String username) throws Exception
+	private Boolean deactivate(String username) throws Exception
 	{
 		NexusDB db = new NexusDB();
-		return db.deleteUser(username);
+		return db.deactivateUser(username);
 		
 	}
-	
+	private Boolean activate(String username) throws Exception
+	{
+		NexusDB db = new NexusDB();
+		return db.activateUser(username);
+	}
 	/**
 	 * This method is for testing.
 	 * @return String
@@ -34,18 +38,32 @@ public class DeleteService {
 	}
 	
 	/**
-	 * This method wraps the result of delete into a json and passes it back
+	 * This method wraps the result of activate into a json and passes it back
 	 * to the DeleteController.
 	 * @param body String
 	 * @return JsonObject with a boolean. True - was success, False - failed.
 	 * @throws Exception if error
 	 */
-	public JsonObject deleteResult(String body) throws Exception
+	public JsonObject activateResult(String body) throws Exception
+	{
+		User user = new Gson().fromJson(body, User.class);
+		JsonObject jsonobj = new JsonObject();
+		jsonobj.addProperty("result", activate(user.getUsername()));
+		return jsonobj;
+	}
+	/**
+	 * This method wraps the result of deactivate into a json and passes it back
+	 * to the DeleteController.
+	 * @param body String
+	 * @return JsonObject with a boolean. True - was success, False - failed.
+	 * @throws Exception if error
+	 */
+	public JsonObject deactivateResult(String body) throws Exception
 	{
 
 		User user = new Gson().fromJson(body, User.class);
 		JsonObject jsonobj = new JsonObject();
-		jsonobj.addProperty("result", delete(user.getUsername()));
+		jsonobj.addProperty("result", deactivate(user.getUsername()));
 		return jsonobj;
 	}
 }
