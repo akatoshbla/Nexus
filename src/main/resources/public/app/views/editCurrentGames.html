@@ -1,58 +1,60 @@
-<div class="modal-content">
+<ng-cloak>
+    <div class="modal-content">
 
-    <div class="modal-body  addLargeMargin">
+        <div class="modal-body  addLargeMargin">
 
-        <form role="form" name = "myForm" ng-submit="realName(credentials)" novalidate>
-            <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-            <h3 CLASS="text-primary" id="headTab">Choose Your Current Games!</h3>
-            <br>
-            <div class="div-padding">
-               
+            <form role="form" name="myForm" ng-submit="realName(credentials)" novalidate>
+                <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+                <h3 CLASS="text-primary" id="headTab">Choose Your Current Games!</h3>
+                <br>
+                <div class="div-padding">
 
-                    <div class="col-xs-4" >
 
-                        <select class="form-control addMargin" ng-model = "currentGames[0]">
-    <option value="World of Warcraft">World of Warcraft</option>
-    <option value="League of Legends">League of Legends</option>
-    <option value="CS:GO">CS:GO</option>
-    <option value="HearthStone">HearthStone</option>
-   
-</select>
-                                       <select class="form-control addMargin" ng-model = "currentGames[1]">
-    <option value="World of Warcraft">World of Warcraft</option>
-    <option value="League of Legends">League of Legends</option>
-    <option value="CS:GO">CS:GO</option>
-    <option value="HearthStone">HearthStone</option>
-   
-</select>
-                                       <select class="form-control addMargin" ng-model = "currentGames[2]">
-    <option value="World of Warcraft">World of Warcraft</option>
-    <option value="League of Legends">League of Legends</option>
-    <option value="CS:GO">CS:GO</option>
-    <option value="HearthStone">HearthStone</option>
-   
-</select>
-  
+                    <div class="col-xs-4">
 
-                        
+                        <select class="form-control addMargin" ng-model="currentGames[0]">
+                            <option value="World of Warcraft">World of Warcraft</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS:GO">CS:GO</option>
+                            <option value="HearthStone">HearthStone</option>
 
-                       
-               
+                        </select>
+                        <select class="form-control addMargin" ng-model="currentGames[1]">
+                            <option value="World of Warcraft">World of Warcraft</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS:GO">CS:GO</option>
+                            <option value="HearthStone">HearthStone</option>
+
+                        </select>
+                        <select class="form-control addMargin" ng-model="currentGames[2]">
+                            <option value="World of Warcraft">World of Warcraft</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS:GO">CS:GO</option>
+                            <option value="HearthStone">HearthStone</option>
+
+                        </select>
 
 
 
-          
+
+
+
+
+
+
+
                         <p class="text-danger">{{error}}</p>
 
 
 
                     </div>
-              
-            </div>
-        </form>
+
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>
+            <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        </div>
     </div>
-    <div class="modal-footer">
-                              <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>
-                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-    </div>
-</div>
+</ng-cloak>
