@@ -72,7 +72,7 @@
                             description: response.userDesc,
                             //currentGame: 'Counter Strike: Global offensive',
                             userName: response.userName,
-                            profilePic: '/profile/philtran.jpg'
+                            profilePic: :response.avatar
 
                         }
                     }

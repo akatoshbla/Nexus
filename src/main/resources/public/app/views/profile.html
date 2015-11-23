@@ -6,7 +6,7 @@
         <div ng-mouseover="hoverProfilePic = true" ng-mouseleave="hoverProfilePic = false" class="col-xs-2 col-sm-2">
             <div class="pull-right">
                 <div class="img-square img-responsive profile-pic">
-                    <img id="profilePicSize" title="profile image"  src="images/{{ profile.profilePic }}">
+                    <img id="profilePicSize" title="profile image"  src="{{ profile.profilePic }}">
                     <div ng-show="hoverProfilePic" class="edit"><a ng-click= "editProfilePic()">edit</a></div>
                    
                 </div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="panel-body" ng-repeat="currGame in gamePlay"><i style="color:green" class="fa fa-check-square"></i>
                         <a href="{{currGame.gameLinks}}"> {{currGame.gameName}}</a>
-
+2
                     </div>
                 </div>
                 <ul class="list-group">
