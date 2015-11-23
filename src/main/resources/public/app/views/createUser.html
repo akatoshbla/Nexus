@@ -1,43 +1,45 @@
-<div class="modal-content">
+<ng-cloak>
+    <div class="modal-content">
 
-    <div class="modal-body">
+        <div class="modal-body">
 
-        <form role="form" name = "myForm" ng-submit="signUp(credentials)" novalidate>
-            <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-            <h1 CLASS="text-primary" id="headTab">Just a few questions to sign up!</h1>
-            <br>
-            <div class="div-padding">
-                <div class="form-group">
+            <form role="form" name="myForm" ng-submit="signUp(credentials)" novalidate>
+                <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+                <h1 CLASS="text-primary" id="headTab">Just a few questions to sign up!</h1>
+                <br>
+                <div class="div-padding">
+                    <div class="form-group">
 
-                    <div class="col-xs-4" id="centerStuff">
-
-
-                        <input type="text" id="username" name="username" ng-model="credentials.username" class="form-control col-sm-2" placeholder="UserName:">
-                        <br>
-
-                        <br>
-                        <input type="password" id="password" name="password1" ng-model="credentials.password" class="form-control col-sm-2" placeholder="Password:">
-                        <br>
+                        <div class="col-xs-4" id="centerStuff">
 
 
-                        <br>
-                        <input type="password" id="password" name="password2" ng-model="credentials.password2" class="form-control col-sm-2" placeholder="Password:">
-                        <br>
-                        <input type="email" id="email" name="email" ng-model="credentials.email" class="form-control col-sm-2" placeholder="Email:">
-                        <br>
-                        <button type="submit" class="btn btn-dark">Submit</button>
-                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-                        <span class="error" ng-show="emailError"> Not valid email!</span>
-                        <p class="text-danger">{{error}}</p>
+                            <input type="text" id="username" name="username" ng-model="credentials.username" class="form-control col-sm-2" placeholder="UserName:">
+                            <br>
+
+                            <br>
+                            <input type="password" id="password" name="password1" ng-model="credentials.password" class="form-control col-sm-2" placeholder="Password:">
+                            <br>
+
+
+                            <br>
+                            <input type="password" id="password" name="password2" ng-model="credentials.password2" class="form-control col-sm-2" placeholder="Password:">
+                            <br>
+                            <input type="email" id="email" name="email" ng-model="credentials.email" class="form-control col-sm-2" placeholder="Email:">
+                            <br>
+                            <button type="submit" class="btn btn-dark">Submit</button>
+                            <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+                            <span class="error" ng-show="emailError"> Not valid email!</span>
+                            <p class="text-danger">{{error}}</p>
 
 
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="modal-footer">
+
+        </div>
     </div>
-    <div class="modal-footer">
-        
-    </div>
-</div>
+</ng-cloak>
