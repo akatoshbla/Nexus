@@ -33,6 +33,17 @@
                 $scope.close();
             })
         };
+             $scope.editCurrentGames = function() {
+                 console.log($scope.currentGames);
+           var jsonObject = $scope.currentGames;
+          
+       
+            //$http.post('http://comp490.duckdns.org/editCurrentGames', jsonObject).success(function(response){
+              //  $rootScope.profile.description = $scope.summary;
+              //  console.log(response);
+              //  $scope.close();
+          //  })
+        };
         
         //close the modal instance
         $scope.close = function () {
