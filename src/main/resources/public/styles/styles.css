@@ -176,17 +176,18 @@ hr.small {
 
 .news {
     padding: 50px 0;
+    font-size: 20pt;
     }
 
 .about {
     padding: 50px 0;
-}
+    }
 
 /* Services */
 
 .services {
     padding: 50px 0;
-}
+    }
 
 .service-item {
     margin-bottom: 30px;
