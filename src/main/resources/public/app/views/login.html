@@ -26,6 +26,7 @@
             </div>
         </div>
     </div>
+</section>
 
 <!-- Services -->
 <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
@@ -47,7 +48,7 @@
                             </h4>
 
                             <p>Connecting you with other players based on your rank!</p>
-                            <a href="#" class="btn btn-light">Learn More</a>
+                            <a ng-click="matchmakingLearnMore()" class="btn btn-light">Learn More</a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -61,7 +62,7 @@
                             </h4>
 
                             <p>Talk to other players instantly!</p>
-                            <a href="#" class="btn btn-light">Learn More</a>
+                            <a ng-click="instantMessagingLearnMore()" class="btn btn-light">Learn More</a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -75,7 +76,7 @@
                             </h4>
 
                             <p>A live community where players can have post, talk about, and share strategies about their games.</p>
-                            <a href="#" class="btn btn-light">Learn More</a>
+                            <a ng-click="communityLearnMore()" class="btn btn-light">Learn More</a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -89,7 +90,7 @@
                             </h4>
 
                             <p>A page where other players can learn more about you!</p>
-                            <a href="#" class="btn btn-light">Learn More</a>
+                            <a ng-click="profileLearnMore()" class="btn btn-light">Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -122,12 +123,12 @@
                             <h4>
                             <strong>Vahan Tokadjian</strong>
                             </h4>
-                            <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p> 
+                             <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>
                     </div>
                     
                     
@@ -136,12 +137,12 @@
                             <h4>
                             <strong>Alex</strong>
                             </h4>
-                            <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p> 
+                             <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>
                     </div>
                     
                           
@@ -150,12 +151,12 @@
                             <h4>
                             <strong>Ben</strong>
                             </h4>
-                            <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p>  
+                             <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>
                     </div>
                     
                     <div class="col-md-3 col-sm-6">
@@ -163,12 +164,12 @@
                             <h4>
                             <strong>Phil</strong>
                             </h4>
-                           <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p> 
+                            <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>
                     </div>
                     
                      <div class="col-md-3 col-sm-6">
@@ -176,24 +177,24 @@
                             <h4>
                             <strong>David</strong>
                             </h4>
-                           <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p> 
+                            <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>
                     </div>
                      <div class="col-md-3 col-sm-6">
-                        <img class="img-portfolio img-responsive" src="images/Profile/doodie.jpg" width="150" height="25">
+                        <img class="img-portfolio img-responsive" src="images/Profile/raffi1.jpg" width="300" height="25">
                             <h4>
                             <strong>Raffi</strong>
                             </h4>
-                            <p>"Example example example example
-                            example example example example
-                            example example example example 
-                            example example example example
-                            example example example example
-                            example example example example" </p>  
+                            <p>
+                                "Our greatest weakness lies in giving up. 
+                                The most certain way to succeed is always
+                                to try just one more time."
+                                -Thomas A. Edison
+                            </p>  
                     </div>                       
                 </div>
                 <!-- /.row (nested) -->
@@ -210,7 +211,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-10 col-lg-offset-1 text-center">
-                <h2>Games supported</h2>
+                <h2>Games Supported</h2>
                 <hr class="small">
                 <div class="row">
                     <div class="col-md-6">
@@ -243,7 +244,8 @@
                     </div-->
                 </div>
                 <!-- /.row (nested) -->
-                <a href="#headTab" class="btn btn-dark">View More Games</a>
+                <!--a href="#headTab" class="btn btn-dark">View More Games</a-->
+                 <a ng-click="viewMoreGames()" class="btn btn-light">View More Games</a>
             </div>
             <!-- /.col-lg-10 -->
         </div>

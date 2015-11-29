@@ -23,9 +23,84 @@
                     }
                 });
             }
-                
+                $scope.matchmakingLearnMore = function (size) {
 
-             // if loginStatus is undefined assign false to it
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/matchmakingLearnMore.html',
+        
+                    controller: 'learnMoreController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                
+                $scope.instantMessagingLearnMore = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/instantMessagingLearnMore.html',
+        
+                    controller: 'learnMoreController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+             
+                $scope.communityLearnMore = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/communityLearnMore.html',
+        
+                    controller: 'learnMoreController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                $scope.profileLearnMore = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/profileLearnMore.html',
+        
+                    controller: 'learnMoreController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+                $scope.viewMoreGames = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/viewMoreGames.html',
+        
+                    controller: 'viewMoreGamesController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            }
+            // if loginStatus is undefined assign false to it
                 if($rootScope.loginStatus === undefined){
                 $rootScope.loginStatus = false;
                 }
