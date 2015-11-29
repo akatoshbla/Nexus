@@ -113,6 +113,7 @@
                 //login if username and password are valid
                 $scope.login = function (credentials) {
                     console.log(credentials)
+                    $rootScope.username = credentials.username;
                     var userInfo = {
 
                         "username": credentials.username,

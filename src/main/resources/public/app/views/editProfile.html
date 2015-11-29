@@ -1,36 +1,38 @@
-<div class="modal-content">
+<ng-cloak>
+    <div class="modal-content">
 
-    <div class="modal-body addMargin">
+        <div class="modal-body addMargin">
 
-        <form role="form" name = "myForm" ng-submit="realName(credentials)" novalidate>
-            <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-            <h3 CLASS="text-primary" id="headTab">Change Profile Name!</h3>
-            <br>
-            <div class="div-padding">
-               
-
-                    <div class="col-xs-4" >
+            <form role="form" name="myForm" ng-submit="realName(credentials)" novalidate>
+                <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+                <h3 CLASS="text-primary" id="headTab">Change Profile Name!</h3>
+                <br>
+                <div class="div-padding">
 
 
-                        <input type="text" id="username" name="username" ng-model="newRealName" class="addMargin"  placeholder="Real Name:">
+                    <div class="col-xs-4">
+
+
+                        <input type="text" id="username" name="username" ng-model="newRealName" class="addMargin" placeholder="Real Name:">
                         <br>
 
-               
 
 
 
-          
+
+
                         <p class="text-danger">{{error}}</p>
 
 
 
                     </div>
-              
-            </div>
-        </form>
+
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>
+            <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        </div>
     </div>
-    <div class="modal-footer">
-                              <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>
-                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-    </div>
-</div>
+</ng-cloak>
