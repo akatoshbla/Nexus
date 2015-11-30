@@ -68,7 +68,7 @@ public class ProfileController
      * <li>"socialLinks": "[\"http:/twitter.com/johndoe\",\"http://www.facebook.com/\"]"
      * </ul>
      * <p>
-     * The post /favGames takes two arrays from the frontend.
+     * The post /currentGames takes two arrays from the frontend.
      * <ul>
      * <li>Returns a Json with the following:
      * <li>"result": true,
@@ -83,9 +83,10 @@ public class ProfileController
      * <li>"gamesPlayed": "[\"World of Warcraft\",\"League of Legends\"]"
      * </ul>
      * <p>
-     * The post /avatar will take a File from the frontend.
+     * The post /avatar will take a String from the frontend.
      * <ul>
      * <li>Returns a json with the following:
+     * <li>"result": true,
      * <li>"avatar": "images/UserAvatars/defaultAvatar.png"
      * </ul>
      * @param profileService class
@@ -235,7 +236,7 @@ public class ProfileController
 					}
 				}, json());
 				
-				post("gamesPlayed", (req, res) -> {
+				post("currentGames", (req, res) -> {
 					String username;
 					
 					try {
@@ -247,7 +248,7 @@ public class ProfileController
 							username = null;
 							System.out.println("Non-Session User Alert at " + req.ip());	
 						}
-						return profileService.updateGamesPlayed(username, req.body());
+						return profileService.updateCurrentGames(username, req.body());
 					} catch (Exception e) {
 						e.printStackTrace();
 						return null;

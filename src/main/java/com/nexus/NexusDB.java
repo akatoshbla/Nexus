@@ -5,12 +5,18 @@ import java.sql.*;
 import java.security.MessageDigest;
 //import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+
 import static java.util.Arrays.asList;
-import java.util.Date;
 import java.util.Properties;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
-import org.omg.CORBA.ULongLongSeqHelper;
 
 /**
  * This class contains the database methods.
@@ -216,6 +222,7 @@ public class NexusDB {
 		List params = asList(id,id,id,id);
 	
 		List result= queryHelper(query,params);
+		
 		int i = 0;
 		for (HashMap obj: (ArrayList<HashMap>)result)
 				result.set(i++, obj.get("name"));
@@ -280,7 +287,7 @@ public class NexusDB {
 		int userID = getUserId(name);
 		try {
 			String statement = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
-					+ ", likes, posts, friends, userDesc, profilePicLink, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ ", likes, posts, friends, userDesc, avatar, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(statement);
 			pstmt.setInt(1, userID);
 			pstmt.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now()));
@@ -313,7 +320,7 @@ public class NexusDB {
 			e.printStackTrace();
 			return null;
 		}
-		try {
+		try { // rework
 			String statement = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
 			pstmt = conn.prepareStatement(statement);
 			pstmt.setInt(1, userID);
@@ -321,25 +328,30 @@ public class NexusDB {
 			pstmt.setString(3, "Link here");
 			pstmt.executeUpdate();
 		}
-		catch(Exception e) {
+		catch(Exception e) { // rework
 			e.printStackTrace();
 			return null;
 		}
-		try {
-			String statement = "INSERT into gamesSupported (id, gameName) VALUES(?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert Nexus supported game name here.");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+//		try { // rework
+//			String statement = "INSERT into gamesSupported (id, gameName) VALUES(?,?)";
+//			pstmt = conn.prepareStatement(statement);
+//			pstmt.setInt(1, userID);
+//			pstmt.setString(2, "Insert Nexus supported game name here.");
+//			pstmt.executeUpdate();
+//		}
+//		catch(Exception e) { // rework
+//			e.printStackTrace();
+//			return null;
+//		}
 		finally {
 			if (pstmt!=null) pstmt.close();
 			conn.close();
 		}
+		String insertCurrentGames = "INSERT into currentGames (id, name) VALUES(?,?)";
+		List params = asList(userID,"Pick Nexus supported game here");
+		updateHelper(insertCurrentGames, params);
+		updateHelper(insertCurrentGames, params);
+		updateHelper(insertCurrentGames, params);
 		return recordExists(name);
 	}
 	
@@ -504,7 +516,7 @@ public class NexusDB {
 			catch (Exception e)
 			{
 				e.printStackTrace();
-				return result;
+				return null;
 			}	
 			
 			//Same as above but
@@ -525,7 +537,7 @@ public class NexusDB {
 			catch (Exception e) 
 			{
 				e.printStackTrace();
-				return result;
+				return null;
 			}
 			finally 
 			{
@@ -574,6 +586,7 @@ public class NexusDB {
 			catch (Exception e)
 			{
 				e.printStackTrace();
+				return null;
 			}
 			try
 			{
@@ -592,7 +605,7 @@ public class NexusDB {
 			catch (Exception e)
 			{
 				e.printStackTrace();
-				return profile;
+				return null;
 			}	
 			
 			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
@@ -610,7 +623,7 @@ public class NexusDB {
 				profile.setSocialLinks(socialLinks);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return profile;
+				return null;
 			}
 			finally 
 			{
@@ -655,6 +668,7 @@ public class NexusDB {
 			catch (Exception e)
 			{
 				e.printStackTrace();
+				return null;
 			}
 			try
 			{
@@ -698,6 +712,96 @@ public class NexusDB {
 			}
 			return gameNames;
 		}
+		
+		public void updateCurrentGames(String username, String[] list) throws Exception {
+			String delete = "DELETE FROM currentGames WHERE id=?";
+			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
+			int id = getUserId(username);
+			List params = asList(id);
+			updateHelper(delete, params);
+			for (int i = 0; i < list.length; i++) {
+				List params2 = asList(id, list[i]);
+				updateHelper(insert, params2);
+			}
+		}
+		
+		public JsonObject updateWOW(String username, String warcraftCharacter, String warcraftRealm) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "World of Warcraft");
+			String insert = "INSERT INTO worldofwarcraft (id,name,realm) VALUES(?,?,?) ON DUPLICATE KEY UPDATE name=?, realm=?"; 
+			String query = "SELECT * FROM worldofwarcraft WHERE id=?";
+			int id = getUserId(username);
+			List params = asList(id,warcraftCharacter,warcraftRealm,warcraftCharacter,warcraftRealm);
+			List params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("warcraftCharacter", (String) map.get("name"));
+				jsonObject.addProperty("warcraftRealm", (String) map.get("realm"));
+//				System.out.println((String) map.get("charname"));
+//				System.out.println((String) map.get("realm"));
+			return jsonObject;
+		}
+		
+		public JsonObject updateLOL(String username, String summoner) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "League of Legends");
+			String insert = "INSERT INTO leagueoflegends (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM leagueoflegends WHERE id=?";
+			int id = getUserId(username);
+			List params = asList(id,summoner,summoner);
+			List params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("summoner", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		public JsonObject updateCSGO(String username) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "CS:GO");
+			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List params = asList(id,"null","null");
+			List params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("charname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		public JsonObject updateHearthStone(String username) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "HearthStone");
+			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM hearthstone WHERE id=?";
+			int id = getUserId(username);
+			List params = asList(id,"null","null");
+			List params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("bnetname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
 	
 	/**
 	 * This method gets all the profile data from the database by user's name
@@ -731,7 +835,7 @@ public class NexusDB {
 				profile.setPosts(results.getInt("posts"));
 				profile.setFriends(results.getInt("friends"));
 				profile.setUserDesc(results.getString("userDesc"));
-				profile.setAvatar(results.getString("profilePicLink"));
+				profile.setAvatar(results.getString("avatar"));
 				profile.setCurrentGame(results.getString("currentGame"));
 				
 				ArrayList<String> socialNames = new ArrayList<String>();
@@ -753,7 +857,7 @@ public class NexusDB {
 					profile.setSocialLinks(socialLinks);
 				} catch (Exception e) {
 					e.printStackTrace();
-					return profile;
+					return null;
 				}
 				query = "SELECT * FROM favGames WHERE id=" +userID;
 				try {
@@ -769,21 +873,21 @@ public class NexusDB {
 					profile.setFavGameLinks(favGameLinks);
 				} catch (Exception e) {
 					e.printStackTrace();
-					return profile;
+					return null;
 				}
-				query = "SELECT * FROM gamesSupported WHERE id=" +userID;
+				query = "SELECT * FROM currentGames WHERE id=" +userID;
 				try {
 					pstmt = connection.prepareStatement(query);
 					ResultSet results3 = pstmt.executeQuery();
 						System.out.println(pstmt);
 					while(results3.next())
 					{
-						supportedGames.add(results3.getString("gameName"));
+						supportedGames.add(results3.getString("name"));
 					}
 					profile.setSupportedGames(supportedGames);
 				} catch (Exception e) {
 					e.printStackTrace();
-					return profile;
+					return null;
 				}
 				
 			}
@@ -791,7 +895,7 @@ public class NexusDB {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return profile;
+			return null;
 		}
 		finally
 		{
@@ -802,6 +906,72 @@ public class NexusDB {
 			connection.close();
 		}
 		return profile;
+	}
+	
+	public JsonArray getCurrentGames(String username) throws Exception {
+		JsonArray jsonArray = new JsonArray();
+		String query = "SELECT * FROM currentGames WHERE id=?";
+		int id = getUserId(username);
+		List params = asList(id);
+		List<HashMap<String, Object>> result= queryHelper(query, params);
+		ArrayList<Object> array = new ArrayList<Object>();
+		for (int i = 0; i < result.size(); i++) {
+			JsonObject jsonObject = new JsonObject();
+			String gameName = (String) result.get(i).get("name");			
+			if (gameName.equals("World of Warcraft")) {
+				String queryWOW = "SELECT * FROM worldofwarcraft WHERE id=?";
+				List paramsWOW = asList(id);
+				List<HashMap<String, Object>> resultWOW = queryHelper(queryWOW, paramsWOW);
+				HashMap<String, Object> mapWOW = new HashMap<String, Object>();
+				for (int j = 0; j < resultWOW.size(); j++) {
+					mapWOW.putAll(resultWOW.get(j));
+				}
+				jsonObject.addProperty("name", "World of Warcraft");
+				jsonObject.addProperty("warcraftCharacter", (String) mapWOW.get("name"));
+				jsonObject.addProperty("warcraftRealm", (String) mapWOW.get("realm"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("League of Legends")) {
+				String queryLOL = "SELECT * FROM leagueoflegends WHERE id=?";
+				List paramsLOL = asList(id);
+				List<HashMap<String, Object>> resultLOL = queryHelper(queryLOL, paramsLOL);
+				HashMap<String, Object> mapLOL = new HashMap<String, Object>();
+				mapLOL.putAll(resultLOL.get(0));
+				jsonObject.addProperty("name", "League of Legends");
+				jsonObject.addProperty("summoner", (String) mapLOL.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("CSGO")) {
+				String queryCSGO = "SELECT * FROM csgo WHERE id=?";
+				List paramsCSGO = asList(id);
+				List<HashMap<String, Object>> resultCSGO = queryHelper(queryCSGO, paramsCSGO);
+				HashMap<String, Object> mapCSGO = new HashMap<String, Object>();
+				mapCSGO.putAll(resultCSGO.get(0));
+				jsonObject.addProperty("name", "CS:GO");
+				jsonObject.addProperty("charname", (String) mapCSGO.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("HearthStone")) { 
+				String queryHS = "SELECT * FROM hearthstone WHERE id=?";
+				List paramsHS = asList(id);
+				List<HashMap<String, Object>> resultHS = queryHelper(queryHS, paramsHS);
+				HashMap<String, Object> mapHS = new HashMap<String, Object>();
+				mapHS.putAll(resultHS.get(0));
+				jsonObject.addProperty("name", "HearthStone");
+				jsonObject.addProperty("bnetname", (String) mapHS.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else { // Default
+				String queryCG = "SELECT * FROM currentGames WHERE id=?";
+				List paramsCG = asList(id);
+				List<HashMap<String, Object>> resultCG = queryHelper(queryCG, paramsCG);
+				for (int j = 0; j < resultCG.size(); j++) {
+					jsonObject.addProperty("name", (String) resultCG.get(j).get("name"));
+				}
+				jsonArray.add(jsonObject);
+			}
+		}
+		return jsonArray;
 	}
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
