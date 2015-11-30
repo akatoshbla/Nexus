@@ -33,10 +33,13 @@
                 $scope.close();
             })
         };
+        
              $scope.editCurrentGames = function() {
-                 console.log($scope.currentGames);
-           var jsonObject = $scope.currentGames;
-          
+                 var jsonObject = {
+          currentGames: $scope.currentGames
+       }
+                 console.log({jsonObject});
+        
        
             //$http.post('http://comp490.duckdns.org/editCurrentGames', jsonObject).success(function(response){
               //  $rootScope.profile.description = $scope.summary;
