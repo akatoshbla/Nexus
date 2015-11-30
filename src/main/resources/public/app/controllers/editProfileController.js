@@ -41,11 +41,11 @@
                  console.log({jsonObject});
         
        
-            //$http.post('http://comp490.duckdns.org/editCurrentGames', jsonObject).success(function(response){
+            $http.post('http://comp490.duckdns.org/currentGames', jsonObject).success(function(response){
               //  $rootScope.profile.description = $scope.summary;
               //  console.log(response);
-              //  $scope.close();
-          //  })
+                $scope.close();
+            })
         };
         
         //close the modal instance
