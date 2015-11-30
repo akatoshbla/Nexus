@@ -2,7 +2,7 @@ package com.nexus.tests;
 
 import static org.junit.Assert.*;
 import com.nexus.*;
-
+import static org.mockito.Mockito.*;
 import org.junit.Test;
 
 
