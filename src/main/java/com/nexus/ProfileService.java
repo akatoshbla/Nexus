@@ -80,7 +80,6 @@ public class ProfileService
 		//creates a new profile and matches the body to the variable
 		Profile profile = new Gson().fromJson(body, Profile.class);
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
 		//return object
 		JsonObject jsonobj = new JsonObject();
@@ -263,7 +262,6 @@ public class ProfileService
 		//creates a new profile and matches the body to the variable
 		Profile profile = new Gson().fromJson(body, Profile.class);
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
 		//return object
 		JsonObject jsonobj = new JsonObject();
