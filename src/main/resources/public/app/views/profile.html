@@ -1,4 +1,7 @@
 <ng-cloak>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <div class="container target" id="userProfile">
         <div class="row">
             <div class="col-xs-10 col-sm-10">
@@ -20,14 +23,13 @@
                     <br>
                 </div>
             </div>
-            <div class="row">
-                <div class="pull-left col-xs-2 col-sm-2">
-                    <ul class="nav nav-justified">
-                        <li class="active"><a href="" data-toggle="tabs">Main</a></li>
-                        <li><a href="" data-toggle="tabs">Info</a></li>
-                    </ul>
+                <div class="btn-group btn-toggle">
+                    <button class="btn btn-sm btn-default" data-toggle="collapse" data-target="#collapsible">Info</button>
                 </div>
-            </div>
+                <div class="well collapse" id="collapsible">
+                    something
+
+                </div>
             <br>
 
             <div class="row">
@@ -140,5 +142,21 @@
             <div id="push"></div>
         </div>
         <script src="/plugins/bootstrap-pager.js"></script>
+        <!--<script>-->
+            <!--$('.btn-toggle').click(function() {-->
+                <!--$(this).find('.btn').toggleClass('active');-->
+
+                <!--if ($(this).find('.btn-primary').size()>0) {-->
+                    <!--$(this).find('.btn').toggleClass('btn-primary');-->
+                <!--}-->
+                <!--$(this).find('.btn').toggleClass('btn-default');-->
+
+            <!--});-->
+
+            <!--$('form').submit(function(){-->
+                <!--alert($(this["options"]).val());-->
+                <!--return false;-->
+            <!--});-->
+        <!--</script>-->
     </div>
 </ng-cloak>

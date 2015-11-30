@@ -38,7 +38,7 @@
                  var jsonObject = {
           currentGames: $scope.currentGames
        }
-                 console.log({jsonObject});
+                 console.log(jsonObject);
         
        
             $http.post('http://comp490.duckdns.org/currentGames', jsonObject).success(function(response){
