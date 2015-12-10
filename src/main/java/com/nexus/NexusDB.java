@@ -23,7 +23,7 @@ import java.util.HashMap;
  * @author David Kopp
  *
  */
-@SuppressWarnings("all")
+
 public class NexusDB {
 
 	private final String userName = "root";
@@ -89,8 +89,8 @@ public class NexusDB {
 				return null; 
 		String query = "SELECT id FROM friends WHERE reqFrom=? AND "
 				+ "reqTo=?";
-		List params = asList(id1,id2);
-		List result = queryHelper(query, params);
+		List<Integer> params = asList(id1,id2);
+		List<HashMap<String,Object>> result = queryHelper(query, params);
 		return (result==null)? null : (result.size()>0);
 	}
 	/**
@@ -116,8 +116,8 @@ public class NexusDB {
 		String query = "SELECT id,friendId FROM friends WHERE id=? AND "
 				+ "friendId=? AND reqFrom IS NULL AND reqTo IS NULL";
 		
-		List params = asList(id1,id2);
-		List result = queryHelper(query, params);
+		List<Integer> params = asList(id1,id2);
+		List<HashMap<String,Object>> result = queryHelper(query, params);
 		return (result==null)? null : (result.size()>0);
 
 	}
@@ -128,7 +128,8 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO make sure they're not already friends or pending friends
+	//TODO decrement the correct pending friend counter
 	public Boolean updateFriendStatus(String name1, String name2) throws Exception
 	{
 		String statement = "UPDATE friends SET reqFrom=NULL,reqTo=NULL where id=? AND friendId=?";
@@ -142,8 +143,13 @@ public class NexusDB {
 			id1 = id2;
 			id2 = tmp;
 		}
-		List params = asList(id1,id2);
+		List<Integer> params = asList(id1,id2);
 		updateHelper(statement,params);
+		
+		//TODO finish 
+		//statement = "UPDATE userprofile SET friends = friends + 1 WHERE id = ? OR id = ?";
+		//updateHelper(statement,params);
+		
 		return checkFriend(name1,name2);		
 	}
 	/**
@@ -154,12 +160,13 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO check if a friend relationship or pending friend relationship
+	// is being deleted, and decrement the correct userprofile counter
 	public Boolean deleteFriend(String name1,String name2) throws Exception
 	{
 		int id1= getUserId(name1);
 		int id2= getUserId(name2);
-		if(id1 == -1 || id2 == -1)	
+		if(id1 == -1 || id2 == -1 || !checkFriend(name1,name2))	
 			return null;
 		if (id1 > id2)
 		{
@@ -168,8 +175,12 @@ public class NexusDB {
 			id2 = tmp;
 		}
 		String statement = "DELETE FROM friends WHERE id=? AND friendId=?";
-		List params = asList(id1,id2);
+		List<Integer> params = asList(id1,id2);
 		updateHelper(statement,params);
+		
+		//TODO finish
+		//statement = "UPDATE userprofile SET friends = friends - 1 WHERE id = ? OR id = ?";
+		//updateHelper(statement,params);
 		return !checkFriend(name1,name2);
 	}
 
@@ -180,7 +191,7 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO check to see if they're not already friends or pending friends
 	public Boolean  createFriendRequest(String fromUser, String toUser) throws Exception
 	{
 		String statement = "INSERT into friends VALUES(?,?,?,?)";
@@ -199,8 +210,14 @@ public class NexusDB {
 			lowerId=toId;
 			higherId=fromId;
 		}
-		List params = asList(lowerId,higherId,fromId,toId);
+		List<Integer> params = asList(lowerId,higherId,fromId,toId);
 		updateHelper(statement, params);
+		
+		//TODO finish
+		//params = asList(toId);
+		//statement = "UPDATE userprofile SET friendRequests = friendRequests + 1 WHERE id = ?";
+		//updateHelper(statement,params);
+		
 		return checkFriendRequest(fromUser,toUser);
 	}
 	/**
@@ -219,14 +236,15 @@ public class NexusDB {
 				+ "friends WHERE (friendId=? AND reqTo = ?)) "
 				+ "ORDER BY name";
 		int id = getUserId(name);
-		List params = asList(id,id,id,id);
+		List<Integer> params = asList(id,id,id,id);
 	
-		List result= queryHelper(query,params);
+		List<HashMap<String,Object>> result= queryHelper(query,params);
 		
-		int i = 0;
-		for (HashMap obj: (ArrayList<HashMap>)result)
-				result.set(i++, obj.get("name"));
-		return result;
+		List<String> friendsList= new ArrayList<>();
+
+		for (HashMap<String,Object> obj : result)
+			friendsList.add((String)obj.get("name"));
+		return friendsList;
 	}
 	/**
 	 * Returns an List containing the usernames of the user's friends.
@@ -243,12 +261,15 @@ public class NexusDB {
 				+ "friends WHERE (friendId=? AND reqFrom IS NULL)) "
 				+ " and active=1 ORDER BY name";
 		int id = getUserId(name);
-		List params = asList(id,id);
-		List result= queryHelper(query,params);
-		int i = 0;
-		for (HashMap obj: (ArrayList<HashMap>)result)
-				result.set(i++, obj.get("name"));
-		return result;		
+		List<Integer> params = asList(id,id);
+		
+		List<HashMap<String,Object>> result= queryHelper(query,params);
+		
+		List<String> friendsList= new ArrayList<>();
+
+		for (HashMap<String,Object> obj : result)
+			friendsList.add((String)obj.get("name"));
+		return friendsList;	
 	}
 	
 	/**
@@ -348,7 +369,7 @@ public class NexusDB {
 			conn.close();
 		}
 		String insertCurrentGames = "INSERT into currentGames (id, name) VALUES(?,?)";
-		List params = asList(userID,"Pick Nexus supported game here");
+		List<Object> params = asList(userID,"Pick Nexus supported game here");
 		updateHelper(insertCurrentGames, params);
 		updateHelper(insertCurrentGames, params);
 		updateHelper(insertCurrentGames, params);
@@ -376,12 +397,12 @@ public class NexusDB {
 	public Boolean isActive(String name) throws Exception
 	{
 		String query = "SELECT active FROM users WHERE name = ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if (results==null || results.size()==0)
 				return null;
 		else {
-			return (int)((HashMap)results.get(0)).get("active")==1;
+			return (int)((HashMap<String,Object>)results.get(0)).get("active")==1;
 		}	
 	}
 	/**
@@ -394,7 +415,7 @@ public class NexusDB {
 	public Boolean deactivateUser(String name) throws Exception
 	{
 		String statement = "UPDATE USERS SET active = 0 WHERE name = ?";
-		List params = asList(name);
+		List<String> params = asList(name);
 		updateHelper(statement,params);
 		return !isActive(name);
 	}
@@ -409,7 +430,7 @@ public class NexusDB {
 	public Boolean activateUser(String name) throws Exception
 	{
 		String statement = "UPDATE USERS SET active = 1 WHERE name = ?";
-		List params = asList(name);
+		List<String> params = asList(name);
 		updateHelper(statement,params);
 		return isActive(name); 
 	}
@@ -423,8 +444,8 @@ public class NexusDB {
 	public Boolean recordExists (String name) throws SQLException
 	{
 		String query = "SELECT name FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		return (results==null)? null : (results.size() > 0);
 	}
 
@@ -440,7 +461,7 @@ public class NexusDB {
 	{
 		password = hashPassword(password);
 		String statement = "UPDATE users SET password = ? WHERE name = ?";
-		List params = asList(password,name);
+		List<String> params = asList(password,name);
 		updateHelper(statement,params);
 		return retrievePassword(name).equals(password);		
 	}
@@ -455,12 +476,12 @@ public class NexusDB {
 	public String retrievePassword(String name) throws SQLException
 	{
 		String query = "SELECT password FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if(results == null || results.size()==0)
 			return null;
 		else{
-			return (String)(((HashMap)results.get(0)).get("password"));
+			return (String)(((HashMap<String,Object>)results.get(0)).get("password"));
 		}
 	}
 	
@@ -475,12 +496,12 @@ public class NexusDB {
 	private int getUserId(String name) throws Exception
 	{
 		String query = "SELECT id FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if(results == null || results.size() == 0)
 			return -1;
 		else 
-			return (int)((HashMap)(results.get(0))).get("id");
+			return (int)((HashMap<String,Object>)(results.get(0))).get("id");
 	}
 	
 		/**
@@ -717,10 +738,10 @@ public class NexusDB {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
 			int id = getUserId(username);
-			List params = asList(id);
+			List<Integer> params = asList(id);
 			updateHelper(delete, params);
 			for (int i = 0; i < list.length; i++) {
-				List params2 = asList(id, list[i]);
+				List<Object> params2 = asList(id, list[i]);
 				updateHelper(insert, params2);
 			}
 		}
@@ -731,8 +752,8 @@ public class NexusDB {
 			String insert = "INSERT INTO worldofwarcraft (id,name,realm) VALUES(?,?,?) ON DUPLICATE KEY UPDATE name=?, realm=?"; 
 			String query = "SELECT * FROM worldofwarcraft WHERE id=?";
 			int id = getUserId(username);
-			List params = asList(id,warcraftCharacter,warcraftRealm,warcraftCharacter,warcraftRealm);
-			List params2 = asList(id);
+			List<Object> params = asList(id,warcraftCharacter,warcraftRealm,warcraftCharacter,warcraftRealm);
+			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -752,8 +773,8 @@ public class NexusDB {
 			String insert = "INSERT INTO leagueoflegends (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
 			String query = "SELECT * FROM leagueoflegends WHERE id=?";
 			int id = getUserId(username);
-			List params = asList(id,summoner,summoner);
-			List params2 = asList(id);
+			List<Object> params = asList(id,summoner,summoner);
+			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -771,8 +792,8 @@ public class NexusDB {
 			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
 			String query = "SELECT * FROM csgo WHERE id=?";
 			int id = getUserId(username);
-			List params = asList(id,"null","null");
-			List params2 = asList(id);
+			List<Object> params = asList(id,"null","null");
+			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -790,8 +811,8 @@ public class NexusDB {
 			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
 			String query = "SELECT * FROM hearthstone WHERE id=?";
 			int id = getUserId(username);
-			List params = asList(id,"null","null");
-			List params2 = asList(id);
+			List<Object> params = asList(id,"null","null");
+			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -912,7 +933,7 @@ public class NexusDB {
 		JsonArray jsonArray = new JsonArray();
 		String query = "SELECT * FROM currentGames WHERE id=?";
 		int id = getUserId(username);
-		List params = asList(id);
+		List<Integer> params = asList(id);
 		List<HashMap<String, Object>> result= queryHelper(query, params);
 		ArrayList<Object> array = new ArrayList<Object>();
 		for (int i = 0; i < result.size(); i++) {
@@ -920,7 +941,7 @@ public class NexusDB {
 			String gameName = (String) result.get(i).get("name");			
 			if (gameName.equals("World of Warcraft")) {
 				String queryWOW = "SELECT * FROM worldofwarcraft WHERE id=?";
-				List paramsWOW = asList(id);
+				List<Integer> paramsWOW = asList(id);
 				List<HashMap<String, Object>> resultWOW = queryHelper(queryWOW, paramsWOW);
 				HashMap<String, Object> mapWOW = new HashMap<String, Object>();
 				for (int j = 0; j < resultWOW.size(); j++) {
@@ -933,7 +954,7 @@ public class NexusDB {
 			}
 			else if (gameName.equals("League of Legends")) {
 				String queryLOL = "SELECT * FROM leagueoflegends WHERE id=?";
-				List paramsLOL = asList(id);
+				List<Integer> paramsLOL = asList(id);
 				List<HashMap<String, Object>> resultLOL = queryHelper(queryLOL, paramsLOL);
 				HashMap<String, Object> mapLOL = new HashMap<String, Object>();
 				mapLOL.putAll(resultLOL.get(0));
@@ -943,7 +964,7 @@ public class NexusDB {
 			}
 			else if (gameName.equals("CSGO")) {
 				String queryCSGO = "SELECT * FROM csgo WHERE id=?";
-				List paramsCSGO = asList(id);
+				List<Integer> paramsCSGO = asList(id);
 				List<HashMap<String, Object>> resultCSGO = queryHelper(queryCSGO, paramsCSGO);
 				HashMap<String, Object> mapCSGO = new HashMap<String, Object>();
 				mapCSGO.putAll(resultCSGO.get(0));
@@ -953,7 +974,7 @@ public class NexusDB {
 			}
 			else if (gameName.equals("HearthStone")) { 
 				String queryHS = "SELECT * FROM hearthstone WHERE id=?";
-				List paramsHS = asList(id);
+				List<Integer> paramsHS = asList(id);
 				List<HashMap<String, Object>> resultHS = queryHelper(queryHS, paramsHS);
 				HashMap<String, Object> mapHS = new HashMap<String, Object>();
 				mapHS.putAll(resultHS.get(0));
@@ -963,7 +984,7 @@ public class NexusDB {
 			}
 			else { // Default
 				String queryCG = "SELECT * FROM currentGames WHERE id=?";
-				List paramsCG = asList(id);
+				List<Integer> paramsCG = asList(id);
 				List<HashMap<String, Object>> resultCG = queryHelper(queryCG, paramsCG);
 				for (int j = 0; j < resultCG.size(); j++) {
 					jsonObject.addProperty("name", (String) resultCG.get(j).get("name"));
@@ -981,7 +1002,7 @@ public class NexusDB {
 	 * @return int -1 if error, 0 if update failed, 1 if updated succeeded.
 	 * @throws SQLException if error
 	 */
-	private int updateHelper(String statement, List<Object> params) throws SQLException
+	private int updateHelper(String statement, List<?> params) throws SQLException
 	{
 		Connection conn=this.getConnection();
 		PreparedStatement pstmt=null;
@@ -997,8 +1018,8 @@ public class NexusDB {
 					pstmt.setInt(i++, (int) obj);
 				else if (obj instanceof java.sql.Date)
 					pstmt.setDate(i++, (java.sql.Date) obj);
-				else return -1;    /* If you need something other than setString or setInt
-				 					    add it to another else if, following the form*/
+				else return -1;    /* If you need something other than setString, setInt or setDate
+				 					    add it to another else if, following this form*/
 			}
 			System.out.println(pstmt);
 			return pstmt.executeUpdate();
@@ -1017,7 +1038,7 @@ public class NexusDB {
 	 * @return List&lt;HashMap&gt; Returned database table.
 	 * @throws SQLException if error
 	 */
-	private List<HashMap<String,Object>> queryHelper(String query, List<Object> params) throws SQLException
+	private List<HashMap<String,Object>> queryHelper(String query, List<?> params) throws SQLException
 	{
 		Connection conn=this.getConnection();
 		PreparedStatement pstmt=null;
