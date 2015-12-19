@@ -195,7 +195,7 @@ public class ProfileService
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
 			JsonArray games = jsonObject.get("currentGames").getAsJsonArray();
 			jsonobj.addProperty("result", true);
-			for (int i = 0; i < games.size(); i++) {
+			for (int i = 0; i < games.size(); i++) {					
 				JsonObject game = games.get(i).getAsJsonObject();
 				String name = game.get("name").getAsString();
 				if (name.equals("World of Warcraft")) {
