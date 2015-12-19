@@ -1,18 +1,13 @@
 package com.nexus;
 
 import java.sql.*;
-//import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-//import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import java.util.Properties;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -283,95 +278,40 @@ public class NexusDB {
 	 */
 	public Boolean createUser(String name, String password, String email) throws Exception
 	{
-
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			if (recordExists(name) || (name.length()>32)) 
-				return false; //already exists
-			else {
-		     String statement = "INSERT into users (name, password, email) VALUES(?,?,?)";
-		     pstmt = conn.prepareStatement(statement);
-		     pstmt.setString(1, name);
-		     pstmt.setString(2, password);
-		     pstmt.setString(3, email);
-		     pstmt.executeUpdate(); 
-		     
-		     System.out.println(pstmt);
-		     //return recordExists(name);
-			}
+		if (recordExists(name) || (name.length()>32)) {
+			return false;
 		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		int userID = getUserId(name);
-		try {
-			String statement = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
+		else {
+			String statement = "INSERT into users (name, password, email) VALUES(?,?,?)";
+		    List<String> params = asList(name, password, email);
+		    updateHelper(statement, params);
+		    System.out.println("User: " + name + " was created in db.");
+		    
+		    int userID = getUserId(name);
+		    String statementDefaultProfile = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
 					+ ", likes, posts, friends, userDesc, avatar, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now()));
-			pstmt.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
-			pstmt.setString(4, "Anonymous");
-			pstmt.setString(5, "Newbie");
-			pstmt.setInt(6, 0);
-			pstmt.setInt(7, 0);
-			pstmt.setInt(8, 0);
-			pstmt.setInt(9, 0);
-			pstmt.setString(10, "Insert your user description here!");
-			pstmt.setString(11, "images/UserAvatars/defaultAvatar.png");
-			pstmt.setString(12, "Insert the current game your are playing here!");
-			pstmt.executeUpdate();
+			List<Object> params2 = asList(userID, java.sql.Date.valueOf(java.time.LocalDate.now()),
+					java.sql.Date.valueOf(java.time.LocalDate.now()), "Anonymous", "Newbie", 0,
+					0, 0, 0, "Insert Your user description here!", "images/UserAvatars/defaultAvatar.png",
+					"Insert the current game you are playing here!");
+			updateHelper(statementDefaultProfile, params2);
+		
+			String statementDefaultSocial = "INSERT into socialLinks (id, socialName, link) VALUES(?,?,?)";
+			List<Object> params3 = asList(userID, "Insert a social site name here.", "Link here!");
+			updateHelper(statementDefaultSocial, params3);
+			
+			String statementDefaultFavGame = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
+			List<Object> params4 = asList(userID, "Insert a game name here.", "Link here!");
+			updateHelper(statementDefaultFavGame, params4);
+			
+			String insertCurrentGames = "INSERT into currentGames (id, name) VALUES(?,?)";
+			List<Object> params5 = asList(userID, "Pick Nexus supported game here");
+			updateHelper(insertCurrentGames, params5);
+			updateHelper(insertCurrentGames, params5);
+			updateHelper(insertCurrentGames, params5);
+			
+			System.out.println("UserID:" + userID + ", Username:" + name + " default profile was created in db.");
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			String statement = "INSERT into socialLinks (id, socialName, link) VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert a social sites name here.");
-			pstmt.setString(3, "Link here");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		try { // rework
-			String statement = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert a game name here.");
-			pstmt.setString(3, "Link here");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) { // rework
-			e.printStackTrace();
-			return null;
-		}
-//		try { // rework
-//			String statement = "INSERT into gamesSupported (id, gameName) VALUES(?,?)";
-//			pstmt = conn.prepareStatement(statement);
-//			pstmt.setInt(1, userID);
-//			pstmt.setString(2, "Insert Nexus supported game name here.");
-//			pstmt.executeUpdate();
-//		}
-//		catch(Exception e) { // rework
-//			e.printStackTrace();
-//			return null;
-//		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
-		}
-		String insertCurrentGames = "INSERT into currentGames (id, name) VALUES(?,?)";
-		List<Object> params = asList(userID,"Pick Nexus supported game here");
-		updateHelper(insertCurrentGames, params);
-		updateHelper(insertCurrentGames, params);
-		updateHelper(insertCurrentGames, params);
 		return recordExists(name);
 	}
 	
@@ -512,62 +452,18 @@ public class NexusDB {
 		 * @throws Exception if error
 		 */
 		public String updateUserProfile(String username, String column, String value) throws Exception
-	{
-			//creates connection b/w front and database
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			String result = null;
-			
-			
+	{		
 			int userID = getUserId(username);
 			String update = "UPDATE userprofile SET " + column + "= ? WHERE id=?";
+			List<Object> params = asList(value, userID);
+			updateHelper(update, params);	
 			
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(update);
-				//these are holders for the String update
-				pstmt.setString(1, value);
-				pstmt.setInt(2, userID);
-					System.out.println(pstmt);
-				//preparing an execution for update
-				pstmt.executeUpdate();	
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}	
-			
-			//Same as above but
-			//Need to query the database for the exact insert
+			// Same as above but
+			// Need to query the database for the exact insert
 			String query = "SELECT " + column +" FROM userprofile WHERE id= ?";
-			try
-			{
-				pstmt = connection.prepareStatement(query);
-				pstmt.setInt(1, userID);
-				//getting query results and puts it in results
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				if (results.next())
-				{	
-					result = results.getString(column);
-				}
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-				return null;
-			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
-			return result;
+			List<Object> params2 = asList(userID);
+			List<HashMap<String,Object>> results = queryHelper(query,params2);
+			return results.get(0).get(column).toString();
 		}
 		
 		/**
@@ -585,74 +481,32 @@ public class NexusDB {
 		public Profile updateUserProfileLists(String username, String tableName, String column1, String column2,
 				ArrayList<String> names, ArrayList<String> links) throws Exception
 		{
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			Profile profile = null;
+			Profile profile = new Profile();
 			ArrayList<String> socialNames = new ArrayList<String>();
 			ArrayList<String> socialLinks = new ArrayList<String>();
 			
 			
 			int userID = getUserId(username);
 			String delete = "DELETE FROM " + tableName + " WHERE id=?";
+			List<Integer> paramsDelete = asList(userID);
+			updateHelper(delete, paramsDelete);
+			
 			String insert = "INSERT INTO " + tableName + "(id," + column1 + "," + column2 + ") VALUES (?,?,?)";
+			for (int i = 0; i < names.size(); i++) {
+				List<Object> paramsInsert = asList(userID, names.get(i), links.get(i));
+				updateHelper(insert, paramsInsert);
+			}
 			
-			try
-			{
-				pstmt = connection.prepareStatement(delete);
-				pstmt.setInt(1, userID);
-					System.out.println(pstmt);
-				pstmt.executeUpdate();		
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(insert);
-				//these are holders for the String update
-				for (int i = 0; i < names.size(); i++)
-				{
-					pstmt.setInt(1, userID);
-					pstmt.setString(2, names.get(i));
-					pstmt.setString(3, links.get(i));
-					pstmt.executeUpdate();
-					System.out.println(pstmt);
-				}	
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}	
+			String query = "SELECT * FROM " + tableName + " WHERE id=?";
+			List<Integer> paramsQuery = asList(userID);
+			List<HashMap<String,Object>> results = queryHelper(query, paramsQuery);
 			
-			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
-			try {
-				profile = new Profile();
-				pstmt = connection.prepareStatement(query);
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				while (results.next())
-				{
-					socialNames.add(results.getString(column1));
-					socialLinks.add(results.getString(column2));
-				}
-				profile.setSocialNames(socialNames);
-				profile.setSocialLinks(socialLinks);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+			for (int i = 0; i < results.size(); i++) {
+				socialNames.add(results.get(i).get(column1).toString());
+				socialLinks.add(results.get(i).get(column2).toString());
 			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
+			profile.setSocialNames(socialNames);
+			profile.setSocialLinks(socialLinks);
 			return profile;
 		}
 		
@@ -669,6 +523,7 @@ public class NexusDB {
 		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
 				ArrayList<String> names) throws Exception
 		{
+			// TODO: Rework with helper methods.
 			Connection connection = this.getConnection();
 			PreparedStatement pstmt = null;
 			ArrayList<String> gameNames = new ArrayList<String>();
@@ -866,6 +721,7 @@ public class NexusDB {
 	 */
 	public Profile getProfile(String username) throws Exception
 	{
+		// TODO: Rework with helper methods.
 		Connection connection = this.getConnection();
 		PreparedStatement pstmt = null;
 		Profile profile = null;
