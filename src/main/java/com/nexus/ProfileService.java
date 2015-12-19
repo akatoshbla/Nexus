@@ -80,7 +80,6 @@ public class ProfileService
 		//creates a new profile and matches the body to the variable
 		Profile profile = new Gson().fromJson(body, Profile.class);
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
 		//return object
 		JsonObject jsonobj = new JsonObject();
@@ -196,7 +195,7 @@ public class ProfileService
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
 			JsonArray games = jsonObject.get("currentGames").getAsJsonArray();
 			jsonobj.addProperty("result", true);
-			for (int i = 0; i < games.size(); i++) {
+			for (int i = 0; i < games.size(); i++) {					
 				JsonObject game = games.get(i).getAsJsonObject();
 				String name = game.get("name").getAsString();
 				if (name.equals("World of Warcraft")) {
@@ -263,7 +262,6 @@ public class ProfileService
 		//creates a new profile and matches the body to the variable
 		Profile profile = new Gson().fromJson(body, Profile.class);
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
 		//return object
 		JsonObject jsonobj = new JsonObject();

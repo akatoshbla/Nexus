@@ -323,7 +323,6 @@ public class NexusDB {
 			pstmt.setString(11, "images/UserAvatars/defaultAvatar.png");
 			pstmt.setString(12, "Insert the current game your are playing here!");
 			pstmt.executeUpdate();
-			// TODO: Finish the default profile on create new user.
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -734,6 +733,12 @@ public class NexusDB {
 			return gameNames;
 		}
 		
+		/**
+		 * Method updates the currentGames table to save the correct order to return currentGames
+		 * @param username String
+		 * @param list String[]
+		 * @throws Exception if error
+		 */
 		public void updateCurrentGames(String username, String[] list) throws Exception {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
@@ -746,6 +751,14 @@ public class NexusDB {
 			}
 		}
 		
+		/**
+		 * Method updates the worldofwarcraft table
+		 * @param username String
+		 * @param warcraftCharacter String
+		 * @param warcraftRealm String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateWOW(String username, String warcraftCharacter, String warcraftRealm) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "World of Warcraft");
@@ -767,6 +780,13 @@ public class NexusDB {
 			return jsonObject;
 		}
 		
+		/**
+		 * Method updates the leagueoflegends table
+		 * @param username String
+		 * @param summoner String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateLOL(String username, String summoner) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "League of Legends");
@@ -786,6 +806,12 @@ public class NexusDB {
 			return jsonObject;
 		}
 		
+		/**
+		 * Method updates the csgo table
+		 * @param username String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateCSGO(String username) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "CS:GO");
@@ -805,6 +831,12 @@ public class NexusDB {
 			return jsonObject;
 		}
 		
+		/**
+		 * Method updates the hearthstone table
+		 * @param username String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
 		public JsonObject updateHearthStone(String username) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "HearthStone");
@@ -929,6 +961,12 @@ public class NexusDB {
 		return profile;
 	}
 	
+	/**
+	 * Method queries and returns the currentGames table information for the user
+	 * @param username String
+	 * @return JsonArray
+	 * @throws Exception if error
+	 */
 	public JsonArray getCurrentGames(String username) throws Exception {
 		JsonArray jsonArray = new JsonArray();
 		String query = "SELECT * FROM currentGames WHERE id=?";
