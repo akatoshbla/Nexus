@@ -511,84 +511,6 @@ public class NexusDB {
 		}
 		
 		/**
-		 * This method updates a table that has only one column and is a one to many relationship.
-		 * Wildcards are tableName and column.
-		 * @param username String
-		 * @param tableName String
-		 * @param column1 String
-		 * @param names ArrayList String
-		 * @return ArrayList String
-		 * @throws Exception if error
-		 */
-		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
-				ArrayList<String> names) throws Exception
-		{
-			// TODO: Rework with helper methods.
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			ArrayList<String> gameNames = new ArrayList<String>();
-			
-			
-			int userID = getUserId(username);
-			String delete = "DELETE FROM " + tableName + " WHERE id=?";
-			String insert = "INSERT INTO " + tableName + "(id," + column1 + ") VALUES (?,?)";
-			
-			try
-			{
-				pstmt = connection.prepareStatement(delete);
-				pstmt.setInt(1, userID);
-					System.out.println(pstmt);
-				pstmt.executeUpdate();		
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(insert);
-				//these are holders for the String update
-				for (int i = 0; i < names.size(); i++)
-				{
-					pstmt.setInt(1, userID);
-					pstmt.setString(2, names.get(i));
-					pstmt.executeUpdate();
-					System.out.println(pstmt);
-				}	
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}	
-			
-			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
-			try {
-				pstmt = connection.prepareStatement(query);
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				while (results.next())
-				{
-					gameNames.add(results.getString(column1));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
-			return gameNames;
-		}
-		
-		/**
 		 * Method updates the currentGames table to save the correct order to return currentGames
 		 * @param username String
 		 * @param list String[]
@@ -721,99 +643,54 @@ public class NexusDB {
 	 */
 	public Profile getProfile(String username) throws Exception
 	{
-		// TODO: Rework with helper methods.
-		Connection connection = this.getConnection();
-		PreparedStatement pstmt = null;
-		Profile profile = null;
+		Profile profile = new Profile();
+		ArrayList<String> socialNames = new ArrayList<String>();
+		ArrayList<String> socialLinks = new ArrayList<String>();
+		ArrayList<String> favGameNames = new ArrayList<String>();
+		ArrayList<String> favGameLinks = new ArrayList<String>();
+		ArrayList<String> supportedGames = new ArrayList<String>();
 		int userID = getUserId(username);
-		String query = "SELECT * FROM userprofile WHERE id=" +userID;
-		try
-		{
-			pstmt = connection.prepareStatement(query);
-			ResultSet results = pstmt.executeQuery();
-				System.out.println(pstmt);
-			if (results.next())
-			{
-				profile = new Profile();
-				profile.setJoined(results.getDate("joined"));
-				profile.setLastOnline(results.getDate("lastSeen"));
-				profile.setRealName(results.getString("realName"));
-				profile.setRole(results.getString("forumLvl"));
-				profile.setShares(results.getInt("shares"));
-				profile.setLikes(results.getInt("likes"));
-				profile.setPosts(results.getInt("posts"));
-				profile.setFriends(results.getInt("friends"));
-				profile.setUserDesc(results.getString("userDesc"));
-				profile.setAvatar(results.getString("avatar"));
-				profile.setCurrentGame(results.getString("currentGame"));
+		String query = "SELECT * FROM userprofile WHERE id=?";
+		List<Integer> params = asList(userID);
+		List<HashMap<String, Object>> results = queryHelper(query, params);
+		
+		profile.setJoined((java.sql.Date) results.get(0).get("joined"));
+		profile.setLastOnline((java.sql.Date) results.get(0).get("lastSeen"));
+		profile.setRealName(results.get(0).get("realName").toString());
+		profile.setRole(results.get(0).get("forumLvl").toString());
+		profile.setShares((int) results.get(0).get("shares"));
+		profile.setLikes((int) results.get(0).get("likes"));
+		profile.setPosts((int) results.get(0).get("posts"));
+		profile.setFriends((int) results.get(0).get("friends"));
+		profile.setUserDesc(results.get(0).get("userDesc").toString());
+		profile.setAvatar(results.get(0).get("avatar").toString());
+		profile.setCurrentGame(results.get(0).get("currentGame").toString());
+								
+		query = "SELECT * FROM socialLinks WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			socialNames.add(results.get(i).get("socialName").toString());
+			socialLinks.add(results.get(i).get("link").toString());
+		}
+		profile.setSocialNames(socialNames);
+		profile.setSocialLinks(socialLinks);
+		
+		query = "SELECT * FROM favGames WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			favGameNames.add(results.get(i).get("gameName").toString());
+			favGameLinks.add(results.get(i).get("gameLink").toString());
+		}
+		profile.setFavGameNames(favGameNames);
+		profile.setFavGameLinks(favGameLinks);
+		
+		query = "SELECT * FROM currentGames WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			supportedGames.add(results.get(i).get("name").toString());
+		}
+		profile.setSupportedGames(supportedGames);
 				
-				ArrayList<String> socialNames = new ArrayList<String>();
-				ArrayList<String> socialLinks = new ArrayList<String>();
-				ArrayList<String> favGameNames = new ArrayList<String>();
-				ArrayList<String> favGameLinks = new ArrayList<String>();
-				ArrayList<String> supportedGames = new ArrayList<String>();
-				query = "SELECT * FROM socialLinks WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results2 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while (results2.next())
-					{
-						socialNames.add(results2.getString("socialName"));
-						socialLinks.add(results2.getString("link"));
-					}
-					profile.setSocialNames(socialNames);
-					profile.setSocialLinks(socialLinks);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-				query = "SELECT * FROM favGames WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results2 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while (results2.next())
-					{
-						favGameNames.add(results2.getString("gameName"));
-						favGameLinks.add(results2.getString("gameLink"));
-					}
-					profile.setFavGameNames(favGameNames);
-					profile.setFavGameLinks(favGameLinks);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-				query = "SELECT * FROM currentGames WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results3 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while(results3.next())
-					{
-						supportedGames.add(results3.getString("name"));
-					}
-					profile.setSupportedGames(supportedGames);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-				
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		finally
-		{
-			if(pstmt != null)
-			{
-				pstmt.close();
-			}
-			connection.close();
-		}
 		return profile;
 	}
 	
@@ -823,6 +700,7 @@ public class NexusDB {
 	 * @return JsonArray
 	 * @throws Exception if error
 	 */
+	@SuppressWarnings("unused")
 	public JsonArray getCurrentGames(String username) throws Exception {
 		JsonArray jsonArray = new JsonArray();
 		String query = "SELECT * FROM currentGames WHERE id=?";
@@ -979,6 +857,7 @@ public class NexusDB {
 	 * @param args standard main args
 	 * @throws Exception if error
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception
 	{
 		NexusDB app = new NexusDB();
