@@ -35,13 +35,11 @@
         };
         
              $scope.editCurrentGames = function() {
-                 var jsonObject = {
-          currentGames: $scope.currentGames
-       }
-                 console.log({jsonObject});
+     
+                
         
        
-            $http.post('http://comp490.duckdns.org/currentGames', jsonObject).success(function(response){
+            $http.post('http://comp490.duckdns.org/currentGames', currentGames).success(function(response){
               //  $rootScope.profile.description = $scope.summary;
               //  console.log(response);
                 $scope.close();
