@@ -4,14 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-import org.eclipse.jetty.http.HttpTester.Request;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -193,27 +190,27 @@ public class ProfileService
 
 		if (username != null) {
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
-			JsonArray games = jsonObject.get("currentGames").getAsJsonArray();
 			jsonobj.addProperty("result", true);
-			for (int i = 0; i < games.size(); i++) {					
-				JsonObject game = games.get(i).getAsJsonObject();
-				String name = game.get("name").getAsString();
-				if (name.equals("World of Warcraft")) {
-					jsonArray.add(db.updateWOW(username, game.get("warcraftCharacter").getAsString(), 
-							game.get("warcraftRealm").getAsString()));
-					currentGames[i] = game.get("name").getAsString();
+			int i = 0;
+			for(Map.Entry<String,JsonElement> game: jsonObject.entrySet()){
+				JsonObject gameInfo = game.getValue().getAsJsonObject();
+				String gameName = gameInfo.get("name").getAsString();
+				if (gameName.equals("World of Warcraft")) {
+					jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
+							gameInfo.get("warcraftRealm").getAsString()));
+					currentGames[i++] = gameName;
 				}
-				else if (name.equals("League of Legends")) {
-					jsonArray.add(db.updateLOL(username, game.get("summoner").getAsString()));
-					currentGames[i] = game.get("name").getAsString();
+				else if (gameName.equals("League of Legends")) {
+					jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
+					currentGames[i++] = gameName;
 				}
-				else if (name.equals("CS:GO")) {
+				else if (gameName.equals("CS:GO")) {
 					jsonArray.add(db.updateCSGO(username));
-					currentGames[i] = game.get("name").getAsString();
+					currentGames[i++] = gameName;
 				}
 				else { // name = "HearthStone"
 					jsonArray.add(db.updateHearthStone(username));
-					currentGames[i] = game.get("name").getAsString();
+					currentGames[i++] = gameName;
 				}
 			}
 			jsonobj.add("currentGames", jsonArray);
