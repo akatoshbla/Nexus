@@ -85,7 +85,7 @@
                     posts: response.posts,
                     followers: response.followers,
                     description: response.userDesc,
-                    //currentGame: 'Counter Strike: Global offensive',
+                    currentGames: response.currentGames,
                     userName: response.userName,
                     profilePic: response.avatar
 
