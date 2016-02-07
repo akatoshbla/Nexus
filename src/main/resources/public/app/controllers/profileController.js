@@ -74,7 +74,7 @@
             console.log("here");
             //function that is run at controller launch to get profile data
             $http.get('http://comp490.duckdns.org/profile').success(function (response) {
-              
+              console.log(response);
                 $rootScope.profile = {
                     join: response.joined,
                     lastSeen: response.lastOnline,
