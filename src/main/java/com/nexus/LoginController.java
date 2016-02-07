@@ -2,6 +2,7 @@ package com.nexus;
 
 import java.util.Date;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import static spark.Spark.*;
 import static com.nexus.JsonUtility.*; 
 
@@ -49,13 +50,14 @@ public class LoginController {
 			System.out.println(date.toString() + ": " + req.ip());
 			
 			try {
-				if (loginService.loginResult(req.body()).get("result").getAsBoolean()) 
+				JsonObject loginResult = loginService.loginResult(req.body());
+				if (loginResult.get("result").getAsBoolean()) 
 				{
 					String username = new Gson().fromJson(req.body(), User.class).getUsername();
 					req.session().attribute("username", username); // TODO: Check sessionId = username
 					System.out.println("User session id: " +req.session().id());
 				}
-				return loginService.loginResult(req.body());
+				return loginResult;
 			}
 			catch (Exception e){
 				e.printStackTrace();
