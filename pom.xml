@@ -3,13 +3,58 @@
   <groupId>com.nexus.app</groupId>
   <artifactId>nexus</artifactId>
   <version>1.0-SNAPSHOT</version>
-  
+  <properties>
+    <powermock.version>1.6.2</powermock.version>
+      <junit.version>4.11</junit.version>
+      <hamcrest.version>1.3</hamcrest.version>
+      <mockito.version>1.9.5</mockito.version>
+</properties>
+
+
+
   <dependencies>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>${junit.version}</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-all</artifactId>
+          <version>${hamcrest.version}</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+          <version>${mockito.version}</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.powermock</groupId>
+          <artifactId>powermock-mockito-release-full</artifactId>
+          <version>${powermock.version}</version>
+          <type>pom</type>
+          <scope>test</scope>
+      </dependency>
   	<dependency>
     	<groupId>com.sparkjava</groupId>
     	<artifactId>spark-core</artifactId>
     	<version>2.0.0</version>
 	</dependency>
+	   <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+   </dependency>
+   <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+   </dependency>
 <!-- 	<dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>

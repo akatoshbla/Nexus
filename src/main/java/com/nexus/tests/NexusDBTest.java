@@ -1,9 +1,9 @@
 package com.nexus.tests;
 
-import static org.junit.Assert.*;
-import com.nexus.*;
-
+import com.nexus.NexusDB;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class NexusDBTest {
@@ -16,5 +16,13 @@ public class NexusDBTest {
 	String  hash = dbTestClass.hashPassword(stringToHash);
 		assertEquals(hash, "19467788BC0CF11790A075EA718452CECF0E79DB59D1964670475E5FE2E4A611");
 	}
+
+	@Test
+	public void checkFriendTest() throws Exception {
+		boolean test1 = dbTestClass.checkFriend("hasher", "hasher1");
+
+		assertEquals(false, test1);
+	}
+
 
 }

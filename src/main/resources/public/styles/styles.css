@@ -2,7 +2,7 @@
     background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
-}
+   }
 
 html,
 body {
@@ -187,6 +187,7 @@ hr.small {
 
 .services {
     padding: 50px 0;
+    color: white;
     }
 
 .service-item {

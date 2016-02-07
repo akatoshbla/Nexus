@@ -1,7 +1,7 @@
 <ng-cloak>
     <center>
         <div
-                align=”center”><img src="images/FinalBanner.png" width="" height="" border="0">
+            align=”center”><img src="images/FinalBanner.png" width="" height="" border="0">
         </div>
     </center>
 
@@ -14,23 +14,10 @@
     </div>
 </header>
 
-<section id="news" class="news">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-10 col-lg-offset-1">
-                <h2>News Feed</h2>
-                <hr class="small">
-                <div class="row">
-                <p>This is where news feed will go</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Services -->
+ <!-- Services -->
 <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
-<section id="services" class="services bg-primary">
+<section id="services" class="services ">
     <div class="container">
         <div class="row text-center">
             <div class="col-lg-10 col-lg-offset-1">
@@ -75,7 +62,8 @@
                                 <strong>Community</strong>
                             </h4>
 
-                            <p>A live community where players can have post, talk about, and share strategies about their games.</p>
+                            <p>A live community where players can have post, talk about, and 
+                               share strategies about their games.</p>
                             <a ng-click="communityLearnMore()" class="btn btn-light">Learn More</a>
                         </div>
                     </div>
@@ -102,6 +90,36 @@
     </div>
     <!-- /.container -->
 </section>
+  
+<!-- News Feed --> 
+<section id="news" class="news bg-primary">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-10 col-lg-offset-1">
+                <h2>News Feed</h2>
+                <hr class="small">
+                <div class="row">
+                    <div id="widgetmain" style="text-align:left;overflow-y:auto;overflow-x:hidden;
+                            width:1000px;background-color:#transparent; border:1px solid #FFFFFF;">
+                        <div id="rsswidget" style="height:500px;">
+                            <iframe src="http://us1.rssfeedwidget.com/getrss.php?time=1448773457941&amp;
+                            x=http%3A%2F%2Fwww.sk-gaming.com%2Frss%2Fchannel%2Flol&amp;w=1000&amp;h=500&amp;
+                            bc=FFFFFF&amp;bw=1&amp;bgc=transparent&amp;m=100&amp;it=true&amp;t=(default)&amp;
+                            tc=FFFFFF&amp;ts=20&amp;tb=transparent&amp;il=true&amp;lc=0011FF&amp;ls=20&amp;lb=false&amp;
+                            id=true&amp;dc=FFFFFF&amp;ds=18&amp;idt=true&amp;dtc=FFFFFF&amp;dts=18" border="0" hspace="0"                                 vspace="0" frameborder="no" marginwidth="0" marginheight="0" style="border:0; 
+                            padding:0; margin:0;width:1000px; height:500px;" id="rssOutput">Reading RSS Feed ...
+                            </iframe>
+                        </div>
+                            <span 
+                                style="font-size:70%"></a>&nbsp;
+                            </span><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>      
+</section>
+      
 
 <!-- Callout -->
 <aside class="callout">
@@ -121,7 +139,7 @@
                     <div class="col-md-3 col-sm-6">
                         <img class="img-portfolio img-responsive" src="images/Profile/vahan.jpg" width="150" height="25">
                             <h4>
-                            <strong>Vahan Tokadjian</strong>
+                            <strong>Vahan</strong>
                             </h4>
                              <p>
                                 "Our greatest weakness lies in giving up. 
