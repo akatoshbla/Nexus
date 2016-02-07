@@ -1,23 +1,24 @@
 package com.nexus;
 
 import java.sql.*;
-//import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-//import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.Arrays.asList;
-import java.util.Date;
 import java.util.Properties;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
-import org.omg.CORBA.ULongLongSeqHelper;
 
 /**
  * This class contains the database methods.
  * @author David Kopp
  *
  */
-@SuppressWarnings("all")
+
 public class NexusDB {
 
 	private final String userName = "root";
@@ -83,8 +84,8 @@ public class NexusDB {
 				return null; 
 		String query = "SELECT id FROM friends WHERE reqFrom=? AND "
 				+ "reqTo=?";
-		List params = asList(id1,id2);
-		List result = queryHelper(query, params);
+		List<Integer> params = asList(id1,id2);
+		List<HashMap<String,Object>> result = queryHelper(query, params);
 		return (result==null)? null : (result.size()>0);
 	}
 	/**
@@ -110,8 +111,8 @@ public class NexusDB {
 		String query = "SELECT id,friendId FROM friends WHERE id=? AND "
 				+ "friendId=? AND reqFrom IS NULL AND reqTo IS NULL";
 		
-		List params = asList(id1,id2);
-		List result = queryHelper(query, params);
+		List<Integer> params = asList(id1,id2);
+		List<HashMap<String,Object>> result = queryHelper(query, params);
 		return (result==null)? null : (result.size()>0);
 
 	}
@@ -122,7 +123,8 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO make sure they're not already friends or pending friends
+	//TODO decrement the correct pending friend counter
 	public Boolean updateFriendStatus(String name1, String name2) throws Exception
 	{
 		String statement = "UPDATE friends SET reqFrom=NULL,reqTo=NULL where id=? AND friendId=?";
@@ -136,8 +138,13 @@ public class NexusDB {
 			id1 = id2;
 			id2 = tmp;
 		}
-		List params = asList(id1,id2);
+		List<Integer> params = asList(id1,id2);
 		updateHelper(statement,params);
+		
+		//TODO finish 
+		//statement = "UPDATE userprofile SET friends = friends + 1 WHERE id = ? OR id = ?";
+		//updateHelper(statement,params);
+		
 		return checkFriend(name1,name2);		
 	}
 	/**
@@ -148,12 +155,13 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO check if a friend relationship or pending friend relationship
+	// is being deleted, and decrement the correct userprofile counter
 	public Boolean deleteFriend(String name1,String name2) throws Exception
 	{
 		int id1= getUserId(name1);
 		int id2= getUserId(name2);
-		if(id1 == -1 || id2 == -1)	
+		if(id1 == -1 || id2 == -1 || !checkFriend(name1,name2))	
 			return null;
 		if (id1 > id2)
 		{
@@ -162,8 +170,12 @@ public class NexusDB {
 			id2 = tmp;
 		}
 		String statement = "DELETE FROM friends WHERE id=? AND friendId=?";
-		List params = asList(id1,id2);
+		List<Integer> params = asList(id1,id2);
 		updateHelper(statement,params);
+		
+		//TODO finish
+		//statement = "UPDATE userprofile SET friends = friends - 1 WHERE id = ? OR id = ?";
+		//updateHelper(statement,params);
 		return !checkFriend(name1,name2);
 	}
 
@@ -174,7 +186,7 @@ public class NexusDB {
 	 * @return Boolean
 	 * @throws SQLException if error
 	 */
-	
+	//TODO check to see if they're not already friends or pending friends
 	public Boolean  createFriendRequest(String fromUser, String toUser) throws Exception
 	{
 		String statement = "INSERT into friends VALUES(?,?,?,?)";
@@ -193,8 +205,14 @@ public class NexusDB {
 			lowerId=toId;
 			higherId=fromId;
 		}
-		List params = asList(lowerId,higherId,fromId,toId);
+		List<Integer> params = asList(lowerId,higherId,fromId,toId);
 		updateHelper(statement, params);
+		
+		//TODO finish
+		//params = asList(toId);
+		//statement = "UPDATE userprofile SET friendRequests = friendRequests + 1 WHERE id = ?";
+		//updateHelper(statement,params);
+		
 		return checkFriendRequest(fromUser,toUser);
 	}
 	/**
@@ -213,13 +231,15 @@ public class NexusDB {
 				+ "friends WHERE (friendId=? AND reqTo = ?)) "
 				+ "ORDER BY name";
 		int id = getUserId(name);
-		List params = asList(id,id,id,id);
+		List<Integer> params = asList(id,id,id,id);
 	
-		List result= queryHelper(query,params);
-		int i = 0;
-		for (HashMap obj: (ArrayList<HashMap>)result)
-				result.set(i++, obj.get("name"));
-		return result;
+		List<HashMap<String,Object>> result= queryHelper(query,params);
+		
+		List<String> friendsList= new ArrayList<>();
+
+		for (HashMap<String,Object> obj : result)
+			friendsList.add((String)obj.get("name"));
+		return friendsList;
 	}
 	/**
 	 * Returns an List containing the usernames of the user's friends.
@@ -236,12 +256,15 @@ public class NexusDB {
 				+ "friends WHERE (friendId=? AND reqFrom IS NULL)) "
 				+ " and active=1 ORDER BY name";
 		int id = getUserId(name);
-		List params = asList(id,id);
-		List result= queryHelper(query,params);
-		int i = 0;
-		for (HashMap obj: (ArrayList<HashMap>)result)
-				result.set(i++, obj.get("name"));
-		return result;		
+		List<Integer> params = asList(id,id);
+		
+		List<HashMap<String,Object>> result= queryHelper(query,params);
+		
+		List<String> friendsList= new ArrayList<>();
+
+		for (HashMap<String,Object> obj : result)
+			friendsList.add((String)obj.get("name"));
+		return friendsList;	
 	}
 	
 	/**
@@ -255,90 +278,39 @@ public class NexusDB {
 	 */
 	public Boolean createUser(String name, String password, String email) throws Exception
 	{
-
-		Connection conn=this.getConnection();
-		PreparedStatement pstmt=null;
-		try {
-			if (recordExists(name) || (name.length()>32)) 
-				return false; //already exists
-			else {
-		     String statement = "INSERT into users (name, password, email) VALUES(?,?,?)";
-		     pstmt = conn.prepareStatement(statement);
-		     pstmt.setString(1, name);
-		     pstmt.setString(2, password);
-		     pstmt.setString(3, email);
-		     pstmt.executeUpdate(); 
-		     
-		     System.out.println(pstmt);
-		     //return recordExists(name);
-			}
+		if (recordExists(name) || (name.length()>32)) {
+			return false;
 		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		int userID = getUserId(name);
-		try {
-			String statement = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
-					+ ", likes, posts, friends, userDesc, profilePicLink, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now()));
-			pstmt.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
-			pstmt.setString(4, "Anonymous");
-			pstmt.setString(5, "Newbie");
-			pstmt.setInt(6, 0);
-			pstmt.setInt(7, 0);
-			pstmt.setInt(8, 0);
-			pstmt.setInt(9, 0);
-			pstmt.setString(10, "Insert your user description here!");
-			pstmt.setString(11, "images/UserAvatars/defaultAvatar.png");
-			pstmt.setString(12, "Insert the current game your are playing here!");
-			pstmt.executeUpdate();
-			// TODO: Finish the default profile on create new user.
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			String statement = "INSERT into socialLinks (id, socialName, link) VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert a social sites name here.");
-			pstmt.setString(3, "Link here");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			String statement = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert a game name here.");
-			pstmt.setString(3, "Link here");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			String statement = "INSERT into gamesSupported (id, gameName) VALUES(?,?)";
-			pstmt = conn.prepareStatement(statement);
-			pstmt.setInt(1, userID);
-			pstmt.setString(2, "Insert Nexus supported game name here.");
-			pstmt.executeUpdate();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally {
-			if (pstmt!=null) pstmt.close();
-			conn.close();
+		else {
+			String statement = "INSERT into users (name, password, email) VALUES(?,?,?)";
+		    List<String> params = asList(name, password, email);
+		    updateHelper(statement, params);
+		    System.out.println("User: " + name + " was created in db.");
+		    
+		    int userID = getUserId(name);
+		    String statementDefaultProfile = "INSERT into userprofile (id, joined, lastSeen, realName, forumLvl, shares"
+					+ ", likes, posts, friends, userDesc, avatar, currentGame) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+			List<Object> params2 = asList(userID, java.sql.Date.valueOf(java.time.LocalDate.now()),
+					java.sql.Date.valueOf(java.time.LocalDate.now()), "Anonymous", "Newbie", 0,
+					0, 0, 0, "Insert Your user description here!", "images/UserAvatars/defaultAvatar.png",
+					"Insert the current game you are playing here!");
+			updateHelper(statementDefaultProfile, params2);
+		
+			String statementDefaultSocial = "INSERT into socialLinks (id, socialName, link) VALUES(?,?,?)";
+			List<Object> params3 = asList(userID, "Insert a social site name here.", "Link here!");
+			updateHelper(statementDefaultSocial, params3);
+			
+			String statementDefaultFavGame = "INSERT into favGames (id, gameName, gameLink) VALUES(?,?,?)";
+			List<Object> params4 = asList(userID, "Insert a game name here.", "Link here!");
+			updateHelper(statementDefaultFavGame, params4);
+			
+			String insertCurrentGames = "INSERT into currentGames (id, name) VALUES(?,?)";
+			List<Object> params5 = asList(userID, "Pick Nexus supported game here");
+			updateHelper(insertCurrentGames, params5);
+			updateHelper(insertCurrentGames, params5);
+			updateHelper(insertCurrentGames, params5);
+			
+			System.out.println("UserID:" + userID + ", Username:" + name + " default profile was created in db.");
 		}
 		return recordExists(name);
 	}
@@ -364,12 +336,12 @@ public class NexusDB {
 	public Boolean isActive(String name) throws Exception
 	{
 		String query = "SELECT active FROM users WHERE name = ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if (results==null || results.size()==0)
 				return null;
 		else {
-			return (int)((HashMap)results.get(0)).get("active")==1;
+			return (int)((HashMap<String,Object>)results.get(0)).get("active")==1;
 		}	
 	}
 	/**
@@ -382,7 +354,7 @@ public class NexusDB {
 	public Boolean deactivateUser(String name) throws Exception
 	{
 		String statement = "UPDATE USERS SET active = 0 WHERE name = ?";
-		List params = asList(name);
+		List<String> params = asList(name);
 		updateHelper(statement,params);
 		return !isActive(name);
 	}
@@ -397,7 +369,7 @@ public class NexusDB {
 	public Boolean activateUser(String name) throws Exception
 	{
 		String statement = "UPDATE USERS SET active = 1 WHERE name = ?";
-		List params = asList(name);
+		List<String> params = asList(name);
 		updateHelper(statement,params);
 		return isActive(name); 
 	}
@@ -411,8 +383,8 @@ public class NexusDB {
 	public Boolean recordExists (String name) throws SQLException
 	{
 		String query = "SELECT name FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		return (results==null)? null : (results.size() > 0);
 	}
 
@@ -428,7 +400,7 @@ public class NexusDB {
 	{
 		password = hashPassword(password);
 		String statement = "UPDATE users SET password = ? WHERE name = ?";
-		List params = asList(password,name);
+		List<String> params = asList(password,name);
 		updateHelper(statement,params);
 		return retrievePassword(name).equals(password);		
 	}
@@ -443,12 +415,12 @@ public class NexusDB {
 	public String retrievePassword(String name) throws SQLException
 	{
 		String query = "SELECT password FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if(results == null || results.size()==0)
 			return null;
 		else{
-			return (String)(((HashMap)results.get(0)).get("password"));
+			return (String)(((HashMap<String,Object>)results.get(0)).get("password"));
 		}
 	}
 	
@@ -463,12 +435,12 @@ public class NexusDB {
 	private int getUserId(String name) throws Exception
 	{
 		String query = "SELECT id FROM users WHERE name= ?";
-		List params = asList(name);
-		List results = queryHelper(query,params);
+		List<String> params = asList(name);
+		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if(results == null || results.size() == 0)
 			return -1;
 		else 
-			return (int)((HashMap)(results.get(0))).get("id");
+			return (int)((HashMap<String,Object>)(results.get(0))).get("id");
 	}
 	
 		/**
@@ -480,62 +452,18 @@ public class NexusDB {
 		 * @throws Exception if error
 		 */
 		public String updateUserProfile(String username, String column, String value) throws Exception
-	{
-			//creates connection b/w front and database
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			String result = null;
-			
-			
+	{		
 			int userID = getUserId(username);
 			String update = "UPDATE userprofile SET " + column + "= ? WHERE id=?";
+			List<Object> params = asList(value, userID);
+			updateHelper(update, params);	
 			
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(update);
-				//these are holders for the String update
-				pstmt.setString(1, value);
-				pstmt.setInt(2, userID);
-					System.out.println(pstmt);
-				//preparing an execution for update
-				pstmt.executeUpdate();	
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return result;
-			}	
-			
-			//Same as above but
-			//Need to query the database for the exact insert
+			// Same as above but
+			// Need to query the database for the exact insert
 			String query = "SELECT " + column +" FROM userprofile WHERE id= ?";
-			try
-			{
-				pstmt = connection.prepareStatement(query);
-				pstmt.setInt(1, userID);
-				//getting query results and puts it in results
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				if (results.next())
-				{	
-					result = results.getString(column);
-				}
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-				return result;
-			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
-			return result;
+			List<Object> params2 = asList(userID);
+			List<HashMap<String,Object>> results = queryHelper(query,params2);
+			return results.get(0).get(column).toString();
 		}
 		
 		/**
@@ -553,150 +481,156 @@ public class NexusDB {
 		public Profile updateUserProfileLists(String username, String tableName, String column1, String column2,
 				ArrayList<String> names, ArrayList<String> links) throws Exception
 		{
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			Profile profile = null;
+			Profile profile = new Profile();
 			ArrayList<String> socialNames = new ArrayList<String>();
 			ArrayList<String> socialLinks = new ArrayList<String>();
 			
 			
 			int userID = getUserId(username);
 			String delete = "DELETE FROM " + tableName + " WHERE id=?";
+			List<Integer> paramsDelete = asList(userID);
+			updateHelper(delete, paramsDelete);
+			
 			String insert = "INSERT INTO " + tableName + "(id," + column1 + "," + column2 + ") VALUES (?,?,?)";
+			for (int i = 0; i < names.size(); i++) {
+				List<Object> paramsInsert = asList(userID, names.get(i), links.get(i));
+				updateHelper(insert, paramsInsert);
+			}
 			
-			try
-			{
-				pstmt = connection.prepareStatement(delete);
-				pstmt.setInt(1, userID);
-					System.out.println(pstmt);
-				pstmt.executeUpdate();		
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(insert);
-				//these are holders for the String update
-				for (int i = 0; i < names.size(); i++)
-				{
-					pstmt.setInt(1, userID);
-					pstmt.setString(2, names.get(i));
-					pstmt.setString(3, links.get(i));
-					pstmt.executeUpdate();
-					System.out.println(pstmt);
-				}	
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return profile;
-			}	
+			String query = "SELECT * FROM " + tableName + " WHERE id=?";
+			List<Integer> paramsQuery = asList(userID);
+			List<HashMap<String,Object>> results = queryHelper(query, paramsQuery);
 			
-			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
-			try {
-				profile = new Profile();
-				pstmt = connection.prepareStatement(query);
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				while (results.next())
-				{
-					socialNames.add(results.getString(column1));
-					socialLinks.add(results.getString(column2));
-				}
-				profile.setSocialNames(socialNames);
-				profile.setSocialLinks(socialLinks);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return profile;
+			for (int i = 0; i < results.size(); i++) {
+				socialNames.add(results.get(i).get(column1).toString());
+				socialLinks.add(results.get(i).get(column2).toString());
 			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
-			}
+			profile.setSocialNames(socialNames);
+			profile.setSocialLinks(socialLinks);
 			return profile;
 		}
 		
 		/**
-		 * This method updates a table that has only one column and is a one to many relationship.
-		 * Wildcards are tableName and column.
+		 * Method updates the currentGames table to save the correct order to return currentGames
 		 * @param username String
-		 * @param tableName String
-		 * @param column1 String
-		 * @param names ArrayList String
-		 * @return ArrayList String
+		 * @param list String[]
 		 * @throws Exception if error
 		 */
-		public ArrayList<String> updateUserProfileList(String username, String tableName, String column1, 
-				ArrayList<String> names) throws Exception
-		{
-			Connection connection = this.getConnection();
-			PreparedStatement pstmt = null;
-			ArrayList<String> gameNames = new ArrayList<String>();
-			
-			
-			int userID = getUserId(username);
-			String delete = "DELETE FROM " + tableName + " WHERE id=?";
-			String insert = "INSERT INTO " + tableName + "(id," + column1 + ") VALUES (?,?)";
-			
-			try
-			{
-				pstmt = connection.prepareStatement(delete);
-				pstmt.setInt(1, userID);
-					System.out.println(pstmt);
-				pstmt.executeUpdate();		
+		public void updateCurrentGames(String username, String[] list) throws Exception {
+			String delete = "DELETE FROM currentGames WHERE id=?";
+			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
+			int id = getUserId(username);
+			List<Integer> params = asList(id);
+			updateHelper(delete, params);
+			for (int i = 0; i < list.length; i++) {
+				List<Object> params2 = asList(id, list[i]);
+				updateHelper(insert, params2);
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
+		}
+		
+		/**
+		 * Method updates the worldofwarcraft table
+		 * @param username String
+		 * @param warcraftCharacter String
+		 * @param warcraftRealm String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateWOW(String username, String warcraftCharacter, String warcraftRealm) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "World of Warcraft");
+			String insert = "INSERT INTO worldofwarcraft (id,name,realm) VALUES(?,?,?) ON DUPLICATE KEY UPDATE name=?, realm=?"; 
+			String query = "SELECT * FROM worldofwarcraft WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,warcraftCharacter,warcraftRealm,warcraftCharacter,warcraftRealm);
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
 			}
-			try
-			{
-				//preparing a statment that the update will run
-				pstmt = connection.prepareStatement(insert);
-				//these are holders for the String update
-				for (int i = 0; i < names.size(); i++)
-				{
-					pstmt.setInt(1, userID);
-					pstmt.setString(2, names.get(i));
-					pstmt.executeUpdate();
-					System.out.println(pstmt);
-				}	
+				jsonObject.addProperty("warcraftCharacter", (String) map.get("name"));
+				jsonObject.addProperty("warcraftRealm", (String) map.get("realm"));
+//				System.out.println((String) map.get("charname"));
+//				System.out.println((String) map.get("realm"));
+			return jsonObject;
+		}
+		
+		/**
+		 * Method updates the leagueoflegends table
+		 * @param username String
+		 * @param summoner String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateLOL(String username, String summoner) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "League of Legends");
+			String insert = "INSERT INTO leagueoflegends (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM leagueoflegends WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,summoner,summoner);
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}	
-			
-			String query = "SELECT * FROM " + tableName + " WHERE id=" +userID;
-			try {
-				pstmt = connection.prepareStatement(query);
-				ResultSet results = pstmt.executeQuery();
-					System.out.println(pstmt);
-				while (results.next())
-				{
-					gameNames.add(results.getString(column1));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				jsonObject.addProperty("summoner", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		/**
+		 * Method updates the csgo table
+		 * @param username String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateCSGO(String username) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "CS:GO");
+			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,"null","null");
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
 			}
-			finally 
-			{
-				if(pstmt != null)
-				{
-					pstmt.close();
-				}
-				connection.close();
+				jsonObject.addProperty("charname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		/**
+		 * Method updates the hearthstone table
+		 * @param username String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateHearthStone(String username) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "HearthStone");
+			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM hearthstone WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,"null","null");
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
 			}
-			return gameNames;
+				jsonObject.addProperty("bnetname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
 		}
 	
 	/**
@@ -709,99 +643,128 @@ public class NexusDB {
 	 */
 	public Profile getProfile(String username) throws Exception
 	{
-		Connection connection = this.getConnection();
-		PreparedStatement pstmt = null;
-		Profile profile = null;
+		Profile profile = new Profile();
+		ArrayList<String> socialNames = new ArrayList<String>();
+		ArrayList<String> socialLinks = new ArrayList<String>();
+		ArrayList<String> favGameNames = new ArrayList<String>();
+		ArrayList<String> favGameLinks = new ArrayList<String>();
+		ArrayList<String> supportedGames = new ArrayList<String>();
 		int userID = getUserId(username);
-		String query = "SELECT * FROM userprofile WHERE id=" +userID;
-		try
-		{
-			pstmt = connection.prepareStatement(query);
-			ResultSet results = pstmt.executeQuery();
-				System.out.println(pstmt);
-			if (results.next())
-			{
-				profile = new Profile();
-				profile.setJoined(results.getDate("joined"));
-				profile.setLastOnline(results.getDate("lastSeen"));
-				profile.setRealName(results.getString("realName"));
-				profile.setRole(results.getString("forumLvl"));
-				profile.setShares(results.getInt("shares"));
-				profile.setLikes(results.getInt("likes"));
-				profile.setPosts(results.getInt("posts"));
-				profile.setFriends(results.getInt("friends"));
-				profile.setUserDesc(results.getString("userDesc"));
-				profile.setAvatar(results.getString("profilePicLink"));
-				profile.setCurrentGame(results.getString("currentGame"));
+		String query = "SELECT * FROM userprofile WHERE id=?";
+		List<Integer> params = asList(userID);
+		List<HashMap<String, Object>> results = queryHelper(query, params);
+		
+		profile.setJoined((java.sql.Date) results.get(0).get("joined"));
+		profile.setLastOnline((java.sql.Date) results.get(0).get("lastSeen"));
+		profile.setRealName(results.get(0).get("realName").toString());
+		profile.setRole(results.get(0).get("forumLvl").toString());
+		profile.setShares((int) results.get(0).get("shares"));
+		profile.setLikes((int) results.get(0).get("likes"));
+		profile.setPosts((int) results.get(0).get("posts"));
+		profile.setFriends((int) results.get(0).get("friends"));
+		profile.setUserDesc(results.get(0).get("userDesc").toString());
+		profile.setAvatar(results.get(0).get("avatar").toString());
+		profile.setCurrentGame(results.get(0).get("currentGame").toString());
+								
+		query = "SELECT * FROM socialLinks WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			socialNames.add(results.get(i).get("socialName").toString());
+			socialLinks.add(results.get(i).get("link").toString());
+		}
+		profile.setSocialNames(socialNames);
+		profile.setSocialLinks(socialLinks);
+		
+		query = "SELECT * FROM favGames WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			favGameNames.add(results.get(i).get("gameName").toString());
+			favGameLinks.add(results.get(i).get("gameLink").toString());
+		}
+		profile.setFavGameNames(favGameNames);
+		profile.setFavGameLinks(favGameLinks);
+		
+		query = "SELECT * FROM currentGames WHERE id=?";
+		results = queryHelper(query, params);
+		for (int i = 0; i < results.size(); i++) {
+			supportedGames.add(results.get(i).get("name").toString());
+		}
+		profile.setSupportedGames(supportedGames);
 				
-				ArrayList<String> socialNames = new ArrayList<String>();
-				ArrayList<String> socialLinks = new ArrayList<String>();
-				ArrayList<String> favGameNames = new ArrayList<String>();
-				ArrayList<String> favGameLinks = new ArrayList<String>();
-				ArrayList<String> supportedGames = new ArrayList<String>();
-				query = "SELECT * FROM socialLinks WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results2 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while (results2.next())
-					{
-						socialNames.add(results2.getString("socialName"));
-						socialLinks.add(results2.getString("link"));
-					}
-					profile.setSocialNames(socialNames);
-					profile.setSocialLinks(socialLinks);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return profile;
-				}
-				query = "SELECT * FROM favGames WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results2 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while (results2.next())
-					{
-						favGameNames.add(results2.getString("gameName"));
-						favGameLinks.add(results2.getString("gameLink"));
-					}
-					profile.setFavGameNames(favGameNames);
-					profile.setFavGameLinks(favGameLinks);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return profile;
-				}
-				query = "SELECT * FROM gamesSupported WHERE id=" +userID;
-				try {
-					pstmt = connection.prepareStatement(query);
-					ResultSet results3 = pstmt.executeQuery();
-						System.out.println(pstmt);
-					while(results3.next())
-					{
-						supportedGames.add(results3.getString("gameName"));
-					}
-					profile.setSupportedGames(supportedGames);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return profile;
-				}
-				
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return profile;
-		}
-		finally
-		{
-			if(pstmt != null)
-			{
-				pstmt.close();
-			}
-			connection.close();
-		}
 		return profile;
+	}
+	
+	/**
+	 * Method queries and returns the currentGames table information for the user
+	 * @param username String
+	 * @return JsonArray
+	 * @throws Exception if error
+	 */
+	@SuppressWarnings("unused")
+	public JsonArray getCurrentGames(String username) throws Exception {
+		JsonArray jsonArray = new JsonArray();
+		String query = "SELECT * FROM currentGames WHERE id=?";
+		int id = getUserId(username);
+		List<Integer> params = asList(id);
+		List<HashMap<String, Object>> result= queryHelper(query, params);
+		ArrayList<Object> array = new ArrayList<Object>();
+		for (int i = 0; i < result.size(); i++) {
+			JsonObject jsonObject = new JsonObject();
+			String gameName = (String) result.get(i).get("name");			
+			if (gameName.equals("World of Warcraft")) {
+				String queryWOW = "SELECT * FROM worldofwarcraft WHERE id=?";
+				List<Integer> paramsWOW = asList(id);
+				List<HashMap<String, Object>> resultWOW = queryHelper(queryWOW, paramsWOW);
+				HashMap<String, Object> mapWOW = new HashMap<String, Object>();
+				for (int j = 0; j < resultWOW.size(); j++) {
+					mapWOW.putAll(resultWOW.get(j));
+				}
+				jsonObject.addProperty("name", "World of Warcraft");
+				jsonObject.addProperty("warcraftCharacter", (String) mapWOW.get("name"));
+				jsonObject.addProperty("warcraftRealm", (String) mapWOW.get("realm"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("League of Legends")) {
+				String queryLOL = "SELECT * FROM leagueoflegends WHERE id=?";
+				List<Integer> paramsLOL = asList(id);
+				List<HashMap<String, Object>> resultLOL = queryHelper(queryLOL, paramsLOL);
+				HashMap<String, Object> mapLOL = new HashMap<String, Object>();
+				mapLOL.putAll(resultLOL.get(0));
+				jsonObject.addProperty("name", "League of Legends");
+				jsonObject.addProperty("summoner", (String) mapLOL.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("CSGO")) {
+				String queryCSGO = "SELECT * FROM csgo WHERE id=?";
+				List<Integer> paramsCSGO = asList(id);
+				List<HashMap<String, Object>> resultCSGO = queryHelper(queryCSGO, paramsCSGO);
+				HashMap<String, Object> mapCSGO = new HashMap<String, Object>();
+				mapCSGO.putAll(resultCSGO.get(0));
+				jsonObject.addProperty("name", "CS:GO");
+				jsonObject.addProperty("charname", (String) mapCSGO.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else if (gameName.equals("HearthStone")) { 
+				String queryHS = "SELECT * FROM hearthstone WHERE id=?";
+				List<Integer> paramsHS = asList(id);
+				List<HashMap<String, Object>> resultHS = queryHelper(queryHS, paramsHS);
+				HashMap<String, Object> mapHS = new HashMap<String, Object>();
+				mapHS.putAll(resultHS.get(0));
+				jsonObject.addProperty("name", "HearthStone");
+				jsonObject.addProperty("bnetname", (String) mapHS.get("name"));
+				jsonArray.add(jsonObject);
+			}
+			else { // Default
+				String queryCG = "SELECT * FROM currentGames WHERE id=?";
+				List<Integer> paramsCG = asList(id);
+				List<HashMap<String, Object>> resultCG = queryHelper(queryCG, paramsCG);
+				for (int j = 0; j < resultCG.size(); j++) {
+					jsonObject.addProperty("name", (String) resultCG.get(j).get("name"));
+				}
+				jsonArray.add(jsonObject);
+			}
+		}
+		return jsonArray;
 	}
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
@@ -811,7 +774,7 @@ public class NexusDB {
 	 * @return int -1 if error, 0 if update failed, 1 if updated succeeded.
 	 * @throws SQLException if error
 	 */
-	private int updateHelper(String statement, List<Object> params) throws SQLException
+	private int updateHelper(String statement, List<?> params) throws SQLException
 	{
 		Connection conn=this.getConnection();
 		PreparedStatement pstmt=null;
@@ -827,8 +790,8 @@ public class NexusDB {
 					pstmt.setInt(i++, (int) obj);
 				else if (obj instanceof java.sql.Date)
 					pstmt.setDate(i++, (java.sql.Date) obj);
-				else return -1;    /* If you need something other than setString or setInt
-				 					    add it to another else if, following the form*/
+				else return -1;    /* If you need something other than setString, setInt or setDate
+				 					    add it to another else if, following this form*/
 			}
 			System.out.println(pstmt);
 			return pstmt.executeUpdate();
@@ -847,7 +810,7 @@ public class NexusDB {
 	 * @return List&lt;HashMap&gt; Returned database table.
 	 * @throws SQLException if error
 	 */
-	private List<HashMap<String,Object>> queryHelper(String query, List<Object> params) throws SQLException
+	private List<HashMap<String,Object>> queryHelper(String query, List<?> params) throws SQLException
 	{
 		Connection conn=this.getConnection();
 		PreparedStatement pstmt=null;
@@ -894,6 +857,7 @@ public class NexusDB {
 	 * @param args standard main args
 	 * @throws Exception if error
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception
 	{
 		NexusDB app = new NexusDB();
