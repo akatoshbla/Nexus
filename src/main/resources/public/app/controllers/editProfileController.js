@@ -40,7 +40,7 @@
             $http.post('http://comp490.duckdns.org/currentGames', $scope.currentGames).success(function(response){
               //  $rootScope.profile.description = $scope.summary;
               //  console.log(response);
-                $rootScope.profile.currentGames = response;
+                $rootScope.profile.currentGames = response.currentGames;
                 console.log(response);
                 $scope.close();
             })
