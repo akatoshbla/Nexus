@@ -3,32 +3,20 @@
 
         <div class="modal-body addMargin">
 
-            <form role="form" name="myForm" ng-submit="realName(credentials)" novalidate>
-                <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-                <h3 CLASS="text-primary" id="headTab">Change Profile Picture!</h3>
-                <br>
+
+            <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+            <h3 CLASS="text-primary" id="headTab">Change Profile Picture!</h3>
+            <br>
+            <div class="dropzone">
                 <div class="div-padding">
 
 
-                    <div class="col-xs-4">
-
-
-                        <input type="text" id="username" name="username" ng-model="" class="addMargin" placeholder="File Path">
-                        <br>
-
-
-
-
-
-
-                        <p class="text-danger">{{error}}</p>
-
-
-
-                    </div>
+              <p>Drag your files here or click in this area.</p>
+<input type="file" accept="image/*">
 
                 </div>
-            </form>
+            </div>
+
         </div>
         <div class="modal-footer">
             <button type="button" ng-click="editRealName()" class="btn btn-dark">Submit</button>

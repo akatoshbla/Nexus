@@ -3,6 +3,7 @@
 
 <head>
     <link href="styles/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="styles/imgur.min.css" rel="stylesheet" type="text/css">
     <link href="styles/styles.css" rel="stylesheet" type="text/css">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
@@ -15,7 +16,19 @@
     <meta charset="utf-8">
     <!--link href="styles/styles.css" rel="stylesheet" type="text/css"-->
 </head>
+<script src="scripts/imgur.js"></script>
+<script>
+    var callback = function (res) {
+        if (res.success === true) {
+            console.log(res.data.link);
+        }
+    };
 
+    new Imgur({
+        clientid: 'eea45a4f96fd9f4',
+        callback: callback
+    });
+</script>
 <body class="background">
     <div id = "login" ng-controller = "loginController">
         <form role="form" ng-hide=loginStatus ng-submit="login(credentials)" novalidate>
