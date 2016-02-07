@@ -41,6 +41,7 @@
               //  $rootScope.profile.description = $scope.summary;
               //  console.log(response);
                 $rootScope.profile.currentGames = response;
+                console.log(response);
                 $scope.close();
             })
         };
