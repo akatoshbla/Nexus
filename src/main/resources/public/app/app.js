@@ -34,6 +34,10 @@
                 controller: 'aboutUsController',
                 templateUrl: 'app/views/aboutUs.html'
             })
+            .when('/summonerPage', {
+                controller:'sumSearchController',
+                templateUrl: 'app/views/summonerPage.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });

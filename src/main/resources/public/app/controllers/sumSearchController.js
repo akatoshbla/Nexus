@@ -1,0 +1,35 @@
+/**
+ * Created by Phil on 2/1/2016.
+ */
+(function(){
+    var sumSearchController = function ($scope, $http, $model, $location, $rootScope){
+        var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/gho5tone";
+        var mastery = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/gho5tone";
+
+        if($scope.search === undefined){
+            $scope.search = "gho5tone";
+            retrieve();
+        }
+        function retrieve(){
+        $http.get(summoner).success(function(response){
+            $scope.sumId = response.id;
+            $scope.sumName = response.name;
+            $scope.profileIcon = response.profileIconId;
+            $scope.sumLvl = response.summonerLevel;
+            $scope.revisDate = response.revisionDate;
+
+            console.log("response:", response);
+            $scope.info = response[$scope.search];
+        });
+        }
+    };
+
+
+
+    sumSearchController.$inject = ['$scope', '$http', '$modal', '$location' , '$rootScope'];
+    // declare controller as part of the app
+    angular.module('nexusApp')
+        .controller('sumSearchController', sumSearchController);
+
+
+}());

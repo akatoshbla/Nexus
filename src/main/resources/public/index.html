@@ -23,15 +23,13 @@
             
 
                 <div>
-                    <!--label for="username" class="text-primary"> Username:</label><br-->
-
+                    <!--<label for="username" class="text-primary"> Username:</label>-->
                     <input type="text" class="basicInput" id="username" name="username" ng-model="credentials.username"  placeholder="UserName:">
-                  
-                    <!--label for="password" class="text-primary"> Password:</label><br-->
+                    <!--<label for="password" class="text-primary"> Password:</label>-->
+
                     <input type="password" class="basicInput" id="password" name="password" ng-model="credentials.password"  placeholder="Password:">
                    
                     <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                
 
                     <button type="button" class="btn btn-dark btn-sm" ng-click="open()"> Sign up</button>
                         <p class="text-danger">{{error}}</p>
@@ -46,31 +44,31 @@
         <ul class="sidebar-nav">
             <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
             <li class="sidebar-brand">
-                <a href="#headTab" onclick=$( "#menu-close").click();>Nexus</a>
+                <a href="#headTab" onclick=$("#menu-close").click();>Nexus</a>
             </li>
             
             <li>
-                <a href="#services" onclick=$( "#menu-close").click();>Services</a>            
+                <a href="#services" onclick=$("#menu-close").click();>Services</a>
             </li>
 
             <li>
-                <a href="#news" onclick=$( "#menu-close").click();>News</a>
+                <a href="#news" onclick=$("#menu-close").click();>News</a>
             </li>
             <li>
-                <a href="#about" onclick=$( "#menu-close").click();>About</a>
+                <a href="#about" onclick=$("#menu-close").click();>About</a>
             </li>
 
             <li>
-                <a href="#portfolio" onclick=$( "#menu-close").click();>Games</a>
+                <a href="#portfolio" onclick=$("#menu-close").click();>Games</a>
             </li>
             <li>
-                <a href="#/profile" ng-show="loginStatus" onclick=$( "#menu-close").click();>profile</a>
+                <a href="#/profile" ng-show="loginStatus" onclick=$("#menu-close").click();>profile</a>
             </li>
             <li>
-                <a href="#/messages" onclick=$( "#menu-close").click();>Messages</a>
+                <a href="#/messages" onclick=$("#menu-close").click();>Messages</a>
             </li>
             <li>
-                <a href="#/league" onclick=$( "#menu-close").click();>League of Legends</a>
+                <a href="#/league" onclick=$("#menu-close").click();>League of Legends</a>
             </li>
             <li>
 
@@ -159,6 +157,7 @@
     <script src="app/controllers/createUserController.js"></script>
     <script src="app/controllers/learnMoreController.js"></script>
     <script src="app/controllers/viewMoreGamesController.js"></script>
+    <script src="app/controllers/sumSearchController.js"></script>
     
     <script src="scripts/ngDialog.js"></script>
     <link rel="stylesheet" href="styles/bootstrap.css">
