@@ -2,8 +2,8 @@
  * Created by Phil on 2/1/2016.
  */
 (function(){
-    var sumSearchController = function ($scope, $http, $model, $location, $rootScope){
-        var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/gho5tone";
+    var sumSearchController = function ($scope, $http){
+        var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/gho5tone?api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3";
         var mastery = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/gho5tone";
 
         if($scope.search === undefined){
@@ -26,7 +26,7 @@
 
 
 
-    sumSearchController.$inject = ['$scope', '$http', '$modal', '$location' , '$rootScope'];
+    sumSearchController.$inject = ['$scope', '$http'];
     // declare controller as part of the app
     angular.module('nexusApp')
         .controller('sumSearchController', sumSearchController);
