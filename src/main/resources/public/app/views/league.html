@@ -6,8 +6,10 @@
 
         <h5>Search for your summoner</h5>
         <!--temp username creditials variable-->
-        <input type="text" id="summoner" name="summoner" ng-model="credentials.username" class="form-control col-sm-2" placeholder="Summoner Name">
-        <a href="#/summonerPage" class="btn btn-light">Submit</a>
+            <input type="text" ng-model="sumName" value="sumName" class="form-control col-sm-2" placeholder="Summoner Name">
+            <a ng-click="search(sumName)" href="#/summonerPage" class="btn btn-light">Submit</a>
+        <br>
+        <p class="text-danger">{{error}}</p>
         <br>
         <h3>Current Free Champs</h3>
         <div class="row" ng-repeat="data in champData">
