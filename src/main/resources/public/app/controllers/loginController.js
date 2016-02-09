@@ -155,7 +155,8 @@
                         profilePic: response.avatar
 
                     }
-                      $rootScope.user = user;
+                    console.log($rootScope.profile);
+                      
             $location.path("/searchedProfile");
                 })
             };
