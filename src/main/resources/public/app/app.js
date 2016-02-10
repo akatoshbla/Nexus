@@ -35,7 +35,7 @@
                 templateUrl: 'app/views/aboutUs.html'
             })
             .when('/summonerPage', {
-                controller:'sumSearchController',
+                controller:'leagueController',
                 templateUrl: 'app/views/summonerPage.html'
             })
             .otherwise({
