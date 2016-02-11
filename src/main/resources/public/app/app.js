@@ -1,7 +1,7 @@
 (function () {
 
 
-    var app = angular.module('nexusApp', ['ngRoute', 'angularModalService', 'ui.bootstrap']);
+    var app = angular.module('nexusApp', ['ngRoute', 'angularModalService', 'ui.bootstrap', 'ngFileUpload', 'ngImgCrop']);
 
 
     app.config(function ($routeProvider, $httpProvider) {
