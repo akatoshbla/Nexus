@@ -71,10 +71,10 @@
             });
         }
         $scope.LoadProfile = function () {
-            console.log("here");
+          
             //function that is run at controller launch to get profile data
             $http.get('http://comp490.duckdns.org/profile').success(function (response) {
-              
+              console.log(response);
                 $rootScope.profile = {
                     join: response.joined,
                     lastSeen: response.lastOnline,
@@ -85,7 +85,7 @@
                     posts: response.posts,
                     followers: response.followers,
                     description: response.userDesc,
-                    //currentGame: 'Counter Strike: Global offensive',
+                    currentGames: response.currentGames,
                     userName: response.userName,
                     profilePic: response.avatar
 

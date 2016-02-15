@@ -32,7 +32,7 @@ public class ProfileService
 		JsonObject jsonobj = new JsonObject();
 		JsonArray jsonArray = new JsonArray();
 
-		if (username != null) {
+		if (username != null && db.recordExists(username)) {
 			Profile profile = db.getProfile(username);
 			jsonobj.addProperty("session", true);
 			jsonobj.addProperty("joined", profile.getJoined());
