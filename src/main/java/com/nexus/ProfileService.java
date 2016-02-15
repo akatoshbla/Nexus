@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.lang.model.element.Element;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -181,7 +182,7 @@ public class ProfileService
 	 * @param body String
 	 * @return JsonObject
 	 * @throws Exception if error
-	 */
+	 */ // TODO:Need to Test (Maybe a double loop to prevent the writes to db unless everything is acceptable.)
 	public JsonObject updateCurrentGames(String username, String body) throws Exception {
 		NexusDB db = new NexusDB();
 		JsonObject jsonobj = new JsonObject();
@@ -191,26 +192,39 @@ public class ProfileService
 		if (username != null) {
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
 			jsonobj.addProperty("result", true);
+			
 			int i = 0;
 			for(Map.Entry<String,JsonElement> game: jsonObject.entrySet()){
 				JsonObject gameInfo = game.getValue().getAsJsonObject();
 				String gameName = gameInfo.get("name").getAsString();
 				if (gameName.equals("World of Warcraft")) {
-					jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
-							gameInfo.get("warcraftRealm").getAsString()));
-					currentGames[i++] = gameName;
+					if (!gameInfo.get("warcraftCharacter").getAsString().equals("") && !gameInfo.get("warcraftRealm").getAsString().equals("")) {
+						jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
+								gameInfo.get("warcraftRealm").getAsString()));
+						currentGames[i++] = gameName;
+					}
+					else {
+						jsonobj.addProperty("result", false);
+						break;
+					}
 				}
 				else if (gameName.equals("League of Legends")) {
-					jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
-					currentGames[i++] = gameName;
+					if (!gameInfo.get("leagueSummoner").getAsString().equals("")) {
+						jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
+						currentGames[i++] = gameName;
+					}
+					else {
+						jsonobj.addProperty("result", false);
+						break;
+					}
 				}
 				else if (gameName.equals("CS:GO")) {
-					jsonArray.add(db.updateCSGO(username));
-					currentGames[i++] = gameName;
+						jsonArray.add(db.updateCSGO(username));
+						currentGames[i++] = gameName;
 				}
 				else { // name = "HearthStone"
-					jsonArray.add(db.updateHearthStone(username));
-					currentGames[i++] = gameName;
+						jsonArray.add(db.updateHearthStone(username));
+						currentGames[i++] = gameName;
 				}
 			}
 			jsonobj.add("currentGames", jsonArray);
@@ -219,7 +233,7 @@ public class ProfileService
 		else {
 			jsonobj.addProperty("result", false);
 		}
-
+		
 		return jsonobj;
 	}
 
