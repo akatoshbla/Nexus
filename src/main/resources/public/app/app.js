@@ -1,7 +1,7 @@
 (function () {
 
 
-    var app = angular.module('nexusApp', ['ngRoute', 'angularModalService', 'ui.bootstrap']);
+    var app = angular.module('nexusApp', ['ngRoute', 'angularModalService', 'ui.bootstrap', 'ngFileUpload', 'ngImgCrop']);
 
 
     app.config(function ($routeProvider, $httpProvider) {
@@ -25,6 +25,9 @@
             .when('/messages', {
                 controller: 'messageController',
                 templateUrl: 'app/views/messages.html'
+            }).when('/searchedProfile', {
+                controller: 'searchedProfileController',
+                templateUrl: 'app/views/searchedProfile.html'
             })
             .when('/league', {
                 controller: 'leagueController',

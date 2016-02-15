@@ -17,60 +17,64 @@
 </head>
 
 <body class="background">
-    <div id = "login" ng-controller = "loginController">
-        <form role="form" ng-hide=loginStatus ng-submit="login(credentials)" novalidate>
-         
-            
+    <div id="login" ng-controller="loginController">
+        <form role="form"  ng-submit="login(credentials)" novalidate>
 
-                <div>
+
+
+            <div>
+                <div ng-hide=loginStatus >
                     <!--label for="username" class="text-primary"> Username:</label><br-->
 
-                    <input type="text" class="basicInput" id="username" name="username" ng-model="credentials.username"  placeholder="UserName:">
-                  
+                    <input type="text" class="basicInput" id="username" name="username" ng-model="credentials.username" placeholder="UserName:">
+
                     <!--label for="password" class="text-primary"> Password:</label><br-->
-                    <input type="password" class="basicInput" id="password" name="password" ng-model="credentials.password"  placeholder="Password:">
-                   
+                    <input type="password" class="basicInput" id="password" name="password" ng-model="credentials.password" placeholder="Password:">
+
                     <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                
+
 
                     <button type="button" class="btn btn-dark btn-sm" ng-click="open()"> Sign up</button>
-                        <p class="text-danger">{{error}}</p>
-
+                    <p class="text-danger">{{error}}</p>
                 </div>
-          
+                <input type="text" class="basicInput" id="search" name="search" ng-model="user" placeholder="Search for a User">
+
+                <button type="button" ng-click="searchUser(user)" class="btn btn-dark btn-sm">Search</button>
+            </div>
+
         </form>
     </div>
-    
+
     <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
     <nav id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
             <li class="sidebar-brand">
-                <a href="#headTab" onclick=$( "#menu-close").click();>Nexus</a>
-            </li>
-            
-            <li>
-                <a href="#services" onclick=$( "#menu-close").click();>Services</a>            
+                <a href="#headTab" data-target=o nclick=$( "#menu-close").click();>Nexus</a>
             </li>
 
             <li>
-                <a href="#news" onclick=$( "#menu-close").click();>News</a>
-            </li>
-            <li>
-                <a href="#about" onclick=$( "#menu-close").click();>About</a>
+                <a href="#services" data-target="#headTab" onclick=$( "#menu-close").click();>Services</a>
             </li>
 
             <li>
-                <a href="#portfolio" onclick=$( "#menu-close").click();>Games</a>
+                <a href="#news" data-target="#news" onclick=$( "#menu-close").click();>News</a>
             </li>
             <li>
-                <a href="#/profile" ng-show="loginStatus" onclick=$( "#menu-close").click();>profile</a>
+                <a href="#about" data-target="#about" onclick=$( "#menu-close").click();>About</a>
+            </li>
+
+            <li>
+                <a href="#portfolio" data-target="#portfolio" onclick=$( "#menu-close").click();>Games</a>
             </li>
             <li>
-                <a href="#/messages" onclick=$( "#menu-close").click();>Messages</a>
+                <a href="#profile" data-target="#profile" ng-show="loginStatus" onclick=$( "#menu-close").click();>profile</a>
             </li>
             <li>
-                <a href="#/league" onclick=$( "#menu-close").click();>League of Legends</a>
+                <a href="#messages" data-target="#messages" onclick=$( "#menu-close").click();>Messages</a>
+            </li>
+            <li>
+                <a href="#league" data-target="#league" onclick=$( "#menu-close").click();>League of Legends</a>
             </li>
             <li>
 
@@ -149,9 +153,12 @@
     <script src="scripts/ngDialog.js"></script>
     <script src="scripts/sha256.js"></script>
     <script src="app/app.js"></script>
-
+    <script src="scripts/FileAPI.min.js"></script>
+            <script src="scripts/ng-file-upload-all.min.js"></script>
+    <script src="scripts/ng-file-upload-shim.min.js"></script>
+    <script src="scripts/ng-file-upload.min.js"></script>
     <script src="app/controllers/profileController.js"></script>
-   <script src="app/controllers/editProfileController.js"></script>
+    <script src="app/controllers/editProfileController.js"></script>
     <script src="app/controllers/loginController.js"></script>
     <script src="app/controllers/verifyController.js"></script>
     <script src="app/controllers/leagueController.js"></script>
@@ -159,10 +166,12 @@
     <script src="app/controllers/createUserController.js"></script>
     <script src="app/controllers/learnMoreController.js"></script>
     <script src="app/controllers/viewMoreGamesController.js"></script>
-    
+    <script src="app/controllers/searchedProfileController.js"></script>
+    <script src="scripts/ng-img-crop.js"></script>
     <script src="scripts/ngDialog.js"></script>
     <link rel="stylesheet" href="styles/bootstrap.css">
     <link rel="stylesheet" href="styles/ngDialog.css">
+    <link rel="stylesheet" href="scripts/ng-img-crop.css">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
