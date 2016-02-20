@@ -121,32 +121,21 @@ public class ProfileController
 		}, json());
 
 		/**
-		 * This method reloads the whole profile page on login or when switching
-		 * back to the profile back. Takes no input, but does take a valid session.
+		 * This method retrieves the profile for the specified user
 		 */
+		//TODO only allow requests from users with active sessions
 		get("/profile/:username",(req,res) -> {
 			String username;
 
 			try {
-				String name = req.params(":username");
+			    username = req.params(":username");
 
 				if (req.session().attribute("username") != null)
-
 				{
-					username = req.session().attribute("username");
-					System.out.println("Username: " + username);
+					System.out.println("Username: " + req.session().attribute("username"));
 					System.out.println("Has a session id: " + req.session().id());
 				}
-				else if (name != null){
-					username=name;
-					System.out.println("body username:" + name);
-				}
 
-				else
-				{
-					username = null;
-					System.out.println("Non-Session User Alert at " +req.ip());
-				}
 				return profileService.getUserProfile(username);
 			} catch (Exception e) {
 				e.printStackTrace();
