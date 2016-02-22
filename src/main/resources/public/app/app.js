@@ -37,6 +37,14 @@
                 controller: 'aboutUsController',
                 templateUrl: 'app/views/aboutUs.html'
             })
+            .when('/worldOfWarcraft', {
+                controller: 'worldOfWarcraftController',
+                templateUrl: 'app/views/worldOfWarcraft.html'
+            })
+            .when('/diablo3', {
+                controller: 'diablo3Controller',
+                templateUrl: 'app/views/diablo3.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });

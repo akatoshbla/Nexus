@@ -1,13 +1,17 @@
 .background{
     background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-   }
+    background-size: cover;
+    width: 100%;
+}
 
 html,
 body {
     width: 100%;
     height: 100%;
+}
+
+#login, #summonerSearch{
+    color: black;
 }
 
 body {
@@ -302,5 +306,3 @@ footer {
 	
 }
 
-
-}
