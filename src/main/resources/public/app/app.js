@@ -36,6 +36,9 @@
             .when('/aboutUs', {
                 controller: 'aboutUsController',
                 templateUrl: 'app/views/aboutUs.html'
+            }).when('/worldOfWarcraft', {
+                controller: 'worldOfWarcraftController',
+                templateUrl: 'app/views/worldOfWarcraft.html'
             })
             .otherwise({
                 redirectTo: '/'
