@@ -1,10 +1,18 @@
 <ng-cloak>
 <div class="container-fluid">
     <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <h2>League of Legends</h2>
+        <br>
 
+        <h2> Search for <a href=""></a> Summoner</h2>
+        <input id="summonerSearch" type="text" class="basicInput" id="summonerName" name="summonerName" ng-model="summonerName" placeholder="Search for a Summoner">
+        <button type="button" ng-click="searchSum(summonerName)" class="btn btn-dark btn-sm">Submit</button>
         <h3>Current Free Champs</h3>
-
         <div class="row" ng-repeat="data in champData">
             <div class="col-xs-10">
             <span class="pull-right">
