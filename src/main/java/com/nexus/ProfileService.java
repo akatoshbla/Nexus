@@ -1,15 +1,12 @@
 package com.nexus;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 
 import java.util.Collection;
 import java.util.Map;
-
-import javax.lang.model.element.Element;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -28,9 +25,7 @@ public class ProfileService
 	public JsonObject getUserProfile(String username) throws Exception
 	{
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		JsonObject jsonobj = new JsonObject();
-		JsonArray jsonArray = new JsonArray();
 
 		if (username != null && db.recordExists(username)) {
 			Profile profile = db.getProfile(username);
@@ -182,7 +177,7 @@ public class ProfileService
 	 * @param body String
 	 * @return JsonObject
 	 * @throws Exception if error
-	 */ // TODO:Need to Test (Maybe a double loop to prevent the writes to db unless everything is acceptable.)
+	 */ 
 	public JsonObject updateCurrentGames(String username, String body) throws Exception {
 		NexusDB db = new NexusDB();
 		JsonObject jsonobj = new JsonObject();
@@ -193,38 +188,49 @@ public class ProfileService
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
 			jsonobj.addProperty("result", true);
 			
+			for(Map.Entry<String, JsonElement> game: jsonObject.entrySet()) {
+				JsonObject gameInfo = game.getValue().getAsJsonObject();
+				String gameName = gameInfo.get("name").getAsString();
+				if (gameName.equals("World of Warcraft")) {
+					if (gameInfo.get("warcraftCharacter").getAsString().equals("") || 
+							gameInfo.get("warcraftRealm").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else if (gameName.equals("League of Legends")) {
+					if (gameInfo.get("leagueSummoner").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else if (gameName.equals("Diablo 3")) {
+					if (gameInfo.get("diabloCharacter").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else { }
+			}
+			
 			int i = 0;
 			for(Map.Entry<String,JsonElement> game: jsonObject.entrySet()){
 				JsonObject gameInfo = game.getValue().getAsJsonObject();
 				String gameName = gameInfo.get("name").getAsString();
 				if (gameName.equals("World of Warcraft")) {
-					if (!gameInfo.get("warcraftCharacter").getAsString().equals("") && !gameInfo.get("warcraftRealm").getAsString().equals("")) {
-						jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
-								gameInfo.get("warcraftRealm").getAsString()));
-						currentGames[i++] = gameName;
-					}
-					else {
-						jsonobj.addProperty("result", false);
-						break;
-					}
+					jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
+							gameInfo.get("warcraftRealm").getAsString()));
 				}
 				else if (gameName.equals("League of Legends")) {
-					if (!gameInfo.get("leagueSummoner").getAsString().equals("")) {
-						jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
-						currentGames[i++] = gameName;
-					}
-					else {
-						jsonobj.addProperty("result", false);
-						break;
-					}
+					jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
+					currentGames[i++] = gameName;
 				}
-				else if (gameName.equals("CS:GO")) {
-						jsonArray.add(db.updateCSGO(username));
-						currentGames[i++] = gameName;
+				else if (gameName.equals("Diablo 3")) {
+					jsonArray.add(db.updateDiablo(username, gameInfo.get("diabloCharacter").getAsString()));
+					currentGames[i++] = gameName;
 				}
-				else { // name = "HearthStone"
-						jsonArray.add(db.updateHearthStone(username));
-						currentGames[i++] = gameName;
+				else { // name = "default"
+					jsonArray.add(gameInfo);
 				}
 			}
 			jsonobj.add("currentGames", jsonArray);

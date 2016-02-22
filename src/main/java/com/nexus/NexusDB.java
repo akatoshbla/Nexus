@@ -586,16 +586,17 @@ public class NexusDB {
 		/**
 		 * Method updates the csgo table
 		 * @param username String
+		 * @param diabloCharacter String
 		 * @return JsonObject
 		 * @throws Exception if error
 		 */
-		public JsonObject updateCSGO(String username) throws Exception {
+		public JsonObject updateDiablo(String username, String diabloCharacter) throws Exception {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("name", "CS:GO");
-			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
-			String query = "SELECT * FROM csgo WHERE id=?";
+			jsonObject.addProperty("name", "Diablo 3");
+			String insert = "INSERT INTO diablo3 (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM diablo3 WHERE id=?";
 			int id = getUserId(username);
-			List<Object> params = asList(id,"null","null");
+			List<Object> params = asList(id,diabloCharacter,diabloCharacter);
 			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
@@ -603,35 +604,35 @@ public class NexusDB {
 			for (int i = 0; i < result.size(); i++) {
 				map.putAll(result.get(i));
 			}
-				jsonObject.addProperty("charname", (String) map.get("name"));
+				jsonObject.addProperty("diabloCharacter", (String) map.get("name"));
 //				System.out.println((String) map.get("name"));
 			return jsonObject;
 		}
 		
-		/**
-		 * Method updates the hearthstone table
-		 * @param username String
-		 * @return JsonObject
-		 * @throws Exception if error
-		 */
-		public JsonObject updateHearthStone(String username) throws Exception {
-			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("name", "HearthStone");
-			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
-			String query = "SELECT * FROM hearthstone WHERE id=?";
-			int id = getUserId(username);
-			List<Object> params = asList(id,"null","null");
-			List<Integer> params2 = asList(id);
-			updateHelper(insert, params);
-			List<HashMap<String, Object>> result= queryHelper(query, params2);
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			for (int i = 0; i < result.size(); i++) {
-				map.putAll(result.get(i));
-			}
-				jsonObject.addProperty("bnetname", (String) map.get("name"));
-//				System.out.println((String) map.get("name"));
-			return jsonObject;
-		}
+//		/**
+//		 * Method updates the hearthstone table
+//		 * @param username String
+//		 * @return JsonObject
+//		 * @throws Exception if error
+//		 */
+//		public JsonObject updateHearthStone(String username) throws Exception {
+//			JsonObject jsonObject = new JsonObject();
+//			jsonObject.addProperty("name", "HearthStone");
+//			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+//			String query = "SELECT * FROM hearthstone WHERE id=?";
+//			int id = getUserId(username);
+//			List<Object> params = asList(id,"null","null");
+//			List<Integer> params2 = asList(id);
+//			updateHelper(insert, params);
+//			List<HashMap<String, Object>> result= queryHelper(query, params2);
+//			HashMap<String, Object> map = new HashMap<String, Object>();
+//			for (int i = 0; i < result.size(); i++) {
+//				map.putAll(result.get(i));
+//			}
+//				jsonObject.addProperty("bnetname", (String) map.get("name"));
+////				System.out.println((String) map.get("name"));
+//			return jsonObject;
+//		}
 	
 	/**
 	 * This method gets all the profile data from the database by user's name
