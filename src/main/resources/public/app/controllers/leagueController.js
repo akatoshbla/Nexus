@@ -33,20 +33,20 @@
 
         $scope.searchSum = function (summonerName) {
 
-            var result = api.summonerInfo(summonerName).success(
-              location.path('/summonerPage')
-            );
-
-            //var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/"+ summonerName +"?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76";
-            //
-            //$http.get(summoner).success(function (response) {
-            //
-            //    $scope.summonerName;
-            //    console.log(response);
-            //    $scope.data = response;
-            //    console.log($scope.data);
-            //})
-        }
+                api.summonerInfo(summonerName).then(function(data){
+                    $scope.data = data;
+                    console.log(data);
+                    if(data != null){
+                        $location.path('/summonerPage');
+                    }
+                    else{
+                        console.log("failed json");
+                    }
+                }, function(error){
+                   console.log(error);
+                });
+            }
+            console.log($scope);
 
     };
 

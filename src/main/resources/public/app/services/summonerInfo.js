@@ -3,38 +3,23 @@
  */
 
 (function () {
-    var api = function ($http) {
-
-    var result;
+    var api = function ($http,$q) {
+        var deferred = $q.defer();
 
     this.summonerInfo = function(summonerName){
 
         var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/"+ summonerName +"?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76";
 
         $http.get(summoner).success(function (response) {
-
+            deferred.resolve(response);
             console.log(response);
-            result = response;
-            console.log(result);
+            console.log(deferred);
         })
 
-        return result;
+        return deferred.promise;
     }
 
 };
-     api.$inject = ['$http'];
+     api.$inject = ['$http','$q'];
       angular.module('nexusApp').service('api', api);  
 }());
- 
-//var summonApp = angular.module('summonApp',[]);
-//summonApp.factory('summonerInfo', function(summonerName){
-//    var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/"+ summonerName +"?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76";
-//    $http.get(summoner).success(function (response) {
-//
-//
-//        $scope.summonerName;
-//        console.log(response);
-//        $scope.sumInfo = response;
-//        console.log($scope.data);
-//    })
-//})
