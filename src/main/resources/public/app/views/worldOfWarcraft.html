@@ -1,10 +1,10 @@
 <div align="center" >
 <img class="img-portfolio img-responsive" img="" src="images/games/world-of-warcraft-logo.png">
-<form id="characterInfo" action="/character" method = "POST">
+<form>
                     <br>Enter Character Name<br>
-                    <input type="text" name="name" /><br>
+                    <input type="text" name="name" ng-model="characterName" /><br>
                 <br>Enter Realm<br>
-                <select id="selectNumber" name= "realm">
+                <select id="selectNumber" ng-model="realm" name= "realm">
                     <option>Select a Realm</option>         
 <option value="Aegwynn">Aegwynn</option>
 <option value="Aerie Peak">Aerie Peak</option>
@@ -247,6 +247,6 @@
                 </select>
               
 		    </br>
-                    <button tyype="button" class = "btn btn-dark btn-sm add-topMargin">Character Lookup</button>
+                    <button tyype="button" ng-click="characterLookup(realm , characterName)" class = "btn btn-dark btn-sm add-topMargin">Character Lookup</button>
                 </form>
 </div>
