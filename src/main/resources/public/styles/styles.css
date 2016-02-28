@@ -343,8 +343,8 @@ footer {
 }
 
 .gear {
-    width: 500px;
-    color: black;
-    background: ghostwhite;
+     width: 500px;
+    color: white;
+    background: #222;
     margin-top: 30px;
 }
