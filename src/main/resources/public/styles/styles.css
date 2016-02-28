@@ -347,4 +347,14 @@ footer {
     color: white;
     background: #222;
     margin-top: 30px;
+ border-radius: 20px;
+}
+.gear-wrapper{
+    
+ color: #fff;
+    background-color: #337ab7;
+    
+    margin-top: 30px;
+    padding: 5px 10px 01px 10px;
+     
 }
