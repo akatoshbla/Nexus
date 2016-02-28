@@ -1,7 +1,9 @@
 /**
  * Created by Phil on 2/28/2016.
  */
-angularModule.service('api', ['$http', function($http) {
+
+
+app.service('api', ['$http', function($http) {
 
     var result;
 
