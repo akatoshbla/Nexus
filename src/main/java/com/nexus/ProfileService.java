@@ -172,7 +172,8 @@ public class ProfileService
 	}
 
 	/**
-	 * This method updates the gamesPlayed table. Deletes all the records for the user and reinserts new ones.
+	 * This method updates multiple tables for currentGames on a users profile. 
+	 * Deletes all the records for the user and reinserts new ones.
 	 * @param username String
 	 * @param body String
 	 * @return JsonObject
@@ -210,8 +211,21 @@ public class ProfileService
 						return jsonobj;
 					}
 				}
-				else { }
+				else if (gameName.equals("CSGO")) {
+					if (gameInfo.get("csgoCharacter").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				} 
+				else if (gameName.equals("Hearthstone")) {
+					if (gameInfo.get("bnetname").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+				} else { }
+				}
 			}
+			
+			db.clearCurrentGames(username); // This method clears the game tables.
 			
 			int i = 0;
 			for(Map.Entry<String,JsonElement> game: jsonObject.entrySet()){
@@ -220,26 +234,35 @@ public class ProfileService
 				if (gameName.equals("World of Warcraft")) {
 					jsonArray.add(db.updateWOW(username, gameInfo.get("warcraftCharacter").getAsString(), 
 							gameInfo.get("warcraftRealm").getAsString()));
+					currentGames[i++] = gameName;
 				}
 				else if (gameName.equals("League of Legends")) {
 					jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
 					currentGames[i++] = gameName;
 				}
 				else if (gameName.equals("Diablo 3")) {
-					jsonArray.add(db.updateDiablo(username, gameInfo.get("diabloCharacter").getAsString()));
+					jsonArray.add(db.updateDiablo3(username, gameInfo.get("diabloCharacter").getAsString()));
 					currentGames[i++] = gameName;
 				}
-				else { // name = "default"
+				else if (gameName.equals("CSGO")) {
+					jsonArray.add(db.updateCSGO(username, gameInfo.get("csgoCharacter").getAsString()));
+					currentGames[i++] = gameName;
+				} 
+				else if (gameName.equals("Hearthstone")) {
+						jsonArray.add(db.updateHearthStone(username, gameInfo.get("bnetname").getAsString()));
+						currentGames[i++] = gameName;
+				} else { // name = "default"
 					jsonArray.add(gameInfo);
+					currentGames[i++] = gameName;
 				}
 			}
 			jsonobj.add("currentGames", jsonArray);
-			db.updateCurrentGames(username, currentGames);
 		}
 		else {
 			jsonobj.addProperty("result", false);
 		}
 		
+		db.updateCurrentGames(username, currentGames);
 		return jsonobj;
 	}
 

@@ -339,7 +339,7 @@ public class NexusDB {
 		List<String> params = asList(name);
 		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if (results==null || results.size()==0)
-				return null;
+				return false;
 		else {
 			return (int)((HashMap<String,Object>)results.get(0)).get("active")==1;
 		}	
@@ -515,7 +515,7 @@ public class NexusDB {
 		 * @param username String
 		 * @param list String[]
 		 * @throws Exception if error
-		 */
+		 */ //TODO: Fix this
 		public void updateCurrentGames(String username, String[] list) throws Exception {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
@@ -526,6 +526,26 @@ public class NexusDB {
 				List<Object> params2 = asList(id, list[i]);
 				updateHelper(insert, params2);
 			}
+		}
+		
+		/**
+		 * Method removes entries from game tables to keep 3 games active only.
+		 * @param username String
+		 * @throws Exception username is not found
+		 */
+		public void clearCurrentGames(String username) throws Exception {
+			String delete = "DELETE FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List<Integer> params = asList(id);
+			updateHelper(delete, params);
+			delete = "DELETE FROM hearthstone WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM leagueoflegends WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM worldofwarcraft WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM diablo3 WHERE id=?";
+			updateHelper(delete, params);
 		}
 		
 		/**
@@ -584,13 +604,13 @@ public class NexusDB {
 		}
 		
 		/**
-		 * Method updates the csgo table
+		 * Method updates the diablo3 table
 		 * @param username String
 		 * @param diabloCharacter String
 		 * @return JsonObject
 		 * @throws Exception if error
 		 */
-		public JsonObject updateDiablo(String username, String diabloCharacter) throws Exception {
+		public JsonObject updateDiablo3(String username, String diabloCharacter) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "Diablo 3");
 			String insert = "INSERT INTO diablo3 (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
@@ -615,24 +635,50 @@ public class NexusDB {
 //		 * @return JsonObject
 //		 * @throws Exception if error
 //		 */
-//		public JsonObject updateHearthStone(String username) throws Exception {
-//			JsonObject jsonObject = new JsonObject();
-//			jsonObject.addProperty("name", "HearthStone");
-//			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
-//			String query = "SELECT * FROM hearthstone WHERE id=?";
-//			int id = getUserId(username);
-//			List<Object> params = asList(id,"null","null");
-//			List<Integer> params2 = asList(id);
-//			updateHelper(insert, params);
-//			List<HashMap<String, Object>> result= queryHelper(query, params2);
-//			HashMap<String, Object> map = new HashMap<String, Object>();
-//			for (int i = 0; i < result.size(); i++) {
-//				map.putAll(result.get(i));
-//			}
-//				jsonObject.addProperty("bnetname", (String) map.get("name"));
-////				System.out.println((String) map.get("name"));
-//			return jsonObject;
-//		}
+		public JsonObject updateHearthStone(String username, String bnetname) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "HearthStone");
+			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM hearthstone WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,bnetname,bnetname);
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("bnetname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		/**
+		 * Method updates the csgo table
+		 * @param username String
+		 * @param csgoCharacter String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateCSGO(String username, String csgoCharacter) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "CSGO");
+			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,csgoCharacter,csgoCharacter);
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("csgoCharacter", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
 	
 	/**
 	 * This method gets all the profile data from the database by user's name
@@ -755,13 +801,18 @@ public class NexusDB {
 				jsonObject.addProperty("bnetname", (String) mapHS.get("name"));
 				jsonArray.add(jsonObject);
 			}
+			else if (gameName.equals("Diablo 3")) {
+				String queryD3 = "SELECT * FROM diablo3 WHERE id=?";
+				List<Integer> paramsD3 = asList(id);
+				List<HashMap<String, Object>> resultD3 = queryHelper(queryD3, paramsD3);
+				HashMap<String, Object> mapD3 = new HashMap<String, Object>();
+				mapD3.putAll(resultD3.get(0));
+				jsonObject.addProperty("name", "Diablo 3");
+				jsonObject.addProperty("diabloCharacter", (String) mapD3.get("name"));
+				jsonArray.add(jsonObject);
+			}
 			else { // Default
-				String queryCG = "SELECT * FROM currentGames WHERE id=?";
-				List<Integer> paramsCG = asList(id);
-				List<HashMap<String, Object>> resultCG = queryHelper(queryCG, paramsCG);
-				for (int j = 0; j < resultCG.size(); j++) {
-					jsonObject.addProperty("name", (String) resultCG.get(j).get("name"));
-				}
+				jsonObject.addProperty("name", "default");
 				jsonArray.add(jsonObject);
 			}
 		}

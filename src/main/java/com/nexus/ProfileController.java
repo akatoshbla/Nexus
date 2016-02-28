@@ -3,9 +3,6 @@ package com.nexus;
 import static com.nexus.JsonUtility.json;
 import static spark.Spark.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 /**
  * This class has the posts and gets for loading and editing the
  * profile page of a valid user. 
