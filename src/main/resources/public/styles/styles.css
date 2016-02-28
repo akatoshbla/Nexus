@@ -1,4 +1,4 @@
-.background{
+.background {
     background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');
     background-size: cover;
     width: 100%;
@@ -10,12 +10,13 @@ body {
     height: 100%;
 }
 
-#login, #summonerSearch{
+#login,
+#summonerSearch {
     color: black;
 }
 
 body {
-    font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: lightskyblue;
 }
 
@@ -23,12 +24,14 @@ body {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    height:400px;
+    height: 400px;
     color: black;
 }
-.text-vertical-center h3{
+
+.text-vertical-center h3 {
     color: white;
 }
+
 .text-vertical-center h1 {
     margin: 0;
     padding: 0;
@@ -37,12 +40,14 @@ body {
     color: #28a4c9;
 }
 
+
 /* Custom Button Styles */
 
 .btn-dark {
     border-radius: 0;
     color: #fff;
-    background-color: #31708f;'rgba(0,0,0,0.4);
+    background-color: #31708f;
+    'rgba(0,0,0,0.4);
 
 }
 
@@ -50,27 +55,36 @@ body {
 .btn-dark:focus,
 .btn-dark:active {
     color: #fff;
-    background-color: lightslategrey; 'rgba(0,0,0,0.7);
+    background-color: lightslategrey;
+    'rgba(0,0,0,0.7);
+
 }
 
 .btn-light {
     border-radius: 0;
     color: #333;
-    background-color: #31708f;;'rgb(255,255,255);
+    background-color: #31708f;
+    ;
+    'rgb(255,255,255);
+
 }
 
 .btn-light:hover,
 .btn-light:focus,
 .btn-light:active {
     color: #333;
-    background-color: lightslategrey;'rgba(255,255,255,0.8);
+    background-color: lightslategrey;
+    'rgba(255,255,255,0.8);
+
 }
+
 
 /* Custom Horizontal Rule */
 
 hr.small {
     max-width: 100px;
 }
+
 
 /* Side Menu */
 
@@ -107,12 +121,15 @@ hr.small {
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #fff;'#999;
+    color: #fff;
+    '#999;
+
 }
+
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .sidebar-nav li a:active,
@@ -134,12 +151,14 @@ hr.small {
     color: #fff;
     background: none;
 }
+
 #menu-toggle {
     z-index: 1;
     position: fixed;
     top: 0;
     right: 0;
 }
+
 #login {
     z-index: 1;
     position: fixed;
@@ -162,6 +181,7 @@ hr.small {
     margin: 5px 5px 0 0;
 }
 
+
 /* Header */
 
 .header {
@@ -176,27 +196,30 @@ hr.small {
     -o-background-size: cover;
 }
 
+
 /* About */
 
 .news {
     padding: 50px 0;
     font-size: 20pt;
-    }
+}
 
 .about {
     padding: 50px 0;
-    }
+}
+
 
 /* Services */
 
 .services {
     padding: 50px 0;
     color: white;
-    }
+}
 
 .service-item {
     margin-bottom: 30px;
 }
+
 
 /* Callout */
 
@@ -211,6 +234,7 @@ hr.small {
     background-size: cover;
     -o-background-size: cover;
 }
+
 
 /* Portfolio */
 
@@ -230,6 +254,7 @@ hr.small {
     opacity: 0.8;
 }
 
+
 /* Call to Action */
 
 .call-to-action {
@@ -239,6 +264,7 @@ hr.small {
 .call-to-action .btn {
     margin: 10px;
 }
+
 
 /* Map */
 
@@ -252,6 +278,7 @@ hr.small {
     }
 }
 
+
 /* Footer */
 
 footer {
@@ -259,53 +286,65 @@ footer {
 }
 
 .button {
-  border-style: solid;
-    color:black;
-  border-width : 1px 1px 1px 1px;
-  text-decoration : none;
-  padding : 4px;
-  border-color : #000000
-
+    border-style: solid;
+    color: black;
+    border-width: 1px 1px 1px 1px;
+    text-decoration: none;
+    padding: 4px;
+    border-color: #000000
 }
+
+
 /* profile css */
-#userProfile{
+
+#userProfile {
     color: black;
 }
 
-#userProfile h1{
-    color:white;
+#userProfile h1 {
+    color: white;
 }
 
 #profilePicSize,
-#friendPicSize{
+#friendPicSize {
     height: 250px;
 }
-#logoff{ margin-left: 10px;
+
+#logoff {
+    margin-left: 10px;
 }
 
-.nav-justified{
+.nav-justified {
     background: #ffffff;
 }
-.addMargin{
+
+.addMargin {
     margin-bottom: 10px;
-    
 }
-.add-topMargin{
- margin-top: 15px;   
+
+.add-topMargin {
+    margin-top: 15px;
 }
-.addLargeMargin{
- margin-bottom: 250px;   
+
+.addLargeMargin {
+    margin-bottom: 250px;
 }
+
 .profile-pic {
-	display: block;
+    display: block;
 }
 
 .edit {
-	padding-top: 7px;	
-	margin-right: 18px;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	
+    padding-top: 7px;
+    margin-right: 18px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
+.gear {
+    width: 500px;
+    color: black;
+    background: ghostwhite;
+    margin-top: 30px;
+}
