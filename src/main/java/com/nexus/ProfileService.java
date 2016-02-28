@@ -1,14 +1,12 @@
 package com.nexus;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 
 import java.util.Collection;
 import java.util.Map;
-
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -27,9 +25,7 @@ public class ProfileService
 	public JsonObject getUserProfile(String username) throws Exception
 	{
 		NexusDB db = new NexusDB();
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		JsonObject jsonobj = new JsonObject();
-		JsonArray jsonArray = new JsonArray();
 
 		if (username != null && db.recordExists(username)) {
 			Profile profile = db.getProfile(username);
@@ -176,12 +172,13 @@ public class ProfileService
 	}
 
 	/**
-	 * This method updates the gamesPlayed table. Deletes all the records for the user and reinserts new ones.
+	 * This method updates multiple tables for currentGames on a users profile. 
+	 * Deletes all the records for the user and reinserts new ones.
 	 * @param username String
 	 * @param body String
 	 * @return JsonObject
 	 * @throws Exception if error
-	 */
+	 */ 
 	public JsonObject updateCurrentGames(String username, String body) throws Exception {
 		NexusDB db = new NexusDB();
 		JsonObject jsonobj = new JsonObject();
@@ -191,6 +188,45 @@ public class ProfileService
 		if (username != null) {
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
 			jsonobj.addProperty("result", true);
+			
+			for(Map.Entry<String, JsonElement> game: jsonObject.entrySet()) {
+				JsonObject gameInfo = game.getValue().getAsJsonObject();
+				String gameName = gameInfo.get("name").getAsString();
+				if (gameName.equals("World of Warcraft")) {
+					if (gameInfo.get("warcraftCharacter").getAsString().equals("") || 
+							gameInfo.get("warcraftRealm").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else if (gameName.equals("League of Legends")) {
+					if (gameInfo.get("leagueSummoner").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else if (gameName.equals("Diablo 3")) {
+					if (gameInfo.get("diabloCharacter").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				}
+				else if (gameName.equals("CSGO")) {
+					if (gameInfo.get("csgoCharacter").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+					}
+				} 
+				else if (gameName.equals("Hearthstone")) {
+					if (gameInfo.get("bnetname").getAsString().equals("")) {
+						jsonobj.addProperty("result", false);
+						return jsonobj;
+				} else { }
+				}
+			}
+			
+			db.clearCurrentGames(username); // This method clears the game tables.
+			
 			int i = 0;
 			for(Map.Entry<String,JsonElement> game: jsonObject.entrySet()){
 				JsonObject gameInfo = game.getValue().getAsJsonObject();
@@ -204,22 +240,29 @@ public class ProfileService
 					jsonArray.add(db.updateLOL(username, gameInfo.get("leagueSummoner").getAsString()));
 					currentGames[i++] = gameName;
 				}
-				else if (gameName.equals("CS:GO")) {
-					jsonArray.add(db.updateCSGO(username));
+				else if (gameName.equals("Diablo 3")) {
+					jsonArray.add(db.updateDiablo3(username, gameInfo.get("diabloCharacter").getAsString()));
 					currentGames[i++] = gameName;
 				}
-				else { // name = "HearthStone"
-					jsonArray.add(db.updateHearthStone(username));
+				else if (gameName.equals("CSGO")) {
+					jsonArray.add(db.updateCSGO(username, gameInfo.get("csgoCharacter").getAsString()));
+					currentGames[i++] = gameName;
+				} 
+				else if (gameName.equals("Hearthstone")) {
+						jsonArray.add(db.updateHearthStone(username, gameInfo.get("bnetname").getAsString()));
+						currentGames[i++] = gameName;
+				} else { // name = "default"
+					jsonArray.add(gameInfo);
 					currentGames[i++] = gameName;
 				}
 			}
 			jsonobj.add("currentGames", jsonArray);
-			db.updateCurrentGames(username, currentGames);
 		}
 		else {
 			jsonobj.addProperty("result", false);
 		}
-
+		
+		db.updateCurrentGames(username, currentGames);
 		return jsonobj;
 	}
 

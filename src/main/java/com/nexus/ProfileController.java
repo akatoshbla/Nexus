@@ -3,9 +3,6 @@ package com.nexus;
 import static com.nexus.JsonUtility.json;
 import static spark.Spark.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 /**
  * This class has the posts and gets for loading and editing the
  * profile page of a valid user. 
@@ -17,6 +14,7 @@ public class ProfileController
 	/**
 	 * The get /profile takes nothing from the frontend, but it will check for a valid session.
 	 * Note: Profile get also works with /profile/&lt;username&gt; to bypass session checking (for testing).
+	 * Note 2: For the currentGames json if the user only has 1 or 2 games, then the game name "default" will be passed back. 
 	 * <ul>
 	 * <li>Returns a Json with the following:
 	 * <li>"session": true,
