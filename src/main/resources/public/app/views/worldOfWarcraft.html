@@ -252,59 +252,59 @@
         </br>
         <button type="button" ng-click="characterLookup(realm , characterName)" class="btn btn-dark btn-sm add-topMargin">Character Lookup</button>
     </form>
-    <div class="gear-wrapper">
+    <div class="gear-wrapper" ng-if='characterInfo'>
         <div class="gear" ng-if='characterInfo'>
             <img src="http://us.battle.net/static-render/us/{{characterInfo.thumbnail}}" alt="Thumbnail" style="margin-bottom:2px" align="left">
-            character info found
+            {{characterInfo.name}}
             <table class="table">
                 <tbody>
                     <tr>
                         <td>Head: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.head.id rel='item={{characterInfo.items.head.id}}'>{{characterInfo.items.head.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.head.id}}" rel='item={{characterInfo.items.head.id}}'>{{characterInfo.items.head.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Neck: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.neck.id rel='item={{characterInfo.items.neck.id}}'>{{characterInfo.items.neck.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item=<{{characterInfo.items.neck.id}}" rel='item={{characterInfo.items.neck.id}}'>{{characterInfo.items.neck.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Shoulders: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.shoulder.id rel='item={{characterInfo.items.shoulder.id}}'>{{characterInfo.items.shoulder.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.shoulder.id}}" rel='item={{characterInfo.items.shoulder.id}}'>{{characterInfo.items.shoulder.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Back: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.back.id rel='item={{characterInfo.items.back.id}}'>{{characterInfo.items.back.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.back.id}}" rel='item={{characterInfo.items.back.id}}'>{{characterInfo.items.back.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Chest: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.chest.id rel='item={{characterInfo.items.chest.id}}'>{{characterInfo.items.chest.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.chest.id}}" rel='item={{characterInfo.items.chest.id}}'>{{characterInfo.items.chest.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Wrists: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.wrist.id rel='item={{characterInfo.items.wrist.id}}'>{{characterInfo.items.wrist.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.wrist.id}}" rel='item={{characterInfo.items.wrist.id}}'>{{characterInfo.items.wrist.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Hands: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.hands.id rel='item={{characterInfo.items.hands.id}}'>{{characterInfo.items.hands.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.hands.id}}" rel='item={{characterInfo.items.hands.id}}'>{{characterInfo.items.hands.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Waist: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.waist.id rel='item={{characterInfo.items.waist.id}}'>{{characterInfo.items.waist.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.waist.id}}" rel='item={{characterInfo.items.waist.id}}'>{{characterInfo.items.waist.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Legs: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.legs.id rel='item={{characterInfo.items.legs.id}}'>{{characterInfo.items.legs.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.legs.id}}" rel='item={{characterInfo.items.legs.id}}'>{{characterInfo.items.legs.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Feet: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.feet.id rel='item={{characterInfo.items.feet.id}}'>{{characterInfo.items.feet.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.feet.id}}" rel='item={{characterInfo.items.feet.id}}'>{{characterInfo.items.feet.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Finger: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.finger1.id rel='item={{characterInfo.items.finger1.id}}'>{{characterInfo.items.finger1.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.finger1.id}}" rel='item={{characterInfo.items.finger1.id}}'>{{characterInfo.items.finger1.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Finger: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.finger2.id rel='item={{characterInfo.items.finger2.id}}'>{{characterInfo.items.finger2.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.finger2.id}}" rel='item={{characterInfo.items.finger2.id}}'>{{characterInfo.items.finger2.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Trinket: </td>
@@ -312,15 +312,15 @@
                     </tr>
                     <tr>
                         <td>Trinket: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.trinket2.id rel='item={{characterInfo.items.trinket2.id}}'>{{characterInfo.items.trinket2.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.trinket2.id}}" rel='item={{characterInfo.items.trinket2.id}}'>{{characterInfo.items.trinket2.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Main Hand: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.mainHand.id rel='item={{characterInfo.items.mainHand.id}}'>{{characterInfo.items.mainHand.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.mainHand.id}}" rel='item={{characterInfo.items.mainHand.id}}'>{{characterInfo.items.mainHand.name}}</a> </td>
                     </tr>
                     <tr>
                         <td>Off Hand: </td>
-                        <td><a href="http://wowhead.com/item=<" + characterInfo.items.offHand.id rel='item={{characterInfo.items.offHand.id}}'>{{characterInfo.items.offHand.name}}</a> </td>
+                        <td><a href="http://wowhead.com/item={{characterInfo.items.offHand.id}}" rel='item={{characterInfo.items.offHand.id}}'>{{characterInfo.items.offHand.name}}</a> </td>
                     </tr>
 
 
