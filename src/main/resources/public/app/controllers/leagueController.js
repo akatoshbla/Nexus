@@ -50,7 +50,7 @@
 
     };
 
-    leagueController.$inject = ['$scope', '$http', '$location'];
+    leagueController.$inject = ['$scope', '$http', '$location', 'api'];
 
     angular.module('nexusApp')
         .controller('leagueController', leagueController);

@@ -2,8 +2,8 @@
  * Created by Phil on 2/28/2016.
  */
 
-
-app.service('api', ['$http', function($http) {
+(function () {
+    var api = function ($http) {
 
     var result;
 
@@ -21,7 +21,11 @@ app.service('api', ['$http', function($http) {
         return result;
     }
 
-}]);
+};
+     api.$inject = ['$http'];
+      angular.module('nexusApp').service('api', api);  
+}());
+ 
 //var summonApp = angular.module('summonApp',[]);
 //summonApp.factory('summonerInfo', function(summonerName){
 //    var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/"+ summonerName +"?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76";
