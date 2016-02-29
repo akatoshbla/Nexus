@@ -53,6 +53,8 @@ public class Main {
     	   	new DeleteController(new DeleteService());
     	   	new ProfileController(new ProfileService());
     	   	new FriendsController(new FriendsService());
+    	   	new MessageController(new MessageService());
+
     }
     
 //	private static void enableCORS(final String origin, final String methods, final String headers) {

@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
+import java.util.Map;
 import java.util.HashMap;
 
 /**
@@ -515,7 +515,7 @@ public class NexusDB {
 		 * @param username String
 		 * @param list String[]
 		 * @throws Exception if error
-		 */ //TODO: Fix this
+		 */ 
 		public void updateCurrentGames(String username, String[] list) throws Exception {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
@@ -817,6 +817,75 @@ public class NexusDB {
 			}
 		}
 		return jsonArray;
+	}
+	
+	/**
+	 * Method that returns all the intervals that a friend and user for matchFinding.
+	 * @param username String
+	 * @return JsonArray of JsonObjects
+	 * @throws Exception If username does not exist
+	 */
+	public JsonArray getMatchFinderResults(String username) throws Exception {
+		JsonArray jsonArray = new JsonArray();
+		int id = getUserId(username);
+		List<String> friends = getFriendsList(username);
+		System.out.println(friends);
+
+		for(String friend : friends) {
+			int friendId = getUserId(friend);
+			String query = "SELECT A.id, A.start, A.end"
+					+" FROM matchFinder A, matchFinder B"
+					+" WHERE (A.id=? AND B.id=? AND A.start < B.end)"
+					+" AND (A.end > B.start)";
+			List<Integer> params = asList(friendId, id);
+			List<HashMap<String, Object>> result = queryHelper(query, params);
+			if (result != null) {
+				for (HashMap<String, Object> obj : result) {
+					JsonObject jsonObj = new JsonObject();
+					jsonObj.addProperty("FriendName", friend);						
+					jsonObj.addProperty("start", obj.get("start").toString());
+					jsonObj.addProperty("end", obj.get("end").toString());
+					jsonArray.add(jsonObj);
+				}
+			}	
+		}
+
+		return jsonArray;
+	}
+	
+	/**
+	 * Creates and stores a message from one user to another.
+	 * @param message String
+	 * @param fromUser String
+	 * @param toUser String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
+	public Boolean updateMessages(String message, String fromUser, String toUser) throws Exception {
+		String statement = "insert into messages (fromId,toId,Message) VALUES (?,?,?);";
+		List<Object> params = asList(getUserId(fromUser),getUserId(toUser),message);
+		return updateHelper(statement,params) != -1;
+	}
+	/**
+	 * Retrieves the list of messages from one user to another.
+	 * @param fromUser
+	 * @param toUser
+	 * @return List
+	 * @throws Exception
+	 */
+	public List<HashMap<String,Object>> getMessages(String fromUser, String toUser) throws Exception{
+		String query = "select "
+				+ "(select name from users where id = fromId) as fromUser, "
+				+ "(select name from users where id = toId) as toUser, "
+				+ "message, "
+				+ "CAST(time AS char) as time "
+				+ "from messages "
+				+ "where (fromId = ? OR fromId = ?) AND (toId = ? OR toId = ?) "
+				+ "order by time;";
+		int fromId = getUserId(fromUser);
+		int toId = getUserId(toUser);
+		
+		return queryHelper(query,asList(fromId,toId,fromId,toId)); 
 	}
 	/**
 	 * Takes in a database statement and a list of PreparedStatement

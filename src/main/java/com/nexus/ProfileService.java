@@ -60,6 +60,27 @@ public class ProfileService
 		}
 		return jsonobj;
 	}
+	
+	/**
+	 * Method calls getMatchFinderResults with a String username.
+	 * @param username String
+	 * @return JsonObject with all the intervals of user friends schedule times that match the user.
+	 * @throws Exception if username is not found from calling recordExists.
+	 */
+	public JsonObject getMatchFinder(String username) throws Exception {
+		NexusDB db = new NexusDB();
+		JsonObject jsonObj = new JsonObject();
+		
+		if (username != null && db.recordExists(username)) {
+			jsonObj.addProperty("result", true);
+			jsonObj.add("matchFinderResults", db.getMatchFinderResults(username));
+		}
+		else {
+			jsonObj.addProperty("result", false);
+		}
+		
+		return jsonObj;
+	}
 
 	/**
 	 * This method updates the realName in the userProfile.
