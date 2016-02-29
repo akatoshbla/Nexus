@@ -37,6 +37,15 @@ public class ProfileController
      * <li>{"name": "League of Legends","summoner": "some summoner"},{"name": "CS:GO"}]
 	 * </ul>
 	 * <p>
+	 * The get /matchFinder returns a jsonobject with a jsonarray or jsonobjects. Matches only to friends.
+	 * <ul>
+	 * <li>Returns a json with the following:
+	 * <li>"result": true,
+	 * <li>"matchFinderResults": 
+	 * <li>[{"FriendName": "davidtest","start": "2016-02-28 14:25:28.0","end": "2016-02-28 18:11:45.0"},
+     * <li>{"FriendName": "ralph","start": "2016-02-29 12:34:12.0","end": "2016-02-29 20:34:31.0"}]
+     * </ul>
+	 * <p>
 	 * The post /realName takes a String from the frontend. Checks for a valid session, in which 
 	 * it gets the user's name from.
 	 * <ul>
@@ -88,7 +97,7 @@ public class ProfileController
      * <li>Returns a json with the following:
      * <li>"result": true,
      * <li>"avatar": "images/UserAvatars/defaultAvatar.png"
-     * </ul>
+     * </ul> 
      * @param profileService class
 	 */
 	public ProfileController(final ProfileService profileService)
@@ -141,9 +150,27 @@ public class ProfileController
 			}		
 		}, json());
 
-		/**
-		 * 
-		 */
+		get("/matchFinder", (req, res) -> {
+			String username;
+			
+			try {
+				if (req.session().attribute("username") != null) {
+					username = req.session().attribute("username");
+					System.out.println("Username: " + username);
+					System.out.println("Has a session id: " + req.session().id());
+				}
+				else {
+					username = null;
+					System.out.println("Non-Session User Alert at " +req.ip());
+				}
+				
+				return profileService.getMatchFinder(username);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}, json());
+		
 		post("/realName", (req, res) -> {
 			//set username
 			String username;

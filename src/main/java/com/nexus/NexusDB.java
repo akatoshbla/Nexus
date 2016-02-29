@@ -515,7 +515,7 @@ public class NexusDB {
 		 * @param username String
 		 * @param list String[]
 		 * @throws Exception if error
-		 */ //TODO: Fix this
+		 */ 
 		public void updateCurrentGames(String username, String[] list) throws Exception {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
@@ -818,6 +818,41 @@ public class NexusDB {
 		}
 		return jsonArray;
 	}
+	
+	/**
+	 * Method that returns all the intervals that a friend and user for matchFinding.
+	 * @param username String
+	 * @return JsonArray of JsonObjects
+	 * @throws Exception If username does not exist
+	 */
+	public JsonArray getMatchFinderResults(String username) throws Exception {
+		JsonArray jsonArray = new JsonArray();
+		int id = getUserId(username);
+		List<String> friends = getFriendsList(username);
+		System.out.println(friends);
+
+		for(String friend : friends) {
+			int friendId = getUserId(friend);
+			String query = "SELECT A.id, A.start, A.end"
+					+" FROM matchFinder A, matchFinder B"
+					+" WHERE (A.id=? AND B.id=? AND A.start < B.end)"
+					+" AND (A.end > B.start)";
+			List<Integer> params = asList(friendId, id);
+			List<HashMap<String, Object>> result = queryHelper(query, params);
+			if (result != null) {
+				for (HashMap<String, Object> obj : result) {
+					JsonObject jsonObj = new JsonObject();
+					jsonObj.addProperty("FriendName", friend);						
+					jsonObj.addProperty("start", obj.get("start").toString());
+					jsonObj.addProperty("end", obj.get("end").toString());
+					jsonArray.add(jsonObj);
+				}
+			}	
+		}
+
+		return jsonArray;
+	}
+	
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
 	 * 	 parameters for the statement
