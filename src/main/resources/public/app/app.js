@@ -46,7 +46,7 @@
                 templateUrl: 'app/views/diablo3.html'
             })
             .when('/summonerPage',{
-                controller: 'leagueController',
+                controller: 'leagueResultController',
                 templateUrl: 'app/views/summonerPage.html'
             })
             .otherwise({
