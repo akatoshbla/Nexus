@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
+import java.util.Map;
 import java.util.HashMap;
 
 /**
@@ -339,7 +339,7 @@ public class NexusDB {
 		List<String> params = asList(name);
 		List<HashMap<String,Object>> results = queryHelper(query,params);
 		if (results==null || results.size()==0)
-				return null;
+				return false;
 		else {
 			return (int)((HashMap<String,Object>)results.get(0)).get("active")==1;
 		}	
@@ -515,7 +515,7 @@ public class NexusDB {
 		 * @param username String
 		 * @param list String[]
 		 * @throws Exception if error
-		 */
+		 */ 
 		public void updateCurrentGames(String username, String[] list) throws Exception {
 			String delete = "DELETE FROM currentGames WHERE id=?";
 			String insert = "INSERT INTO currentGames (id,name) VALUES(?,?)";
@@ -526,6 +526,26 @@ public class NexusDB {
 				List<Object> params2 = asList(id, list[i]);
 				updateHelper(insert, params2);
 			}
+		}
+		
+		/**
+		 * Method removes entries from game tables to keep 3 games active only.
+		 * @param username String
+		 * @throws Exception username is not found
+		 */
+		public void clearCurrentGames(String username) throws Exception {
+			String delete = "DELETE FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List<Integer> params = asList(id);
+			updateHelper(delete, params);
+			delete = "DELETE FROM hearthstone WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM leagueoflegends WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM worldofwarcraft WHERE id=?";
+			updateHelper(delete, params);
+			delete = "DELETE FROM diablo3 WHERE id=?";
+			updateHelper(delete, params);
 		}
 		
 		/**
@@ -584,18 +604,19 @@ public class NexusDB {
 		}
 		
 		/**
-		 * Method updates the csgo table
+		 * Method updates the diablo3 table
 		 * @param username String
+		 * @param diabloCharacter String
 		 * @return JsonObject
 		 * @throws Exception if error
 		 */
-		public JsonObject updateCSGO(String username) throws Exception {
+		public JsonObject updateDiablo3(String username, String diabloCharacter) throws Exception {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("name", "CS:GO");
-			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
-			String query = "SELECT * FROM csgo WHERE id=?";
+			jsonObject.addProperty("name", "Diablo 3");
+			String insert = "INSERT INTO diablo3 (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM diablo3 WHERE id=?";
 			int id = getUserId(username);
-			List<Object> params = asList(id,"null","null");
+			List<Object> params = asList(id,diabloCharacter,diabloCharacter);
 			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
@@ -603,24 +624,24 @@ public class NexusDB {
 			for (int i = 0; i < result.size(); i++) {
 				map.putAll(result.get(i));
 			}
-				jsonObject.addProperty("charname", (String) map.get("name"));
+				jsonObject.addProperty("diabloCharacter", (String) map.get("name"));
 //				System.out.println((String) map.get("name"));
 			return jsonObject;
 		}
 		
-		/**
-		 * Method updates the hearthstone table
-		 * @param username String
-		 * @return JsonObject
-		 * @throws Exception if error
-		 */
-		public JsonObject updateHearthStone(String username) throws Exception {
+//		/**
+//		 * Method updates the hearthstone table
+//		 * @param username String
+//		 * @return JsonObject
+//		 * @throws Exception if error
+//		 */
+		public JsonObject updateHearthStone(String username, String bnetname) throws Exception {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", "HearthStone");
 			String insert = "INSERT INTO hearthstone (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
 			String query = "SELECT * FROM hearthstone WHERE id=?";
 			int id = getUserId(username);
-			List<Object> params = asList(id,"null","null");
+			List<Object> params = asList(id,bnetname,bnetname);
 			List<Integer> params2 = asList(id);
 			updateHelper(insert, params);
 			List<HashMap<String, Object>> result= queryHelper(query, params2);
@@ -629,6 +650,32 @@ public class NexusDB {
 				map.putAll(result.get(i));
 			}
 				jsonObject.addProperty("bnetname", (String) map.get("name"));
+//				System.out.println((String) map.get("name"));
+			return jsonObject;
+		}
+		
+		/**
+		 * Method updates the csgo table
+		 * @param username String
+		 * @param csgoCharacter String
+		 * @return JsonObject
+		 * @throws Exception if error
+		 */
+		public JsonObject updateCSGO(String username, String csgoCharacter) throws Exception {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", "CSGO");
+			String insert = "INSERT INTO csgo (id,name) VALUES(?,?) ON DUPLICATE KEY UPDATE name=?"; 
+			String query = "SELECT * FROM csgo WHERE id=?";
+			int id = getUserId(username);
+			List<Object> params = asList(id,csgoCharacter,csgoCharacter);
+			List<Integer> params2 = asList(id);
+			updateHelper(insert, params);
+			List<HashMap<String, Object>> result= queryHelper(query, params2);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < result.size(); i++) {
+				map.putAll(result.get(i));
+			}
+				jsonObject.addProperty("csgoCharacter", (String) map.get("name"));
 //				System.out.println((String) map.get("name"));
 			return jsonObject;
 		}
@@ -754,17 +801,91 @@ public class NexusDB {
 				jsonObject.addProperty("bnetname", (String) mapHS.get("name"));
 				jsonArray.add(jsonObject);
 			}
+			else if (gameName.equals("Diablo 3")) {
+				String queryD3 = "SELECT * FROM diablo3 WHERE id=?";
+				List<Integer> paramsD3 = asList(id);
+				List<HashMap<String, Object>> resultD3 = queryHelper(queryD3, paramsD3);
+				HashMap<String, Object> mapD3 = new HashMap<String, Object>();
+				mapD3.putAll(resultD3.get(0));
+				jsonObject.addProperty("name", "Diablo 3");
+				jsonObject.addProperty("diabloCharacter", (String) mapD3.get("name"));
+				jsonArray.add(jsonObject);
+			}
 			else { // Default
-				String queryCG = "SELECT * FROM currentGames WHERE id=?";
-				List<Integer> paramsCG = asList(id);
-				List<HashMap<String, Object>> resultCG = queryHelper(queryCG, paramsCG);
-				for (int j = 0; j < resultCG.size(); j++) {
-					jsonObject.addProperty("name", (String) resultCG.get(j).get("name"));
-				}
+				jsonObject.addProperty("name", "default");
 				jsonArray.add(jsonObject);
 			}
 		}
 		return jsonArray;
+	}
+	
+	/**
+	 * Method that returns all the intervals that a friend and user for matchFinding.
+	 * @param username String
+	 * @return JsonArray of JsonObjects
+	 * @throws Exception If username does not exist
+	 */
+	public JsonArray getMatchFinderResults(String username) throws Exception {
+		JsonArray jsonArray = new JsonArray();
+		int id = getUserId(username);
+		List<String> friends = getFriendsList(username);
+		System.out.println(friends);
+
+		for(String friend : friends) {
+			int friendId = getUserId(friend);
+			String query = "SELECT A.id, A.start, A.end"
+					+" FROM matchFinder A, matchFinder B"
+					+" WHERE (A.id=? AND B.id=? AND A.start < B.end)"
+					+" AND (A.end > B.start)";
+			List<Integer> params = asList(friendId, id);
+			List<HashMap<String, Object>> result = queryHelper(query, params);
+			if (result != null) {
+				for (HashMap<String, Object> obj : result) {
+					JsonObject jsonObj = new JsonObject();
+					jsonObj.addProperty("FriendName", friend);						
+					jsonObj.addProperty("start", obj.get("start").toString());
+					jsonObj.addProperty("end", obj.get("end").toString());
+					jsonArray.add(jsonObj);
+				}
+			}	
+		}
+
+		return jsonArray;
+	}
+	
+	/**
+	 * Creates and stores a message from one user to another.
+	 * @param message String
+	 * @param fromUser String
+	 * @param toUser String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
+	public Boolean updateMessages(String message, String fromUser, String toUser) throws Exception {
+		String statement = "insert into messages (fromId,toId,Message) VALUES (?,?,?);";
+		List<Object> params = asList(getUserId(fromUser),getUserId(toUser),message);
+		return updateHelper(statement,params) != -1;
+	}
+	/**
+	 * Retrieves the list of messages from one user to another.
+	 * @param fromUser
+	 * @param toUser
+	 * @return List
+	 * @throws Exception
+	 */
+	public List<HashMap<String,Object>> getMessages(String fromUser, String toUser) throws Exception{
+		String query = "select "
+				+ "(select name from users where id = fromId) as fromUser, "
+				+ "(select name from users where id = toId) as toUser, "
+				+ "message, "
+				+ "CAST(time AS char) as time "
+				+ "from messages "
+				+ "where (fromId = ? OR fromId = ?) AND (toId = ? OR toId = ?) "
+				+ "order by time;";
+		int fromId = getUserId(fromUser);
+		int toId = getUserId(toUser);
+		
+		return queryHelper(query,asList(fromId,toId,fromId,toId)); 
 	}
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
