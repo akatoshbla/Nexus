@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
+import java.util.Map;
 import java.util.HashMap;
 
 /**
@@ -853,6 +853,40 @@ public class NexusDB {
 		return jsonArray;
 	}
 	
+	/**
+	 * Creates and stores a message from one user to another.
+	 * @param message String
+	 * @param fromUser String
+	 * @param toUser String
+	 * @return Boolean
+	 * @throws Exception if error
+	 */
+	public Boolean updateMessages(String message, String fromUser, String toUser) throws Exception {
+		String statement = "insert into messages (fromId,toId,Message) VALUES (?,?,?);";
+		List<Object> params = asList(getUserId(fromUser),getUserId(toUser),message);
+		return updateHelper(statement,params) != -1;
+	}
+	/**
+	 * Retrieves the list of messages from one user to another.
+	 * @param fromUser
+	 * @param toUser
+	 * @return List
+	 * @throws Exception
+	 */
+	public List<HashMap<String,Object>> getMessages(String fromUser, String toUser) throws Exception{
+		String query = "select "
+				+ "(select name from users where id = fromId) as fromUser, "
+				+ "(select name from users where id = toId) as toUser, "
+				+ "message, "
+				+ "CAST(time AS char) as time "
+				+ "from messages "
+				+ "where (fromId = ? OR fromId = ?) AND (toId = ? OR toId = ?) "
+				+ "order by time;";
+		int fromId = getUserId(fromUser);
+		int toId = getUserId(toUser);
+		
+		return queryHelper(query,asList(fromId,toId,fromId,toId)); 
+	}
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
 	 * 	 parameters for the statement
