@@ -10,10 +10,10 @@
     </div>
 
     <!--need a dropdown to display per champion selected-->
-    <select id="selectNumber" ng-repeat="data in champdata" name="champions">
-        <!--<option value="Zuluhed">Zuluhed</option>-->
+    <select id="selectNumber" ng-model=" " ng-repeat="data in champdata" name="champions">
+        <option value="Zuluhed">Zuluhed</option>
     </select>
-    <h2>{{ summonerInfo.champions[0]['id']}}</h2>
+    <h2>Summoner: {{ summonerInfo.champions[0]['id']}}</h2>
     <!--need to return champion profile and Name-->
     <p>Total Sessions Played: {{ summonerInfo.champions[0]["stats"]["totalSessionsPlayed"] }} </p>
 
