@@ -33,9 +33,8 @@
 
         $scope.searchSum = function (summonerName) {
 
-                api.summonerInfo(summonerName).then(function(data){
+                api.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
-                    console.log(data);
                     if(data != null){
                         $location.path('/summonerPage');
                     }
@@ -46,7 +45,7 @@
                    console.log(error);
                 });
             }
-            console.log($scope);
+            //console.log($scope);
 
     };
 

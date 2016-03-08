@@ -5,8 +5,12 @@
 
     var leagueResultController = function ($scope, $http, api) {
 
-        $scope.summonerInfo= api.getResult();
-        console.log({info: $scope.summonerInfo});
+        $scope.summonerInfo = api.getResultForRanked();
+        //console.log({info: $scope.summonerInfo});
+        console.log($scope.summonerInfo);
+
+       // $scope.champs = api.getChamps();
+       // console.log($scope.champs);
 
     };
 
