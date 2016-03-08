@@ -9,8 +9,8 @@
         //console.log({info: $scope.summonerInfo});
         console.log($scope.summonerInfo);
 
-       // $scope.champs = api.getChamps();
-       // console.log($scope.champs);
+        $scope.champs = api.getChamps();
+        console.log($scope.champs);
 
     };
 
