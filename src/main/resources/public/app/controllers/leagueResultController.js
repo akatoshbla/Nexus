@@ -1,5 +1,6 @@
 /**
  * Created by Phil on 2/28/2016.
+ * Controller for summonerPage to pass data to html
  */
 (function () {
 

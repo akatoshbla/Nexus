@@ -1,8 +1,10 @@
 /**
  * Created by Phil on 2/28/2016.
+ * Api for retrieving league of legends information
  */
 
 (function () {
+    //change api to a more functional name, no more global namespace
     var api = function ($http, $q, $parse) {
         var deferred = $q.defer();
         var result;
