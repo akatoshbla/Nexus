@@ -328,11 +328,14 @@
                 </tbody>
             </table>
         </div>
-        <div class="pvp" ng-if='characterInfo'>
+        <div class="pvp" ng-show="tabs.arena2v2" ng-if='characterInfo'>
             <table class = table>
                 <tbody>
-                    <span>2 V 2</span>
-                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left"> 
+                    <button ng-click= "tabChange('2v2')">2 V 2</button>
+                     <button ng-click= "tabChange('5v5')">5 V 5</button>
+                    
+                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">   
+                   <span>2 v 2</span>
                     <tr>
                     <td>Rating: </td>
                     <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.rating}}</td>
@@ -359,11 +362,54 @@
                       <tr>
                     <td>Games Lost This Week: </td>
                     <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyLost}}</td>
+                    </tr>                    
+                </tbody>
+            </table>
+
+        </div>
+ <div class="pvp" ng-show="tabs.arena5v5" ng-if='characterInfo'>
+            <table class = table>
+                <tbody>
+                    <button ng-click= "tabChange('2v2')">2 V 2</button>
+                     <button ng-click= "tabChange('5v5')">5 V 5</button>
+                    
+                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">   
+                   
+                    <span>5 v 5</span>
+                    <tr>
+                    <td>Rating: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.rating}}</td>
                     </tr>
-                                        
+                     <tr>
+                    <td>Games Played This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonPlayed}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Won This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonWon}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Lost This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonLost}}</td>
+                    </tr>
+                     <td>Games Played This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyPlayed}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Won This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyWon}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Lost This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyLost}}</td>
+                    </tr>                   
                 </tbody>
             </table>
 
         </div>
     </div>
 </div>
+
+
+             
+                   
