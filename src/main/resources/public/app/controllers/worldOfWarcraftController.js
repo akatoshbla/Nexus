@@ -16,6 +16,10 @@
             var request = host + realm.replace(" " , "-") + '/' + characterName + "?fields=guild,items,pvp,appearance,progression&locale=en_US&&apikey=t5bqm7xpt3kzu4u3jxrasec9pje5nvrp";
              $http.get(request).success( function(response){
                  console.log(response);
+                response.race = wowTabService.getRace(response.race);
+               response.gender =  wowTabService.getGender(response.gender);
+              response.faction = wowTabService.getFaction(response.faction);
+              response.class =   wowTabService.getClass(response.class);
                  $scope.characterInfo = response;
              })  
         } ;
