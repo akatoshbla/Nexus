@@ -3,11 +3,11 @@
     <form>
         <br>Enter Character Name
         <br>
-        <input type="text" name="name" ng-model="characterName" />
+        <input type="text" name="name" class = "black-text" ng-model="characterName" />
         <br>
         <br>Enter Realm
         <br>
-        <select id="selectNumber" ng-model="realm" name="realm">
+        <select id="selectNumber" class="black-text" ng-model="realm" name="realm">
             <option>Select a Realm</option>
             <option value="Aegwynn">Aegwynn</option>
             <option value="Aerie Peak">Aerie Peak</option>
@@ -329,87 +329,127 @@
             </table>
         </div>
         <div class="pvp" ng-show="tabs.arena2v2" ng-if='characterInfo'>
-            <table class = table>
+            <table class=table>
                 <tbody>
-                    <button ng-click= "tabChange('2v2')">2 V 2</button>
-                     <button ng-click= "tabChange('5v5')">5 V 5</button>
-                    
-                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">   
-                   <span>2 v 2</span>
+                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('5v5')">5 V 5</button>
+
+                    <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
+                    <div>2 v 2</div>
                     <tr>
-                    <td>Rating: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.rating}}</td>
+                        <td>Rating: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.rating}}</td>
                     </tr>
-                     <tr>
-                    <td>Games Played This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonPlayed}}</td>
+                    <tr>
+                        <td>Games Played This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonPlayed}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Won This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonWon}}</td>
+                    <tr>
+                        <td>Games Won This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonWon}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Lost This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonLost}}</td>
+                    <tr>
+                        <td>Games Lost This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonLost}}</td>
                     </tr>
-                     <td>Games Played This Week: </td>
+                    <td>Games Played This Week: </td>
                     <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyPlayed}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Won This Week: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyWon}}</td>
+                    <tr>
+                        <td>Games Won This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyWon}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Lost This Week: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyLost}}</td>
-                    </tr>                    
+                    <tr>
+                        <td>Games Lost This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyLost}}</td>
+                    </tr>
                 </tbody>
             </table>
 
         </div>
- <div class="pvp" ng-show="tabs.arena5v5" ng-if='characterInfo'>
-            <table class = table>
+        <div class="pvp" ng-show="tabs.arena5v5" ng-if='characterInfo'>
+            <table class=table>
                 <tbody>
-                    <button ng-click= "tabChange('2v2')">2 V 2</button>
-                     <button ng-click= "tabChange('5v5')">5 V 5</button>
-                    
-                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">   
-                   
-                    <span>5 v 5</span>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('5v5')">5 V 5</button>
+
+
+                    <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
+
+                    <div>5 v 5</div>
                     <tr>
-                    <td>Rating: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.rating}}</td>
+                        <td>Rating: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.rating}}</td>
                     </tr>
-                     <tr>
-                    <td>Games Played This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonPlayed}}</td>
+                    <tr>
+                        <td>Games Played This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonPlayed}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Won This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonWon}}</td>
+                    <tr>
+                        <td>Games Won This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonWon}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Lost This Season: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonLost}}</td>
+                    <tr>
+                        <td>Games Lost This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.seasonLost}}</td>
                     </tr>
-                     <td>Games Played This Week: </td>
+                    <td>Games Played This Week: </td>
                     <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyPlayed}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Won This Week: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyWon}}</td>
+                    <tr>
+                        <td>Games Won This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyWon}}</td>
                     </tr>
-                      <tr>
-                    <td>Games Lost This Week: </td>
-                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyLost}}</td>
-                    </tr>                   
+                    <tr>
+                        <td>Games Lost This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_5v5.weeklyLost}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="pvp" ng-show="tabs.arena3v3" ng-if='characterInfo'>
+            <table class=table>
+                <tbody>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small" ng-click="tabChange('5v5')">5 V 5</button>
+
+                    <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
+
+                    <div>3 v 3</div>
+                    <tr>
+                        <td>Rating: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.rating}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Played This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.seasonPlayed}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Won This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.seasonWon}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Lost This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.seasonLost}}</td>
+                    </tr>
+                    <td>Games Played This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.weeklyPlayed}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Won This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.weeklyWon}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Lost This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.weeklyLost}}</td>
+                    </tr>
                 </tbody>
             </table>
 
         </div>
     </div>
 </div>
-
-
-             
-                   
