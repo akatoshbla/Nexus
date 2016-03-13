@@ -349,6 +349,7 @@ footer {
     background: #222;
     margin-top: 30px;
  border-radius: 20px;
+    vertical-align: top;
 }
 .gear-wrapper{
     
@@ -366,9 +367,16 @@ footer {
     background: #222;
     margin-top: 30px;
  border-radius: 20px;
+    vertical-align: top;
     
 }
 .thumbnail{
     height: 84px;
      width: 84px;
+}
+.black-text{
+ color: black;   
+}
+.underline{
+ text-decoration: underline;   
 }
