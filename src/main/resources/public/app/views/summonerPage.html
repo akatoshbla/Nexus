@@ -1,1 +1,54 @@
-<p>Summoner {{ summonerName }}</p>
+<div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div align="center">
+        <img src="images/Games/lol-logo.png">
+    </div>
+
+    <!--need a dropdown to display per champion selected-->
+    <select id="selectNumber" ng-model=" " ng-repeat="data in champdata" name="champions">
+        <option value="Zuluhed">Zuluhed</option>
+    </select>
+    <h2>Summoner: {{ summonerInfo.champions[0]['id']}}</h2>
+    <!--need to return champion profile and Name-->
+    <p>Total Sessions Played: {{ summonerInfo.champions[0]["stats"]["totalSessionsPlayed"] }} </p>
+
+    <p>Total Deaths Per Session: {{ summonerInfo.champions[0]["stats"]["totalDeathsPerSession"] }}</p>
+
+    <p>Total Damage Taken: {{ summonerInfo.champions[0]["stats"]["totalDamageTaken"] }}</p>
+
+    <p>Total Minion Kills: {{ summonerInfo.champions[0]["stats"]["totalMinionKills"] }}</p>
+
+    <p>Max Champions Killed: {{ summonerInfo.champions[0]["stats"]["maxChampionsKilled"] }}</p>
+
+    <p>Total Double Kills: {{ summonerInfo.champions[0]["stats"]["totalDoubleKills"] }}</p>
+
+    <p>Total Physical DamageDealt: {{ summonerInfo.champions[0]["stats"]["totalPhysicalDamageDealt"] }}</p>
+
+    <p>Total Champion Kills: {{ summonerInfo.champions[0]["stats"]["totalChampionKills"] }}</p>
+
+    <p>Total Assists: {{ summonerInfo.champions[0]["stats"]["totalAssists"] }}</p>
+
+    <p>Total Damage Dealt: {{ summonerInfo.champions[0]["stats"]["totalDamageDealt"] }}</p>
+
+    <p>Most Champion Kills Per Session: {{ summonerInfo.champions[0]["stats"]["mostChampionKillsPerSession"] }}</p>
+
+    <p>Total Sessions Lost: {{ summonerInfo.champions[0]["stats"]["totalSessionsLost"] }}</p>
+
+    <p>Total Sessions Won: {{ summonerInfo.champions[0]["stats"]["totalSessionsWon"] }}</p>
+
+    <p>Total Magic Damage Dealt: {{ summonerInfo.champions[0]["stats"]["totalMagicDamageDealt"] }}</p>
+
+    <p>Total Gold Earned: {{ summonerInfo.champions[0]["stats"]["totalGoldEarned"] }}</p>
+
+    <p>Total Turrets Killed: {{ summonerInfo.champions[0]["stats"]["totalTurretsKilled"] }}</p>
+
+    <p>Max Number of Deaths: {{ summonerInfo.champions[0]["stats"]["maxNumDeaths"] }}</p>
+
+
+</div>
+
