@@ -254,8 +254,7 @@
     </form>
     <div class="gear-wrapper" ng-if='characterInfo'>
         <div class="gear" ng-if='characterInfo'>
-            <img src="http://us.battle.net/static-render/us/{{characterInfo.thumbnail}}" alt="Thumbnail" style="margin-bottom:2px" align="left">
-            {{characterInfo.name}}
+            <img src="http://us.battle.net/static-render/us/{{characterInfo.thumbnail}}" alt="Thumbnail" style="margin-bottom:2px" align="left"> {{characterInfo.name}}
             <table class="table">
                 <tbody>
                     <tr>
@@ -328,6 +327,43 @@
 
                 </tbody>
             </table>
+        </div>
+        <div class="pvp" ng-if='characterInfo'>
+            <table class = table>
+                <tbody>
+                    <span>2 V 2</span>
+                    <img class = "thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left"> 
+                    <tr>
+                    <td>Rating: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.rating}}</td>
+                    </tr>
+                     <tr>
+                    <td>Games Played This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonPlayed}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Won This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonWon}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Lost This Season: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.seasonLost}}</td>
+                    </tr>
+                     <td>Games Played This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyPlayed}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Won This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyWon}}</td>
+                    </tr>
+                      <tr>
+                    <td>Games Lost This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_2v2.weeklyLost}}</td>
+                    </tr>
+                                        
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
