@@ -380,3 +380,9 @@ footer {
 .underline{
  text-decoration: underline;   
 }
+.padding{
+ padding: 5px 5px 5px 5px;   
+}
+.margin{
+ margin: 5px 5px 5px 5px;   
+}

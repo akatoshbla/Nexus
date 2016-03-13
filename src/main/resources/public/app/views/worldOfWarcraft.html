@@ -383,9 +383,10 @@
         <div class="pvp" ng-show="tabs.arena2v2" ng-if='characterInfo'>
             <table class=table>
                 <tbody>
-                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('2v2')">2 V 2</button>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('3v3')">3 V 3</button>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('5v5')">5 V 5</button>
+                    <button class="btn btn-dark btn-small underline margin" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('5v5')">5 V 5</button>
+                     <button class="btn btn-dark btn-small  margin" ng-click="tabChange('rbg')">Rated Battle Ground</button>
 
                     <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
                     <div>2 v 2</div>
@@ -423,9 +424,10 @@
         <div class="pvp" ng-show="tabs.arena5v5" ng-if='characterInfo'>
             <table class=table>
                 <tbody>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('2v2')">2 V 2</button>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('3v3')">3 V 3</button>
-                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('5v5')">5 V 5</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small underline margin" ng-click="tabChange('5v5')">5 V 5</button>
+                     <button class="btn btn-dark btn-small  margin" ng-click="tabChange('rbg')">Rated Battle Ground</button>
 
 
                     <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
@@ -465,9 +467,10 @@
         <div class="pvp" ng-show="tabs.arena3v3" ng-if='characterInfo'>
             <table class=table>
                 <tbody>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('2v2')">2 V 2</button>
-                    <button class="btn btn-dark btn-small underline" ng-click="tabChange('3v3')">3 V 3</button>
-                    <button class="btn btn-dark btn-small" ng-click="tabChange('5v5')">5 V 5</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small underline margin" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('5v5')">5 V 5</button>
+                       <button class="btn btn-dark btn-small  margin" ng-click="tabChange('rbg')">Rated Battle Ground</button>
 
                     <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
 
@@ -498,6 +501,48 @@
                     <tr>
                         <td>Games Lost This Week: </td>
                         <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_3v3.weeklyLost}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+         <div class="pvp" ng-show="tabs.rbg" ng-if='characterInfo'>
+            <table class=table>
+                <tbody>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('2v2')">2 V 2</button>
+                    <button class="btn btn-dark btn-small  margin" ng-click="tabChange('3v3')">3 V 3</button>
+                    <button class="btn btn-dark btn-small margin" ng-click="tabChange('5v5')">5 V 5</button>
+                     <button class="btn btn-dark btn-small underline margin" ng-click="tabChange('rbg')">Rated Battle Ground</button>
+
+                    <img class="thumbnail" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQgQ28qctCN2YZwOtKTzRde-AYtscLh11Fgirb4dWMz8ct9-GJhIw" alt="Thumbnail" style="margin-bottom:2px" align="left">
+
+                    <div>Rated Battle Ground</div>
+                    <tr>
+                        <td>Rating: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.rating}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Played This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.seasonPlayed}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Won This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.seasonWon}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Lost This Season: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.seasonLost}}</td>
+                    </tr>
+                    <td>Games Played This Week: </td>
+                    <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.weeklyPlayed}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Won This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.weeklyWon}}</td>
+                    </tr>
+                    <tr>
+                        <td>Games Lost This Week: </td>
+                        <td>{{characterInfo.pvp.brackets.ARENA_BRACKET_RBG.weeklyLost}}</td>
                     </tr>
                 </tbody>
             </table>
