@@ -1,6 +1,6 @@
 (function () {
 
-    var leagueController = function ($scope, $http, $location) {
+    var leagueController = function ($scope, $http, $location, api) {
         // url for champ including my access key
         var champListUrl = "https://na.api.pvp.net/api/lol/na/v1.2/champion?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76"
 
@@ -33,20 +33,23 @@
 
         $scope.searchSum = function (summonerName) {
 
-            var summoner = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/"+ summonerName +"?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76";
-
-            $http.get(summoner).success(function (response) {
-
-                $scope.summonerName;
-                console.log(response);
-                $scope.data = response;
-                console.log($scope.data);
-            })
-        }
+                api.summonerRank(summonerName).then(function(data){
+                    $scope.data = data;
+                    if(data != null){
+                        $location.path('/summonerPage');
+                    }
+                    else{
+                        console.log("failed json");
+                    }
+                }, function(error){
+                   console.log(error);
+                });
+            }
+            //console.log($scope);
 
     };
 
-    leagueController.$inject = ['$scope', '$http', '$location'];
+    leagueController.$inject = ['$scope', '$http', '$location', 'api'];
 
     angular.module('nexusApp')
         .controller('leagueController', leagueController);
