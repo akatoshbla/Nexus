@@ -9,11 +9,15 @@
           arena5v5: false,
           rbg: false    
     }
+            $scope.infoTabs = {
+                    info: true,
+                    stats: false 
+                }
           console.log($scope.tabs);
 
          $scope.characterLookup = function (realm, characterName) {
            var  host = "https://us.api.battle.net/wow/character/";
-            var request = host + realm.replace(" " , "-") + '/' + characterName + "?fields=guild,items,pvp,appearance,progression&locale=en_US&&apikey=t5bqm7xpt3kzu4u3jxrasec9pje5nvrp";
+            var request = host + realm.replace(" " , "-") + '/' + characterName + "?fields=guild,items,pvp,appearance,stats,progression&locale=en_US&&apikey=t5bqm7xpt3kzu4u3jxrasec9pje5nvrp";
              $http.get(request).success( function(response){
                  console.log(response);
                 response.race = wowTabService.getRace(response.race);
@@ -26,6 +30,9 @@
       $scope.tabChange = function(requestTab){
           $scope.tabs = wowTabService.tabsPvp(requestTab);
              
+      }
+      $scope.infoChange = function(requestTab){
+       $scope.infoTabs = wowTabService.tabsInfo(requestTab);   
       }
     }
 

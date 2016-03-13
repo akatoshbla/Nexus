@@ -38,6 +38,24 @@
             }
             return tabResult;
         };
+        
+           this.tabsInfo = function (requestTab) {
+            var tabResult;
+            if (requestTab === "info") {
+                tabResult = {
+                    info: true,
+                    stats: false
+                   
+                }
+            } else if (requestTab === "stats") {
+                tabResult = {
+                    info: false,
+                    stats: true,
+                }
+
+            }
+            return tabResult;
+        };
 
         this.getGender = function (gender) {
             if (gender === 0) {
