@@ -241,6 +241,7 @@ public class NexusDB {
 			friendsList.add((String)obj.get("name"));
 		return friendsList;
 	}
+	
 	/**
 	 * Returns an List containing the usernames of the user's friends.
 	 * @param name String
@@ -835,8 +836,8 @@ public class NexusDB {
 			int friendId = getUserId(friend);
 			String query = "SELECT A.id, A.start, A.end"
 					+" FROM matchFinder A, matchFinder B"
-					+" WHERE (A.id=? AND B.id=? AND A.start < B.end)"
-					+" AND (A.end > B.start)";
+					+" WHERE (A.id=? AND B.id=? AND B.start <= A.end)"
+					+" AND (B.end >= A.start)";
 			List<Integer> params = asList(friendId, id);
 			List<HashMap<String, Object>> result = queryHelper(query, params);
 			if (result != null) {
