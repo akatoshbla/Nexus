@@ -107,7 +107,7 @@ public class ProfileController
 
 			try {
 
-				if (req.session().attribute("username") != null)
+				if (req.session().attribute("username") == null) // != changed
 
 				{
 					username = req.session().attribute("username");
@@ -137,7 +137,7 @@ public class ProfileController
 			try {
 			    username = req.params(":username");
 
-				if (req.session().attribute("username") != null)
+				if (req.session().attribute("username") == null) // != changed
 				{
 					System.out.println("Username: " + req.session().attribute("username"));
 					System.out.println("Has a session id: " + req.session().id());
