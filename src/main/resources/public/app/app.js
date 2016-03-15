@@ -45,6 +45,10 @@
                 controller: 'diablo3Controller',
                 templateUrl: 'app/views/diablo3.html'
             })
+            .when('/summonerPage',{
+                controller: 'leagueResultController',
+                templateUrl: 'app/views/summonerPage.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });

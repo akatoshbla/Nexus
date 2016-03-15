@@ -344,10 +344,12 @@ footer {
 
 .gear {
      width: 500px;
+    display: inline-block;
     color: white;
     background: #222;
     margin-top: 30px;
  border-radius: 20px;
+    vertical-align: top;
 }
 .gear-wrapper{
     
@@ -357,4 +359,30 @@ footer {
     margin-top: 30px;
     padding: 5px 10px 01px 10px;
      
+}
+.pvp {
+    display:inline-block;
+         width: 500px;
+    color: white;
+    background: #222;
+    margin-top: 30px;
+ border-radius: 20px;
+    vertical-align: top;
+    
+}
+.thumbnail{
+    height: 84px;
+     width: 84px;
+}
+.black-text{
+ color: black;   
+}
+.underline{
+ text-decoration: underline;   
+}
+.padding{
+ padding: 5px 5px 5px 5px;   
+}
+.margin{
+ margin: 5px 5px 5px 5px;   
 }
