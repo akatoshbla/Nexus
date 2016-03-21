@@ -5,7 +5,7 @@
 
 (function () {
     //change api to a more functional name, no more global namespace
-    var api = function ($http, $q, $parse) {
+    var sumInfo = function ($http, $q, $parse) {
         var deferred = $q.defer();
         var result;
         var lolObject;
@@ -43,7 +43,7 @@
         }
 
     };
-    api.$inject = ['$http', '$q', '$parse'];
-    angular.module('nexusApp').service('api', api);
+    sumInfo.$inject = ['$http', '$q', '$parse'];
+    angular.module('nexusApp').service('sumInfo', sumInfo);
 }());
 //buklaou

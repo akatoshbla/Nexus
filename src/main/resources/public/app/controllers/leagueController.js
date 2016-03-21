@@ -1,6 +1,6 @@
 (function () {
 
-    var leagueController = function ($scope, $http, $location, api) {
+    var leagueController = function ($scope, $http, $location, sumInfo) {
         // url for champ including my access key
         var champListUrl = "https://na.api.pvp.net/api/lol/na/v1.2/champion?api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76"
 
@@ -33,7 +33,7 @@
 
         $scope.searchSum = function (summonerName) {
 
-                api.summonerRank(summonerName).then(function(data){
+                sumInfo.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
                     if(data != null){
                         $location.path('/summonerPage');
@@ -49,7 +49,7 @@
 
     };
 
-    leagueController.$inject = ['$scope', '$http', '$location', 'api'];
+    leagueController.$inject = ['$scope', '$http', '$location', 'sumInfo'];
 
     angular.module('nexusApp')
         .controller('leagueController', leagueController);
