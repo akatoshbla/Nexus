@@ -107,7 +107,7 @@ public class ProfileController
 
 			try {
 
-				if (req.session().attribute("username") != null)
+				if (req.session().attribute("username") != null) 
 
 				{
 					username = req.session().attribute("username");
