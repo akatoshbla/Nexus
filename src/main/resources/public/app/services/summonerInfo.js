@@ -9,8 +9,9 @@
         var deferred = $q.defer();
         var result;
         var lolObject;
+        var info;
         this.summonerRank = function (summonerName) {
-            var info = summonerName.toString();
+            info = summonerName.toString();
             var summoner = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'+ summonerName +'?api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3';
             $http.get(summoner).success(function (response) {
                 //using summoner ID to get other info
@@ -23,6 +24,9 @@
 
             result = deferred.promise;
             return deferred.promise;
+        }
+        this.getSummonerName = function(){
+            return info;
         }
 
         this.getResultForRanked = function(){

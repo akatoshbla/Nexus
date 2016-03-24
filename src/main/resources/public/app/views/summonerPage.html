@@ -8,17 +8,19 @@
     <div align="center">
         <img src="images/Games/lol-logo.png">
     </div>
-
+    <br>
     <!--need a dropdown to display per champion selected-->
-    <select id="selectNumber" ng-model=" " ng-repeat="data in champdata" name="champions">
-        <option value="Zuluhed">Zuluhed</option>
+    <select>
+        <option>Select a Summoner</option>
+        <option ng-repeat="champs in summonerInfo.champions " value = {{champs['id']}}>{{champs['id']}}</option>
     </select>
-
+    <br>
+    <br>
     <section id="news" class="news bg-primary">
         <div class="container">
             <div class="row text-center">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <h2>Summoner:  summonerName </h2>
+                    <h2>Summoner:  {{summonerName}} </h2>
                     <hr class="small">
                     <div class="feed-container">
                         <h2>Champion: {{ summonerInfo.champions[0]['id']}}</h2>
