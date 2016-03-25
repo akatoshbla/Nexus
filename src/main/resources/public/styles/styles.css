@@ -1,6 +1,7 @@
 .background {
     /*background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');*/
     background-color: #28a4c9;
+    /*#28a4c9*/
     background-size: cover;
     width: 100%;
 }
@@ -39,6 +40,12 @@ body {
 body {
     font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: black;
+}
+
+.stuff,#league{
+    width:155px;
+    float:left;
+    /*display: inline;*/
 }
 
 /*select{*/
