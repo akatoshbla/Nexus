@@ -42,16 +42,13 @@ body {
     color: black;
 }
 
+/*sets image box for ng-repeat*/
 .stuff,#league{
     width:155px;
     float:left;
     /*display: inline;*/
 }
 
-/*select{*/
-    /*width: 200px;*/
-    /*height:50px;*/
-/*}*/
 .text-vertical-center {
     display: table-cell;
     text-align: center;
