@@ -1,7 +1,24 @@
 .background {
-    background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');
+    /*background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');*/
+    background-color: #28a4c9;
     background-size: cover;
     width: 100%;
+}
+
+.feed-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 35px;
+    height: 0;
+    overflow: hidden;
+}
+
+.feed-container iframe {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 html,
@@ -15,11 +32,19 @@ body {
     color: black;
 }
 
-body {
-    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: lightskyblue;
+#summonerSearch{
+    width: 200px;
 }
 
+body {
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: black;
+}
+
+/*select{*/
+    /*width: 200px;*/
+    /*height:50px;*/
+/*}*/
 .text-vertical-center {
     display: table-cell;
     text-align: center;
@@ -344,10 +369,12 @@ footer {
 
 .gear {
      width: 500px;
+    display: inline-block;
     color: white;
     background: #222;
     margin-top: 30px;
  border-radius: 20px;
+    vertical-align: top;
 }
 .gear-wrapper{
     
@@ -357,4 +384,30 @@ footer {
     margin-top: 30px;
     padding: 5px 10px 01px 10px;
      
+}
+.pvp {
+    display:inline-block;
+         width: 500px;
+    color: white;
+    background: #222;
+    margin-top: 30px;
+ border-radius: 20px;
+    vertical-align: top;
+    
+}
+.thumbnail{
+    height: 84px;
+     width: 84px;
+}
+.black-text{
+ color: black;   
+}
+.underline{
+ text-decoration: underline;   
+}
+.padding{
+ padding: 5px 5px 5px 5px;   
+}
+.margin{
+ margin: 5px 5px 5px 5px;   
 }
