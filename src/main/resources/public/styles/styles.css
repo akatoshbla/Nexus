@@ -411,3 +411,6 @@ footer {
 .margin{
  margin: 5px 5px 5px 5px;   
 }
+.inline{
+ display:inline-block;
+}
