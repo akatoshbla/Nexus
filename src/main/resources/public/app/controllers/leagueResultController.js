@@ -4,18 +4,19 @@
  */
 (function () {
 
-    var leagueResultController = function ($scope, $http, api) {
+    var leagueResultController = function ($scope, $http, sumInfo) {
 
-        $scope.summonerInfo = api.getResultForRanked();
+        $scope.summonerInfo = sumInfo.getResultForRanked();
         //console.log({info: $scope.summonerInfo});
         console.log($scope.summonerInfo);
 
+        $scope.summonerName = sumInfo.getSummonerName();
        // $scope.champs = api.getChamps();
        // console.log($scope.champs);
 
     };
 
-    leagueResultController.$inject = ['$scope','$http', 'api'];
+    leagueResultController.$inject = ['$scope','$http', 'sumInfo'];
 
     angular.module('nexusApp')
         .controller('leagueResultController', leagueResultController);
