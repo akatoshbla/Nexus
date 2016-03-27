@@ -10,10 +10,17 @@
     </div>
     <br>
     <!--need a dropdown to display per champion selected-->
-    <select>
-        <option>Select a Summoner</option>
-        <option ng-repeat="champs in summonerInfo.champions " value = {{champs['id']}}>{{champs['id']}}</option>
-    </select>
+    <div>
+        <form>
+            <label>Select a champion: </label>
+            <select name="selectChamps" ng-model="summonerInfo.selectChamps">
+                <option ng-repeat="champs in summonerInfo.champions " value = {{champs}}>{{champs['id']}}</option>
+            </select>
+        </form>
+
+        {{summonerInfo.selectChamps}}
+    </div>
+
     <br>
     <br>
     <section id="news" class="news bg-primary">

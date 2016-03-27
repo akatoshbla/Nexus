@@ -11,8 +11,8 @@
         console.log($scope.summonerInfo);
 
         $scope.summonerName = sumInfo.getSummonerName();
-       // $scope.champs = api.getChamps();
-       // console.log($scope.champs);
+        $scope.champs = sumInfo.getChamps();
+        console.log($scope.champs);
 
     };
 
