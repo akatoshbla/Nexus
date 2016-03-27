@@ -1,5 +1,5 @@
 <div align="center">
-    <img class="img-portfolio img-responsive" img="" src="images/games/world-of-warcraft-logo.png">
+    <img class="img-portfolio img-responsive" img="" src="images/games/diablo3edit.png">
     <form>
         <br>Enter BattleTag ( name-#### format )
         <br>
@@ -9,11 +9,11 @@
         </br>
         <button type="button" ng-click="battlenetLookup(id, hero)" class="btn btn-dark btn-sm add-topMargin">Hero Lookup</button>
     </form>
-    <div ng-if="battlenet" class="gear-wrapper" >
-                <div class="pvp" >
-            <table class=table>
+    <div ng-if="battlenet" class="gear-wrapper">
+        <div class="pvp">
+            <table class="table">
                 <tbody>
-             
+
 
                     <div> Battlenet account stats for {{battlenet.battleTag}}</div>
                     <tr>
@@ -29,7 +29,7 @@
                         <td>{{battlenet.jeweler.level}}</td>
                     </tr>
                     <td>Hardcore Jeweler Level: </td>
-                     <td>{{battlenet.jewelerHardcore.level}}</td>
+                    <td>{{battlenet.jewelerHardcore.level}}</td>
                     </tr>
                     <tr>
                         <td>Total Monsters Killed: </td>
@@ -39,15 +39,52 @@
                         <td>Total Elites Killed: </td>
                         <td>{{battlenet.kills.elites}}</td>
                     </tr>
-                      <tr>
+                    <tr>
                         <td>Total Hardcore Monsters Killed: </td>
-                       <td>{{battlenet.kills.hardcoreMonsters}}</td>
+                        <td>{{battlenet.kills.hardcoreMonsters}}</td>
                     </tr>
                 </tbody>
             </table>
 
         </div>
-        <div  ng-repeat="hero in battlenet.heroes" class = "inline">
+        <div ng-if="battlenet" class="gear-wrapper inline">
+            <div class="pvp">
+                <table class=table>
+                    <tbody>
+
+
+                        <div> Acts Cleared</div>
+                        <tr>
+                            <td>Act I: </td>
+                            <td>{{battlenet.progression.act1}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act II: </td>
+                            <td>{{battlenet.progression.act2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act III: </td>
+                            <td>{{battlenet.progression.act3}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act IV: </td>
+                            <td>{{battlenet.progression.act4}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act V: </td>
+                            <td>{{battlenet.progression.act5}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div ng-repeat="hero in battlenet.heroes" class="inline">
             <button class="btn btn-dark btn-sm add-all-margin inline" ng-click="heroLookup(id, hero.id)">{{hero.name}}</button>
         </div>
     </div>
+
+
+
+</div>
