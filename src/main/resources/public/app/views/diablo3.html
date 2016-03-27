@@ -8,82 +8,87 @@
 
         </br>
         <button type="button" ng-click="battlenetLookup(id, hero)" class="btn btn-dark btn-sm add-topMargin">Hero Lookup</button>
+        <p>{{errorText}}</p>
     </form>
-    <div ng-if="battlenet" class="gear-wrapper">
+    <div>
+        <div ng-if="battlenet && !error">Click a hero to look there stats up!</div>
+    </div>
+    <div ng-if="battlenet && !error" ng-repeat="hero in battlenet.heroes" class="inline">
+        <button class="btn btn-dark btn-sm add-all-margin inline" ng-click="heroLookup(id, hero.id)">{{hero.name}}</button>
+    </div>
+</div>
+<div ng-if="battlenet && !error" class="gear-wrapper">
+    <div class="pvp">
+        <table class="table">
+            <tbody>
+
+
+                <div class="center-this-text"> Battlenet account stats for {{battlenet.battleTag}}</div>
+                <tr>
+                    <td>Blacksmith Level: </td>
+                    <td>{{battlenet.blacksmith.level}}</td>
+                </tr>
+                <tr>
+                    <td>Hardcore Blacksmit Level: </td>
+                    <td>{{battlenet.blacksmithHardcore.level}}</td>
+                </tr>
+                <tr>
+                    <td>Jeweler Level: </td>
+                    <td>{{battlenet.jeweler.level}}</td>
+                </tr>
+                <td>Hardcore Jeweler Level: </td>
+                <td>{{battlenet.jewelerHardcore.level}}</td>
+                </tr>
+                <tr>
+                    <td>Total Monsters Killed: </td>
+                    <td>{{battlenet.kills.monsters}}</td>
+                </tr>
+                <tr>
+                    <td>Total Elites Killed: </td>
+                    <td>{{battlenet.kills.elites}}</td>
+                </tr>
+                <tr>
+                    <td>Total Hardcore Monsters Killed: </td>
+                    <td>{{battlenet.kills.hardcoreMonsters}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div ng-if="battlenet" class="gear-wrapper inline">
         <div class="pvp">
-            <table class="table">
+            <table class=table>
                 <tbody>
 
 
-                    <div> Battlenet account stats for {{battlenet.battleTag}}</div>
+                    <div class="center-this-text"> Acts Cleared</div>
                     <tr>
-                        <td>Blacksmith Level: </td>
-                        <td>{{battlenet.blacksmith.level}}</td>
-                    </tr>
-                    <tr>
-                        <td>Hardcore Blacksmit Level: </td>
-                        <td>{{battlenet.blacksmithHardcore.level}}</td>
+                        <td>Act I: </td>
+                        <td>{{battlenet.progression.act1}}</td>
                     </tr>
                     <tr>
-                        <td>Jeweler Level: </td>
-                        <td>{{battlenet.jeweler.level}}</td>
-                    </tr>
-                    <td>Hardcore Jeweler Level: </td>
-                    <td>{{battlenet.jewelerHardcore.level}}</td>
+                        <td>Act II: </td>
+                        <td>{{battlenet.progression.act2}}</td>
                     </tr>
                     <tr>
-                        <td>Total Monsters Killed: </td>
-                        <td>{{battlenet.kills.monsters}}</td>
+                        <td>Act III: </td>
+                        <td>{{battlenet.progression.act3}}</td>
                     </tr>
                     <tr>
-                        <td>Total Elites Killed: </td>
-                        <td>{{battlenet.kills.elites}}</td>
+                        <td>Act IV: </td>
+                        <td>{{battlenet.progression.act4}}</td>
                     </tr>
                     <tr>
-                        <td>Total Hardcore Monsters Killed: </td>
-                        <td>{{battlenet.kills.hardcoreMonsters}}</td>
+                        <td>Act V: </td>
+                        <td>{{battlenet.progression.act5}}</td>
                     </tr>
+
                 </tbody>
             </table>
 
         </div>
-        <div ng-if="battlenet" class="gear-wrapper inline">
-            <div class="pvp">
-                <table class=table>
-                    <tbody>
-
-
-                        <div> Acts Cleared</div>
-                        <tr>
-                            <td>Act I: </td>
-                            <td>{{battlenet.progression.act1}}</td>
-                        </tr>
-                        <tr>
-                            <td>Act II: </td>
-                            <td>{{battlenet.progression.act2}}</td>
-                        </tr>
-                        <tr>
-                            <td>Act III: </td>
-                            <td>{{battlenet.progression.act3}}</td>
-                        </tr>
-                        <tr>
-                            <td>Act IV: </td>
-                            <td>{{battlenet.progression.act4}}</td>
-                        </tr>
-                        <tr>
-                            <td>Act V: </td>
-                            <td>{{battlenet.progression.act5}}</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-        <div ng-repeat="hero in battlenet.heroes" class="inline">
-            <button class="btn btn-dark btn-sm add-all-margin inline" ng-click="heroLookup(id, hero.id)">{{hero.name}}</button>
-        </div>
     </div>
+
 
 
 
