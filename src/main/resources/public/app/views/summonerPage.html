@@ -17,6 +17,7 @@
                 <option ng-repeat="champs in champJson" value = {{champs.id}}>{{champs.key}}</option>
             </select>
         </form>
+        {{summonerInfo.selectChamps["stats"]}}
     </div>
 
     <br>
@@ -28,6 +29,7 @@
                     <h2>Summoner:  {{summonerName}} </h2>
                     <hr class="small">
                     <div class="feed-container">
+                        <h2>Champion: {{ summonerInfo.selectChamps[0]['id']}}</h2>
                         <!--need to return champion profile and Name-->
                         <p>Total Sessions Played: {{ summonerInfo.champions[0]["stats"]["totalSessionsPlayed"] }} </p>
 
