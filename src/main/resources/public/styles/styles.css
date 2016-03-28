@@ -421,3 +421,6 @@ footer {
 .inline{
  display:inline-block;
 }
+.center-this-text{
+    text-align: center
+}
