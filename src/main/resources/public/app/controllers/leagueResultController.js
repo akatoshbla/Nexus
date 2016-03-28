@@ -13,7 +13,9 @@
         $scope.summonerName = sumInfo.getSummonerName();
 
         $scope.champJson = sumInfo.getChamps();
-        //console.log($scope.champJson);
+
+        $scope.chosenChamp = sumInfo.chosenChamp(summonerInfo.selectChamps.id);
+        console.log($scope.chosenChamp);
 
     };
 
