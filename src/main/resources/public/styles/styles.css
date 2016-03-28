@@ -358,6 +358,9 @@ footer {
 .profile-pic {
     display: block;
 }
+.add-all-margin{
+ margin: 10px 10px 10px 10px;
+}
 
 .edit {
     padding-top: 7px;
@@ -410,4 +413,10 @@ footer {
 }
 .margin{
  margin: 5px 5px 5px 5px;   
+}
+.inline{
+ display:inline-block;
+}
+.center-this-text{
+    text-align: center
 }

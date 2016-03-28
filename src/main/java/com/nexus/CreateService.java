@@ -22,17 +22,23 @@ public class CreateService {
 	private boolean create(String username, String password, String email) throws Exception
 	{
 		NexusDB db = new NexusDB();
-		password = db.hashPassword(password);
+		JforumDB jdb = new JforumDB();
 		if (db.recordExists(username))
 			return false;
 		else {
 			if (email != null)
 			{
-				return db.createUser(username, password, email);
+				return db.createUser(username,  db.hashPassword(
+								db.hashPassword(password).toLowerCase()), email) && 
+					  jdb.createUser(username, jdb.hashPassword(
+								password,"MD5").toLowerCase(), email);
 			}
 			else
 			{
-				return db.createUser(username, password);
+				return db.createUser(username,  db.hashPassword(
+							  db.hashPassword(password).toLowerCase())) &&
+					  jdb.createUser(username, jdb.hashPassword(
+							  password,"MD5").toLowerCase(),"");
 			}
 		}
 	}
