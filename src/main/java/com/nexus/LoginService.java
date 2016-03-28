@@ -20,13 +20,10 @@ public class LoginService {
 	 */
 	private boolean login(String username, String password) throws Exception
 	{
-
-    	//password=password.toUpperCase();
 		NexusDB db = new NexusDB();
-		password = db.hashPassword(password);
+		password = db.hashPassword(db.hashPassword(password).toLowerCase());
 		String hash = db.retrievePassword(username);
-		
-		//failIfInvalid(password);
+		System.out.println(password);
 		if (hash.equals(password) && hash!=null)
 			return true;	
 		else	

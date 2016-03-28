@@ -35,8 +35,8 @@
             var userInfo = {
 
                 "username": credentials.username,
-                "password": sha256_digest(credentials.password),
-                "password2": sha256_digest(credentials.password2),
+                "password": credentials.password,
+                "password2": credentials.password2,
                 "email": credentials.email
             };
             if(validateEmail(credentials.email)){
