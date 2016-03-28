@@ -8,11 +8,12 @@
 
         $scope.summonerInfo = sumInfo.getResultForRanked();
         //console.log({info: $scope.summonerInfo});
-        console.log($scope.summonerInfo);
+        //console.log($scope.summonerInfo);
 
         $scope.summonerName = sumInfo.getSummonerName();
-        $scope.champs = sumInfo.getChamps();
-        console.log($scope.champs);
+
+        $scope.champJson = sumInfo.getChamps();
+        //console.log($scope.champJson);
 
     };
 
