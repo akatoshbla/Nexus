@@ -117,9 +117,8 @@ public class ProfileController
 
 				else
 				{
-					username = "user007"; // switched from null
+					username = null; // switched from null "user007"
 					System.out.println("Non-Session User Alert at " +req.ip());
-					return profileService.getUserProfile(username);
 				}
 				return profileService.getUserProfile(username);
 			} catch (Exception e) {
@@ -264,7 +263,6 @@ public class ProfileController
 				} else {
 					username = null; // change to force username and uncomment the below return (frontend profile forced connection)
 					System.out.println("Non-Session User Alert at " + req.ip());
-					//return profileService.updateCurrentGames(username, req.body());
 				}
 				return profileService.updateCurrentGames(username, req.body());
 			} catch (Exception e) {
