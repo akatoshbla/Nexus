@@ -33,12 +33,19 @@
 
         $scope.searchSum = function (summonerName) {
 
+            $scope.exist = "";
+
                 sumInfo.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
                     if(data != null){
-                        $location.path('/summonerPage');
+                        $scope.exist = true;
+                        $scope.summonerName = sumInfo.getSummonerName();
+                        $scope.summonerInfo = sumInfo.getResultForRanked();
+                        $scope.champJson = sumInfo.getChamps();
+                        //$location.path('/summonerPage');
                     }
                     else{
+                        $scope.exist = false;
                         console.log("failed json");
                     }
                 }, function(error){
@@ -46,6 +53,37 @@
                 });
             }
             //console.log($scope);
+
+        $scope.infoTabs = {
+            info: true,
+            stats: false
+        }
+
+        //$scope.summonerInfo = sumInfo.getResultForRanked();
+        //console.log({info: $scope.summonerInfo});
+        //console.log($scope.summonerInfo);
+
+        //$scope.summonerName = sumInfo.getSummonerName();
+
+        //$scope.champJson = sumInfo.getChamps();
+
+        //$scope.chosenChamp = sumInfo.chosenOne();
+        //console.log($scope.chosenChamp);
+
+        $scope.chosenOne = function (selectChamps){
+            console.log(selectChamps);
+            $scope.chosenChampion = [];
+            var sumJson = sumInfo.getResultForRanked();
+            //console.log(sumJson);
+            angular.forEach(sumJson.champions,function(data){
+                //console.log(data);
+                if(data.id == selectChamps){
+                    $scope.chosenChampion.push(data);
+                    //console.log(chosenChampion);
+                }
+            })
+            console.log($scope.chosenChampion);
+        }
 
     };
 
