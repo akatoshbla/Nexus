@@ -20,9 +20,7 @@
 
                         $scope.champData.push(data);
                     })
-
                 }
-
             })
             $scope.combinedObject.push($scope.champData);
 
