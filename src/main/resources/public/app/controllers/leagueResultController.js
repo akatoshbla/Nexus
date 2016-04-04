@@ -6,7 +6,10 @@
 
     var leagueResultController = function ($scope, $http, sumInfo) {
 
-
+        $scope.infoTabs = {
+            info: true,
+            stats: false
+        }
 
         $scope.summonerInfo = sumInfo.getResultForRanked();
         //console.log({info: $scope.summonerInfo});
@@ -34,7 +37,6 @@
             console.log($scope.chosenChampion);
         }
 
-        console.log(chosenChampion);
     };
 
     leagueResultController.$inject = ['$scope','$http', 'sumInfo'];
