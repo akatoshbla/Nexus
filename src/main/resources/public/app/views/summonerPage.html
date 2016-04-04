@@ -10,60 +10,145 @@
     </div>
     <br>
     <!--need a dropdown to display per champion selected-->
-    <select>
-        <option>Select a Summoner</option>
-        <option ng-repeat="champs in summonerInfo.champions " value = {{champs['id']}}>{{champs['id']}}</option>
-    </select>
+    <div>
+        <form>
+            <label>Select a champion: </label>
+            <select name="selectChamps" ng-model="selectChamps">
+                <option ng-repeat="champs in champJson" value = {{champs.id}}>{{champs.key}}</option>
+            </select>
+            <button type="button" ng-click="chosenOne(selectChamps)" class="btn btn-dark btn-sm add-topMargin">Character Lookup</button>
+        </form>
+        <!--{{selectChamps}}-->
+    </div>
+
     <br>
     <br>
-    <section id="news" class="news bg-primary">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <h2>Summoner:  {{summonerName}} </h2>
-                    <hr class="small">
-                    <div class="feed-container">
-                        <h2>Champion: {{ summonerInfo.champions[0]['id']}}</h2>
-                        <!--need to return champion profile and Name-->
-                        <p>Total Sessions Played: {{ summonerInfo.champions[0]["stats"]["totalSessionsPlayed"] }} </p>
+    <div class = "summonerWrapper" ng-if="chosenChampion">
+        <div class = "champion" ng-if="chosenChampion" ng-show="infoTabs.info">
+            <!--<section id="news" class="news bg-primary">-->
+                <div class="container">
+                    <!--<div class="row text-center">-->
+                        <!--<div class="col-lg-10 col-lg-offset-1">-->
+                            <h2>Summoner:  {{summonerName}} </h2>
+                            <hr class="small">
+                            <table class="table">
+                                <tbody>
+                                <div>Champion Info</div>
+                                <tr>
+                                    <td>Total Sessions Played: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalSessionsPlayed"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Deaths Per Session: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalDeathsPerSession"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Damage Taken: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalDamageTaken"] }}</td>
+                                </tr>
 
-                        <p>Total Deaths Per Session: {{ summonerInfo.champions[0]["stats"]["totalDeathsPerSession"] }}</p>
+                                <tr>
+                                    <td>Total Minion Kills: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalMinionKills"] }}</td>
+                                </tr>
+                                <td>Max Champions Killed: </td>
+                                <td>{{ chosenChampion[0]["stats"]["maxChampionsKilled"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Double Kills: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalDoubleKills"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Physical DamageDealt: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalPhysicalDamageDealt"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Champion Kills: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalChampionKills"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Assists: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalAssists"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Damage Dealt: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalDamageDealt"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Magic Damage Dealt: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalMagicDamageDealt"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Most Champion Kills Per Session: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["mostChampionKillsPerSession"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Sessions Lost: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalSessionsLost"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Sessions Won: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalSessionsWon"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Gold Earned: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalGoldEarned"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Turrets Killed: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["totalTurretsKilled"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Max Number of Deaths: </td>
+                                    <td>{{ chosenChampion[0]["stats"]["maxNumDeaths"] }}</td>
+                                </tr>
+                                <!--<p>Total Sessions Played: {{ chosenChampion[0]["stats"]["totalSessionsPlayed"] }} </p>-->
 
-                        <p>Total Damage Taken: {{ summonerInfo.champions[0]["stats"]["totalDamageTaken"] }}</p>
+                                <!--<p>Total Deaths Per Session: {{ chosenChampion[0]["stats"]["totalDeathsPerSession"] }}</p>-->
 
-                        <p>Total Minion Kills: {{ summonerInfo.champions[0]["stats"]["totalMinionKills"] }}</p>
+                                <!--<p>Total Damage Taken: {{ chosenChampion[0]["stats"]["totalDamageTaken"] }}</p>-->
 
-                        <p>Max Champions Killed: {{ summonerInfo.champions[0]["stats"]["maxChampionsKilled"] }}</p>
+                                <!--<p>Total Minion Kills: {{ chosenChampion[0]["stats"]["totalMinionKills"] }}</p>-->
 
-                        <p>Total Double Kills: {{ summonerInfo.champions[0]["stats"]["totalDoubleKills"] }}</p>
+                                <!--<p>Max Champions Killed: {{ chosenChampion[0]["stats"]["maxChampionsKilled"] }}</p>-->
 
-                        <p>Total Physical DamageDealt: {{ summonerInfo.champions[0]["stats"]["totalPhysicalDamageDealt"] }}</p>
+                                <!--<p>Total Double Kills: {{ chosenChampion[0]["stats"]["totalDoubleKills"] }}</p>-->
 
-                        <p>Total Champion Kills: {{ summonerInfo.champions[0]["stats"]["totalChampionKills"] }}</p>
+                                <!--<p>Total Physical DamageDealt: {{ chosenChampion[0]["stats"]["totalPhysicalDamageDealt"] }}</p>-->
 
-                        <p>Total Assists: {{ summonerInfo.champions[0]["stats"]["totalAssists"] }}</p>
+                                <!--<p>Total Champion Kills: {{ chosenChampion[0]["stats"]["totalChampionKills"] }}</p>-->
 
-                        <p>Total Damage Dealt: {{ summonerInfo.champions[0]["stats"]["totalDamageDealt"] }}</p>
+                                <!--<p>Total Assists: {{ chosenChampion[0]["stats"]["totalAssists"] }}</p>-->
 
-                        <p>Most Champion Kills Per Session: {{ summonerInfo.champions[0]["stats"]["mostChampionKillsPerSession"] }}</p>
+                                <!--<p>Total Damage Dealt: {{ chosenChampion[0]["stats"]["totalDamageDealt"] }}</p>-->
 
-                        <p>Total Sessions Lost: {{ summonerInfo.champions[0]["stats"]["totalSessionsLost"] }}</p>
+                                <!--<p>Most Champion Kills Per Session: {{ chosenChampion[0]["stats"]["mostChampionKillsPerSession"] }}</p>-->
 
-                        <p>Total Sessions Won: {{ summonerInfo.champions[0]["stats"]["totalSessionsWon"] }}</p>
+                                <!--<p>Total Sessions Lost: {{ chosenChampion[0]["stats"]["totalSessionsLost"] }}</p>-->
 
-                        <p>Total Magic Damage Dealt: {{ summonerInfo.champions[0]["stats"]["totalMagicDamageDealt"] }}</p>
+                                <!--<p>Total Sessions Won: {{ chosenChampion[0]["stats"]["totalSessionsWon"] }}</p>-->
 
-                        <p>Total Gold Earned: {{ summonerInfo.champions[0]["stats"]["totalGoldEarned"] }}</p>
+                                <!--<p>Total Magic Damage Dealt: {{ chosenChampion[0]["stats"]["totalMagicDamageDealt"] }}</p>-->
 
-                        <p>Total Turrets Killed: {{ summonerInfo.champions[0]["stats"]["totalTurretsKilled"] }}</p>
+                                <!--<p>Total Gold Earned: {{ chosenChampion[0]["stats"]["totalGoldEarned"] }}</p>-->
 
-                        <p>Max Number of Deaths: {{ summonerInfo.champions[0]["stats"]["maxNumDeaths"] }}</p>
+                                <!--<p>Total Turrets Killed: {{ chosenChampion[0]["stats"]["totalTurretsKilled"] }}</p>-->
 
-                    </div>
+                                <!--<p>Max Number of Deaths: {{ chosenChampion[0]["stats"]["maxNumDeaths"] }}</p>-->
+
+
+                                </tbody>
+                                <!--<h2>Champion: {{ champ.key}}</h2>-->
+                                <!--need to return champion profile and Name-->
+
+                            </table>
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
-            </div>
+            <!--</section>-->
         </div>
-    </section>
+
+    </div>
 
 
 </div>
