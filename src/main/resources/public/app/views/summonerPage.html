@@ -14,16 +14,22 @@
         <form>
             <label>Select a champion: </label>
             <select name="selectChamps" ng-model="selectChamps">
-                <option ng-repeat="champs in champJson" value = {{champs}}>{{champs.key}}</option>
+                <option ng-repeat="champs in champJson" value = {{champs.id}}>{{champs.key}}</option>
             </select>
-
             <button type="button" ng-click="chosenOne(selectChamps)" class="btn btn-dark btn-sm add-topMargin">Character Lookup</button>
         </form>
+
         {{selectChamps}}
     </div>
 
     <br>
     <br>
+    <div class = "summonerWrapper" ng-if="">
+        <div class = "champion" ng-if="" ng-show="">
+
+        </div>
+
+    </div>
     <section id="news" class="news bg-primary">
         <div class="container">
             <div class="row text-center">

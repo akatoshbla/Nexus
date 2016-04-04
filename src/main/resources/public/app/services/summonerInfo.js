@@ -54,7 +54,6 @@
             return lolJson;
         }
 
-
     };
     sumInfo.$inject = ['$http', '$q'];
     angular.module('nexusApp').service('sumInfo', sumInfo);

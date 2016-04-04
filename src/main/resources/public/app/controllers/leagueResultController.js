@@ -6,7 +6,7 @@
 
     var leagueResultController = function ($scope, $http, sumInfo) {
 
-        var chosenChampion = [];
+
 
         $scope.summonerInfo = sumInfo.getResultForRanked();
         //console.log({info: $scope.summonerInfo});
@@ -20,13 +20,18 @@
         //console.log($scope.chosenChamp);
 
         $scope.chosenOne = function (selectChamps){
-            angular.forEach(summonerInfo.champions,function(champ){
-                if(champ.id === selectChamps){
-                    chosenChampion.push(champ);
-                    console.log(champ);
+            //console.log(selectChamps);
+            $scope.chosenChampion = [];
+            var sumJson = sumInfo.getResultForRanked();
+            //console.log(sumJson);
+            angular.forEach(sumJson.champions,function(data){
+                //console.log(data.id);
+                if(data.id == selectChamps){
+                    $scope.chosenChampion.push(data);
+                    //console.log(chosenChampion);
                 }
             })
-            return chosenChampion;
+            console.log($scope.chosenChampion);
         }
 
         console.log(chosenChampion);
