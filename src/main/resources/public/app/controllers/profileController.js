@@ -79,7 +79,7 @@
                     join: response.joined,
                     lastSeen: response.lastOnline,
                     realName: response.realName,
-                    forumLvl: 'Lurker',
+                    forumLvl: response.role, // changed from 'Lurker'
                     shares: response.shares,
                     likes: response.likes,
                     posts: response.posts,
