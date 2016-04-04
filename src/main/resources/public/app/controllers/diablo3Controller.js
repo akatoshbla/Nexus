@@ -17,6 +17,7 @@
         };
 
         $scope.heroLookup = function (id, heroId) {
+            $scope.heroChecked = true;
             $http.get('https://us.api.battle.net/d3/profile/' + id + '/hero/' + heroId + '?locale=en_US&apikey=t5bqm7xpt3kzu4u3jxrasec9pje5nvrp').success(function (response) {
                 $scope.heroInfo = response;
                 if (response.code == "NOTFOUND") {
@@ -25,6 +26,12 @@
                 } else {
                     $scope.error = false;
                    
+                }
+                if($scope.heroInfo.gender == 0){
+                 $scope.heroInfo.gender = 'Male';   
+                }
+                else{
+                 $scope.heroInfo.gender = 'Female';   
                 }
                 console.log($scope.heroInfo);
             })

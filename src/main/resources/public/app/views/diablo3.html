@@ -12,84 +12,195 @@
     </form>
     <div>
         <div ng-if="battlenet && !error">Click a hero to look there stats up!</div>
+        <div>
+            {{error}}
+        </div>
     </div>
-    <div ng-if="battlenet && !error" ng-repeat="hero in battlenet.heroes" class="inline">
-        <button class="btn btn-dark btn-sm add-all-margin inline" ng-click="heroLookup(id, hero.id)">{{hero.name}}</button>
-    </div>
-</div>
-<div ng-if="battlenet && !error" class="gear-wrapper">
-    <div class="pvp">
-        <table class="table">
-            <tbody>
+    <div class=" gear-wrapper inline">
+        <div ng-if="battlenet && !error" ng-repeat="hero in battlenet.heroes">
+            <button class="btn btn-dark btn-sm add-all-margin inline" ng-click="heroLookup(id, hero.id)">{{hero.name}}</button>
+        </div>
+
+        <div ng-if="heroInfo" class=" inline">
+            <div class="pvp">
+                <table class=table>
+                    <tbody>
 
 
-                <div class="center-this-text"> Battlenet account stats for {{battlenet.battleTag}}</div>
-                <tr>
-                    <td>Blacksmith Level: </td>
-                    <td>{{battlenet.blacksmith.level}}</td>
-                </tr>
-                <tr>
-                    <td>Hardcore Blacksmit Level: </td>
-                    <td>{{battlenet.blacksmithHardcore.level}}</td>
-                </tr>
-                <tr>
-                    <td>Jeweler Level: </td>
-                    <td>{{battlenet.jeweler.level}}</td>
-                </tr>
-                <td>Hardcore Jeweler Level: </td>
-                <td>{{battlenet.jewelerHardcore.level}}</td>
-                </tr>
-                <tr>
-                    <td>Total Monsters Killed: </td>
-                    <td>{{battlenet.kills.monsters}}</td>
-                </tr>
-                <tr>
-                    <td>Total Elites Killed: </td>
-                    <td>{{battlenet.kills.elites}}</td>
-                </tr>
-                <tr>
-                    <td>Total Hardcore Monsters Killed: </td>
-                    <td>{{battlenet.kills.hardcoreMonsters}}</td>
-                </tr>
-            </tbody>
-        </table>
+                        <div class="center-this-text"> {{heroInfo.name}}</div>
+                        <tr>
+                            <td>Class: </td>
+                            <td>{{heroInfo.class}}</td>
+                        </tr>
+                        <tr>
+                            <td>Level: </td>
+                            <td>{{heroInfo.level}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender: </td>
+                            <td>{{heroInfo.gender}}</td>
+                        </tr>
+                        <tr>
+                            <td>Elite Kills: </td>
+                            <td>{{heroInfo.kills.elites}}</td>
+                        </tr>
 
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div ng-if="heroInfo" class=" inline">
+            <div class="pvp">
+                <table class=table>
+                    <tbody>
+
+
+                        <div class="center-this-text"> {{heroInfo.name}} Stats</div>
+                        <tr>
+                            <td>Arcane Resist: </td>
+                            <td>{{heroInfo.stats.arcaneResist}}</td>
+                        </tr>
+                        <tr>
+                            <td>Armor: </td>
+                            <td>{{heroInfo.stats.armor}}</td>
+                        </tr>
+
+                           <tr>
+                            <td>Attack Speed: </td>
+                            <td>{{heroInfo.stats.attackSpeed}}</td>
+                        </tr>
+                           <tr>
+                            <td>Block Chance: </td>
+                            <td>{{heroInfo.stats.blockChance}}</td>
+                        </tr>
+                           <tr>
+                            <td>Cold Resist: </td>
+                            <td>{{heroInfo.stats.coldResist}}</td>
+                        </tr>
+                           <tr>
+                            <td>Crit Chance: </td>
+                            <td>{{heroInfo.stats.critChance}}</td>
+                        
+                        </tr>
+                           <tr>
+                            <td>Crit Damage: </td>
+                            <td>{{heroInfo.stats.critDamage}}</td>
+                        </tr>
+                           <tr>
+                            <td>Damage: </td>
+                            <td>{{heroInfo.stats.damage}}</td>
+                        </tr>
+                           <tr>
+                            <td>Dexterity: </td>
+                            <td>{{heroInfo.stats.dexterity}}</td>
+                        </tr>
+                          <tr>
+                            <td>Fire Resist: </td>
+                            <td>{{heroInfo.stats.fireResist}}</td>
+                        </tr>
+                              <tr>
+                            <td>Intelligence: </td>
+                            <td>{{heroInfo.stats.intelligence}}</td>
+                        </tr>
+                             <tr>
+                            <td>Health: </td>
+                            <td>{{heroInfo.stats.life}}</td>
+                        </tr>
+                             <tr>
+                            <td>Strength: </td>
+                            <td>{{heroInfo.stats.strength}}</td>
+                        </tr>
+                             <tr>
+                            <td>Lighting Resist: </td>
+                            <td>{{heroInfo.stats.lightningResist}}</td>
+                        </tr>
+                           <tr>
+                            <td>Vitality: </td>
+                            <td>{{heroInfo.stats.vitality}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
-    <div ng-if="battlenet" class="gear-wrapper inline">
+
+    <div ng-if="battlenet && !error" class="gear-wrapper">
         <div class="pvp">
-            <table class=table>
+            <table class="table">
                 <tbody>
 
 
-                    <div class="center-this-text"> Acts Cleared</div>
+                    <div class="center-this-text"> Battlenet account stats for {{battlenet.battleTag}}</div>
                     <tr>
-                        <td>Act I: </td>
-                        <td>{{battlenet.progression.act1}}</td>
+                        <td>Blacksmith Level: </td>
+                        <td>{{battlenet.blacksmith.level}}</td>
                     </tr>
                     <tr>
-                        <td>Act II: </td>
-                        <td>{{battlenet.progression.act2}}</td>
+                        <td>Hardcore Blacksmit Level: </td>
+                        <td>{{battlenet.blacksmithHardcore.level}}</td>
                     </tr>
                     <tr>
-                        <td>Act III: </td>
-                        <td>{{battlenet.progression.act3}}</td>
+                        <td>Jeweler Level: </td>
+                        <td>{{battlenet.jeweler.level}}</td>
+                    </tr>
+                    <td>Hardcore Jeweler Level: </td>
+                    <td>{{battlenet.jewelerHardcore.level}}</td>
                     </tr>
                     <tr>
-                        <td>Act IV: </td>
-                        <td>{{battlenet.progression.act4}}</td>
+                        <td>Total Monsters Killed: </td>
+                        <td>{{battlenet.kills.monsters}}</td>
                     </tr>
                     <tr>
-                        <td>Act V: </td>
-                        <td>{{battlenet.progression.act5}}</td>
+                        <td>Total Elites Killed: </td>
+                        <td>{{battlenet.kills.elites}}</td>
                     </tr>
-
+                    <tr>
+                        <td>Total Hardcore Monsters Killed: </td>
+                        <td>{{battlenet.kills.hardcoreMonsters}}</td>
+                    </tr>
                 </tbody>
             </table>
 
         </div>
+        <div ng-if="battlenet" class="gear-wrapper inline">
+            <div class="pvp">
+                <table class=table>
+                    <tbody>
+
+
+                        <div class="center-this-text"> Acts Cleared</div>
+                        <tr>
+                            <td>Act I: </td>
+                            <td>{{battlenet.progression.act1}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act II: </td>
+                            <td>{{battlenet.progression.act2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act III: </td>
+                            <td>{{battlenet.progression.act3}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act IV: </td>
+                            <td>{{battlenet.progression.act4}}</td>
+                        </tr>
+                        <tr>
+                            <td>Act V: </td>
+                            <td>{{battlenet.progression.act5}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+
+
+
     </div>
-
-
-
-
-</div>
