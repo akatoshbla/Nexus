@@ -392,6 +392,13 @@ footer {
     padding: 5px 10px 01px 10px;
      
 }
+
+.champion{
+    /*display:inline-block;*/
+    color: white;
+    background: #222;
+
+}
 .pvp {
     display:inline-block;
          width: 500px;

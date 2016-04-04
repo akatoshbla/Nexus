@@ -23,12 +23,12 @@
         //console.log($scope.chosenChamp);
 
         $scope.chosenOne = function (selectChamps){
-            //console.log(selectChamps);
+            console.log(selectChamps);
             $scope.chosenChampion = [];
             var sumJson = sumInfo.getResultForRanked();
             //console.log(sumJson);
             angular.forEach(sumJson.champions,function(data){
-                //console.log(data.id);
+                //console.log(data);
                 if(data.id == selectChamps){
                     $scope.chosenChampion.push(data);
                     //console.log(chosenChampion);
@@ -36,6 +36,7 @@
             })
             console.log($scope.chosenChampion);
         }
+
 
     };
 
