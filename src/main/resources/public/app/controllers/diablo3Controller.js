@@ -8,7 +8,7 @@
                     $scope.error = true;
                     $scope.errorText = "Battlenet Id not found, make sure format is name-####";
                 } else {
-                    $scope.error = false;
+                    $scope.error = "";
                 }
                 $scope.battlenet = response;
                 console.log($scope.battlenet);
@@ -24,7 +24,7 @@
                     $scope.error = true;
                     $scope.errorText = "hero not found";
                 } else {
-                    $scope.error = false;
+                    $scope.error = "";
                    
                 }
                 if($scope.heroInfo.gender == 0){

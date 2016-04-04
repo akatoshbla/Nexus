@@ -417,6 +417,21 @@ footer {
 .inline{
  display:inline-block;
 }
+.block{
+ display:block;   
+}
 .center-this-text{
     text-align: center
+}
+.tooltip {
+  display: inherit;
+  position: absolute;
+  background-color: #222;
+  padding: 7px 10px;
+  max-width: 250px;
+  color: #fff;
+}
+.smallIcon{
+ height: 20px;
+  width: 20px;
 }
