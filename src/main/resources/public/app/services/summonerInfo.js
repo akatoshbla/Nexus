@@ -11,7 +11,8 @@
         var lolObject;
         var info;
         var lolJson = [];
-        var choseChampion = [];
+        var chosenChampion = [];
+        var temp;
         this.summonerRank = function (summonerName) {
             info = summonerName.toString();
             var summoner = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'+ summonerName +'?api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3';
@@ -32,18 +33,18 @@
         }
 
         this.getResultForRanked = function(){
-            lolObject = result.$$state.value;
             //console.log(lolObject);
+            lolObject = result.$$state.value;
             return lolObject;
         }
 
         this.getChamps = function () {
-            //console.log([lolObject.champions]);
+            //console.log(lolObject.champions);
             //add each champ to champData
             angular.forEach(lolObject.champions, function (champ) {
                     // $scope.freeChamps.push(champ);
                 //console.log(champ);
-                    $http.get("https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ.id + "?champData=image&api_key=d22b06f5-db0b-4886-a43f-86ff2d96ee76").success(function (data) {
+                    $http.get("https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ.id + "?champData=image&api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3").success(function (data) {
                         //console.log(data);
                         lolJson.push(data);
                         //$scope.champData.push(data);

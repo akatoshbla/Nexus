@@ -13,11 +13,13 @@
     <div>
         <form>
             <label>Select a champion: </label>
-            <select name="selectChamps" ng-model="summonerInfo.selectChamps">
-                <option ng-repeat="champs in champJson" value = {{champs.id}}>{{champs.key}}</option>
+            <select name="selectChamps" ng-model="selectChamps">
+                <option ng-repeat="champs in champJson" value = {{champs}}>{{champs.key}}</option>
             </select>
+
+            <button type="button" ng-click="chosenOne(selectChamps)" class="btn btn-dark btn-sm add-topMargin">Character Lookup</button>
         </form>
-        {{summonerInfo.selectChamps["stats"]}}
+        {{selectChamps}}
     </div>
 
     <br>
