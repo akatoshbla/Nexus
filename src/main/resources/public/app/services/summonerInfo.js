@@ -16,10 +16,11 @@
             var summoner = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3';
             $http.get(summoner).success(function (response) {
                 //using summoner ID to get other info
-                console.log(reponse)
                 //console.log(response);
-                $http.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + response[info].id + '/ranked?season=SEASON2015&api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3').success(function (res) {
-                    deferred.resolve(res);
+                $http.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + response[info].id + '/ranked?season=SEASON2015&api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3').success(function (res,status) {
+                    deferred.resolve(res)
+                }).error(function(res,status){
+                    console.log('error' + status);
                 });
 
             })

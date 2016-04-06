@@ -394,10 +394,13 @@ footer {
 }
 
 .champion{
-    /*display:inline-block;*/
+    display:inline-block;
     color: white;
     width: auto;
     background: #222;
+    margin-top: 30px;
+    border-radius: 20px;
+    vertical-align: top;
 
 }
 .pvp {
