@@ -20,9 +20,7 @@
 
                         $scope.champData.push(data);
                     })
-
                 }
-
             })
             $scope.combinedObject.push($scope.champData);
 
@@ -34,9 +32,11 @@
         $scope.searchSum = function (summonerName) {
 
             $scope.exist = "";
+            $scope.error = "";
 
                 sumInfo.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
+                    console.log(data);
                     if(data != null){
                         $scope.exist = true;
                         $scope.summonerName = sumInfo.getSummonerName();
@@ -48,8 +48,9 @@
                         $scope.exist = false;
                         console.log("failed json");
                     }
-                }, function(error){
-                   console.log(error);
+                }).catch(function(data, status){
+                    console.log(status);
+                    $scope.error = status;
                 });
             }
             //console.log($scope);
