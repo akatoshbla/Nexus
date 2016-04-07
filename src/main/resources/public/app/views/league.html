@@ -16,7 +16,7 @@
                    ng-keyup="$event.keyCode == 13 && searchSum(summonerName)" ng-model="summonerName"
                    placeholder="Search for a Summoner">
             <button type="button" ng-click="searchSum(summonerName)" class="btn btn-dark btn-sm">Submit</button>
-            <span class="error" ng-show="error" ng-cloak> {{error}}</span>
+            <p class="text-danger">{{error}}</p>
             <div class = "summonerWrapper" ng-if="exist">
                 <div ng-show="exist">
                     <form>

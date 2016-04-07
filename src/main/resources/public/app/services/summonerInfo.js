@@ -19,15 +19,17 @@
                 //console.log(response);
                 $http.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + response[info].id + '/ranked?season=SEASON2015&api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3').success(function (res,status) {
                     deferred.resolve(res)
-                }).error(function(res,status){
-                    console.log('error' + status);
+                }).error(function(res){
+                    console.log(res);
+                    result = res;
                 });
 
             })
             //vermatrix
 
             result = deferred.promise;
-            return deferred.promise;
+            console.log(result);
+            return result;
         }
         this.getSummonerName = function () {
             return info;
