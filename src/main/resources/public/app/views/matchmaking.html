@@ -1,0 +1,26 @@
+<ng-cloak>
+<div class="modal-content">
+
+    <div class="modal-body">
+        
+       
+ <div style="display:inline-block; min-height:290px;">
+     <span>>Choose a Date and Time you can play</span>
+      <uib-datepicker ng-model="date" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
+     <span>Start Time</span>
+      <uib-timepicker ng-model="startTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+     <span>Finish Time</span>
+      <uib-timepicker ng-model="finishTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+    </div>
+    <div class="modal-footer">
+        
+            
+                        <button type="button" ng-click="editAboutUser()" class="btn btn-dark">Submit</button>
+                        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+          
+                        <p class="text-danger">{{error}}</p>
+
+    </div>
+</div>
+    </ng-cloak>
