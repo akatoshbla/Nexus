@@ -17,6 +17,7 @@
                                 <option value="League of Legends" ng-show="currentGames[1].name !== 'League of Legends' && currentGames[2].name !== 'League of Legends'">League of Legends</option>
                                 <option value="CS:GO" ng-show="currentGames[1].name !== 'CS:GO' && currentGames[2].name !== 'CS:GO'">CS:GO</option>
                                 <option value="HearthStone" ng-show="currentGames[1].name !== 'HearthStone' && currentGames[2].name !== 'HearthStone'">HearthStone</option>
+                                <option value="Diablo 3" ng-show="currentGames[1].name !== 'Diablo 3' && currentGames[2].name !== 'Diablo 3'">Diablo 3</option>
                             </select>
                             <div ng-show="currentGames[0].name === 'World of Warcraft'">
                                 <input type="text" class="form-control" ng-model="currentGames[0].warcraftCharacter" placeholder="Character Name">
@@ -24,7 +25,9 @@
                             </div>
                             <div ng-show="currentGames[0].name === 'League of Legends'">
                                 <input type="text" class="form-control" ng-model="currentGames[0].leagueSummoner" placeholder="Summoner Name">
-
+                            </div>
+                            <div ng-show="currentGames[0].name === 'Diablo 3'">
+                                <input type="text" class="form-control" ng-model="currentGames[0].diabloCharacter" placeholder="Battle Tag">
                             </div>
                         </div>
                         <div class="addMargin">
@@ -33,6 +36,7 @@
                                 <option value="League of Legends" ng-show="currentGames[0].name !== 'League of Legends' && currentGames[2].name !== 'League of Legends'">League of Legends</option>
                                 <option value="CS:GO" ng-show="currentGames[0].name !== 'CS:GO' && currentGames[2].name !== 'CS:GO'">CS:GO</option>
                                 <option value="HearthStone" ng-show="currentGames[0].name !== 'HearthStone' && currentGames[2].name !== 'HearthStone'">HearthStone</option>
+                                <option value="Diablo 3" ng-show="currentGames[0].name !== 'Diablo 3' && currentGames[2].name !== 'Diablo 3'">Diablo 3</option>
 
                             </select>
                             <div ng-show="currentGames[1].name === 'World of Warcraft'">
@@ -41,7 +45,9 @@
                             </div>
                             <div ng-show="currentGames[1].name === 'League of Legends'">
                                 <input type="text" class="form-control" ng-model="currentGames[1].leagueSummoner" placeholder="Summoner Name">
-
+                            </div>
+                            <div ng-show="currentGames[1].name === 'Diablo 3'">
+                                <input type="text" class="form-control" ng-model="currentGames[1].diabloCharacter" placeholder="Battle Tag">
                             </div>
                         </div>
 
@@ -51,6 +57,7 @@
                                 <option value="League of Legends" ng-show="currentGames[0].name !== 'League of Legends' && currentGames[1].name !== 'League of Legends'">League of Legends</option>
                                 <option value="CS:GO" ng-show="currentGames[1].name !== 'CS:GO' && currentGames[0].name !== 'CS:GO'">CS:GO</option>
                                 <option value="HearthStone" ng-show="currentGames[1].name !== 'HearthStone' && currentGames[0].name !== 'HearthStone'">HearthStone</option>
+                                <option value="Diablo 3" ng-show="currentGames[0].name !== 'Diablo 3' && currentGames[1].name !== 'Diablo 3'">Diablo 3</option>
 
                             </select>
                             <div ng-show="currentGames[2].name === 'World of Warcraft'">
@@ -59,8 +66,10 @@
                             </div>
                             <div ng-show="currentGames[2].name === 'League of Legends'">
                                 <input type="text" class="form-control" ng-model="currentGames[2].leagueSummoner" placeholder="Summoner Name">
-
                             </div>
+                            <div ng-show="currentGames[2].name === 'Diablo 3'">
+                                <input type="text" class="form-control" ng-model="currentGames[2].diabloCharacter" placeholder="Battle Tag">
+                            </div>v
                         </div>
 
                         <p class="text-danger">{{error}}</p>

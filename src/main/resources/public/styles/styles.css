@@ -1,6 +1,7 @@
 .background {
     /*background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');*/
-    background-color: #28a4c9;
+    background-color: white;
+    background-color: #28a4c9
     background-size: cover;
     width: 100%;
 }
@@ -41,10 +42,13 @@ body {
     color: black;
 }
 
-/*select{*/
-    /*width: 200px;*/
-    /*height:50px;*/
-/*}*/
+/*sets image box for ng-repeat*/
+.stuff,#league{
+    width:155px;
+    float:left;
+    /*display: inline;*/
+}
+
 .text-vertical-center {
     display: table-cell;
     text-align: center;
@@ -227,10 +231,12 @@ hr.small {
 .news {
     padding: 50px 0;
     font-size: 20pt;
+    color: #3366FF;
 }
 
 .about {
     padding: 50px 0;
+    color: #3366FF;
 }
 
 
@@ -238,7 +244,7 @@ hr.small {
 
 .services {
     padding: 50px 0;
-    color: white;
+    color: #3366FF;
 }
 
 .service-item {
@@ -265,6 +271,7 @@ hr.small {
 
 .portfolio {
     padding: 50px 0;
+    color: #3366FF;
 }
 
 .portfolio-item {
@@ -388,6 +395,13 @@ footer {
     padding: 5px 10px 01px 10px;
      
 }
+
+.champion{
+    /*display:inline-block;*/
+    color: white;
+    background: #222;
+
+}
 .pvp {
     display:inline-block;
          width: 500px;
@@ -422,6 +436,9 @@ footer {
 }
 .center-this-text{
     text-align: center
+}
+.img-resize{
+ margin-left: 59%;   
 }
 .tooltip {
   display: inherit;
