@@ -416,6 +416,10 @@ footer {
     height: 84px;
      width: 84px;
 }
+.friendpics{
+    height: 250px;
+    width: 250px;
+}
 .black-text{
  color: black;   
 }
