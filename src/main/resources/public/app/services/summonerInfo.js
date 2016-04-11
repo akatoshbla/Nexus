@@ -7,11 +7,15 @@
     //change api to a more functional name, no more global namespace
     var sumInfo = function ($http, $q) {
         var deferred = $q.defer();
+        var failDeferred = $q.defer();
         var result;
         var lolObject;
         var info;
+        var fail;
         var lolJson = [];
         this.summonerRank = function (summonerName) {
+            var deferred = $q.defer();
+
             info = summonerName.toString();
             var summoner = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + summonerName + '?api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3';
             $http.get(summoner).success(function (response) {
@@ -19,16 +23,15 @@
                 //console.log(response);
                 $http.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + response[info].id + '/ranked?season=SEASON2015&api_key=6de076c3-3dc7-4efc-9566-a5dfae3003b3').success(function (res,status) {
                     deferred.resolve(res)
+                    console.log(result);
                 }).error(function(res){
-                    console.log(res);
-                    result = res;
+                   deferred.reject(res);
                 });
 
             })
             //vermatrix
 
             result = deferred.promise;
-            console.log(result);
             return result;
         }
         this.getSummonerName = function () {
@@ -37,6 +40,7 @@
 
         this.getResultForRanked = function () {
             //console.log(lolObject);
+            //console.log(result);
             lolObject = result.$$state.value;
             return lolObject;
         }

@@ -33,9 +33,10 @@
 
             $scope.exist = "";
             $scope.error = "";
-
+            console.log(summonerName);
                 sumInfo.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
+                    console.log(data);
                     if(data != null){
                         $scope.exist = true;
                         $scope.summonerName = sumInfo.getSummonerName();
@@ -49,8 +50,7 @@
                         console.log("failed json");
                     }
                 }).catch(function(data){
-                    console.error(data);
-                    $scope.error = data;
+                    $scope.error = "Summoner is " + data;
                 });
             }
             //console.log($scope);
