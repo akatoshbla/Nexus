@@ -25,7 +25,21 @@
                 }
             });
         }
-        
+        $rootScope.matchmaking = function (size) {
+
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'app/views/matchmaking.html',
+                    controller: 'matchmakingController',
+                    size: size,
+                    resolve: {
+                        items: function () {
+                            return $scope.items;
+                        }
+                    }
+                });
+            
+        }
         $rootScope.editCurrentGames = function (size) {
 
                 var modalInstance = $modal.open({
@@ -79,7 +93,7 @@
                     join: response.joined,
                     lastSeen: response.lastOnline,
                     realName: response.realName,
-                    forumLvl: 'Lurker',
+                    forumLvl: response.role, // changed from 'Lurker'
                     shares: response.shares,
                     likes: response.likes,
                     posts: response.posts,

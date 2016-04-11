@@ -25,6 +25,7 @@
                     <ul class="nav nav-justified">
                         <li class="active"><a href="" data-toggle="tabs">Main</a></li>
                         <li><a href="" data-toggle="tabs">Info</a></li>
+                        <li ng-click="matchmaking()"><a>Matchmaking</a></li>
                     </ul>
                 </div>
             </div>
@@ -120,7 +121,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-4 col-md-4" ng-repeat="friends in friends">
-                                    <div class="thumbnail">
+                                    <div class="friendpics">
                                         <a ng-href="{{ friends.friendName}}">
                                             <img id="friendPicSize" src="images/{{friends.friendPic}}"></a>
 
