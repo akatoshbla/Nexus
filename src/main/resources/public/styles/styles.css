@@ -1,7 +1,6 @@
 .background {
     /*background-image: url('http://c2gmusichall.com/wp-content/uploads/2014/08/backgrounds-that-work-well-with-shadygamer-shadygamer.jpg');*/
     background-color: white;
-    background-color: #28a4c9
     background-size: cover;
     width: 100%;
 }
@@ -397,9 +396,13 @@ footer {
 }
 
 .champion{
-    /*display:inline-block;*/
+    display:inline-block;
     color: white;
+    width: auto;
     background: #222;
+    margin-top: 30px;
+    border-radius: 20px;
+    vertical-align: top;
 
 }
 .pvp {
@@ -415,6 +418,10 @@ footer {
 .thumbnail{
     height: 84px;
      width: 84px;
+}
+.friendpics{
+    height: 250px;
+    width: 250px;
 }
 .black-text{
  color: black;   

@@ -20,23 +20,23 @@
 
                         $scope.champData.push(data);
                     })
-
                 }
-
             })
             $scope.combinedObject.push($scope.champData);
 
 
-            console.log($scope.combinedObject);
+            //console.log($scope.combinedObject);
 
         })
 
         $scope.searchSum = function (summonerName) {
 
             $scope.exist = "";
-
+            $scope.error = "";
+            console.log(summonerName);
                 sumInfo.summonerRank(summonerName).then(function(data){
                     $scope.data = data;
+                    console.log(data);
                     if(data != null){
                         $scope.exist = true;
                         $scope.summonerName = sumInfo.getSummonerName();
@@ -46,10 +46,11 @@
                     }
                     else{
                         $scope.exist = false;
+                        $scope.error = "User doesn't exist";
                         console.log("failed json");
                     }
-                }, function(error){
-                   console.log(error);
+                }).catch(function(data){
+                    $scope.error = "Summoner is " + data;
                 });
             }
             //console.log($scope);
@@ -58,17 +59,6 @@
             info: true,
             stats: false
         }
-
-        //$scope.summonerInfo = sumInfo.getResultForRanked();
-        //console.log({info: $scope.summonerInfo});
-        //console.log($scope.summonerInfo);
-
-        //$scope.summonerName = sumInfo.getSummonerName();
-
-        //$scope.champJson = sumInfo.getChamps();
-
-        //$scope.chosenChamp = sumInfo.chosenOne();
-        //console.log($scope.chosenChamp);
 
         $scope.chosenOne = function (selectChamps){
             console.log(selectChamps);
