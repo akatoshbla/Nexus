@@ -5,8 +5,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
+
+import javax.xml.stream.events.EndDocument;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -334,6 +339,34 @@ public class ProfileService
 			jsonobj.addProperty("avatar", avatar);
 		}
 		else {
+			jsonobj.addProperty("result", false);
+		}
+		return jsonobj;
+	}
+	
+	// TODO: javadocs need info
+	public JsonObject updateMatchFinder(String username, String body) throws Exception {
+		NexusDB db = new NexusDB();
+		
+		JsonObject jsonobj = new JsonObject();
+		
+		if (username != null) {
+			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
+			String start = jsonObject.get("startTime").getAsString();
+			System.out.println(start);
+			String end = jsonObject.get("finishTime").getAsString();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+			Date startDate = (Date) sdf.parse(start);
+			Timestamp startDateTime = new Timestamp(startDate.getTime());
+			System.out.println(startDateTime.toString());
+			//Timestamp startDateTime = Timestamp.valueOf(start);
+			Timestamp endDateTime = Timestamp.valueOf(end);
+
+			db.updateMatchFinder(username, startDateTime, endDateTime);
+			jsonobj.addProperty("result", true);
+			jsonobj.add("matchFinderResults", db.getMatchFinderResults(username));
+			
+		} else {
 			jsonobj.addProperty("result", false);
 		}
 		return jsonobj;

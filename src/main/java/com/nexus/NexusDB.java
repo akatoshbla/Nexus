@@ -9,6 +9,7 @@ import static java.util.Arrays.asList;
 import java.util.Properties;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Map;
 import java.util.HashMap;
@@ -834,11 +835,11 @@ public class NexusDB {
 
 		for(String friend : friends) {
 			int friendId = getUserId(friend);
-			String query = "SELECT A.id, A.start, A.end"
+			String query = "SELECT A.id, A.start, A.end, A.matched"
 					+" FROM matchFinder A, matchFinder B"
-					+" WHERE (A.id=? AND B.id=? AND B.start <= A.end)"
+					+" WHERE (A.id=? AND B.id=? AND B.start <= A.end AND A.matched=?)"
 					+" AND (B.end >= A.start)";
-			List<Integer> params = asList(friendId, id);
+			List<Integer> params = asList(friendId, id, 0);
 			List<HashMap<String, Object>> result = queryHelper(query, params);
 			if (result != null) {
 				for (HashMap<String, Object> obj : result) {
@@ -852,6 +853,13 @@ public class NexusDB {
 		}
 
 		return jsonArray;
+	}
+	
+	// TODO: javadocs info here
+	public void updateMatchFinder(String username, Timestamp startDate, Timestamp endDate) throws Exception {
+		String insert = "INSERT INTO matchFinder (id,start,end) VALUES(?,?,?)";
+		List<Object> params = asList(getUserId(username), startDate, endDate);
+		updateHelper(insert, params);
 	}
 	
 	/**
@@ -912,6 +920,8 @@ public class NexusDB {
 					pstmt.setInt(i++, (int) obj);
 				else if (obj instanceof java.sql.Date)
 					pstmt.setDate(i++, (java.sql.Date) obj);
+				else if (obj instanceof java.sql.Timestamp)
+					pstmt.setTimestamp(i++, (java.sql.Timestamp) obj);
 				else return -1;    /* If you need something other than setString, setInt or setDate
 				 					    add it to another else if, following this form*/
 			}
