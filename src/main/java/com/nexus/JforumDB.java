@@ -21,8 +21,9 @@ public class JforumDB {
 	
 	/**
 	 * Hashes a string using the specified algorithm. 
-	 * alg input should "SHA-256" or "MD5" for our purposes.
+	 * Alg input should "SHA-256" or "MD5" for our purposes.
 	 * @param password String
+	 * @param alg String
 	 * @return String
 	 * @throws Exception if error
 	 */

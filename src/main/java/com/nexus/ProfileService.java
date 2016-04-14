@@ -3,10 +3,20 @@ package com.nexus;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import bsh.StringUtil;
+
 import com.google.gson.JsonElement;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
+
+import javax.xml.stream.events.EndDocument;
 
 /**
  * This class has all the methods to support the ProfileController.
@@ -334,6 +344,46 @@ public class ProfileService
 			jsonobj.addProperty("avatar", avatar);
 		}
 		else {
+			jsonobj.addProperty("result", false);
+		}
+		return jsonobj;
+	}
+	
+	/**
+	 * This method parses the match finder model and calls the update to the match table. One entry at a time only.
+	 * @param username String
+	 * @param body String
+	 * @return JsonObject with result = boolean and the json object of matching schedules.
+	 * @throws Exception if username is not found from calling recordExists.
+	 */
+	public JsonObject updateMatchFinder(String username, String body) throws Exception {
+		NexusDB db = new NexusDB();
+		
+		JsonObject jsonobj = new JsonObject();
+		
+		if (username != null) {
+			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
+			String unparsedStartDate = jsonObject.get("startTime").getAsString();
+			String unparsedEndDate = jsonObject.get("finishTime").getAsString();
+
+			SimpleDateFormat jsonParse = new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss");
+			SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			java.util.Date jsonStartDate = jsonParse.parse(unparsedStartDate);
+			String parsedStartDate = formatDate.format(jsonStartDate);
+
+			java.util.Date jsonEndDate = jsonParse.parse(unparsedEndDate);
+			String parsedEndDate = formatDate.format(jsonEndDate);
+			System.out.println(parsedStartDate);
+			System.out.println(parsedEndDate);
+			Timestamp startDateTime = Timestamp.valueOf(parsedStartDate);
+			Timestamp endDateTime = Timestamp.valueOf(parsedEndDate);
+			
+			db.updateMatchFinder(username, startDateTime, endDateTime);
+			jsonobj.addProperty("result", true);
+			jsonobj.add("matchFinderResults", db.getMatchFinderResults(username));
+			
+		} else {
 			jsonobj.addProperty("result", false);
 		}
 		return jsonobj;

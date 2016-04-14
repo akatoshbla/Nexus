@@ -171,6 +171,28 @@ public class ProfileController
 			}
 		}, json());
 		
+		post("/matchFinder", (req, res) -> {
+			String username;
+			
+			try {
+				if (req.session().attribute("username") != null) {
+					//req.session requests username from cookie with the attribute of username
+					username = req.session().attribute("username");
+					System.out.println("Username: " + username);
+					System.out.println("Has a session id: " + req.session().id());
+				} else {
+					username = null;
+					System.out.println("Non-Session User Alert at " + req.ip());
+				}
+				//returns the result from getRealName which is in ProfileService class
+				return profileService.updateMatchFinder(username, req.body());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			// transforms json object from java to json object from frontend
+		}, json());
+		
 		post("/realName", (req, res) -> {
 			//set username
 			String username;
