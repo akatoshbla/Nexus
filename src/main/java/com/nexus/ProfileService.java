@@ -366,7 +366,7 @@ public class ProfileService
 			String unparsedStartDate = jsonObject.get("startTime").getAsString();
 			String unparsedEndDate = jsonObject.get("finishTime").getAsString();
 
-			SimpleDateFormat jsonParse = new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss");
+			SimpleDateFormat jsonParse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			java.util.Date jsonStartDate = jsonParse.parse(unparsedStartDate);
