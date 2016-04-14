@@ -822,7 +822,7 @@ public class NexusDB {
 	}
 	
 	/**
-	 * Method that returns all the intervals that a friend and user for matchFinding.
+	 * Method that returns all the intervals that a user and all other users have in common for matchFinding.
 	 * @param username String
 	 * @return JsonArray of JsonObjects
 	 * @throws Exception If username does not exist
@@ -830,21 +830,22 @@ public class NexusDB {
 	public JsonArray getMatchFinderResults(String username) throws Exception {
 		JsonArray jsonArray = new JsonArray();
 		int id = getUserId(username);
-		List<String> friends = getFriendsList(username);
-		System.out.println(friends);
+		//List<String> friends = getFriendsList(username);
+		List<String> users = getAllOtherUsers(username);
+		System.out.println(users);
 
-		for(String friend : friends) {
-			int friendId = getUserId(friend);
+		for(String user : users) {
+			int userId = getUserId(user);
 			String query = "SELECT A.id, A.start, A.end, A.matched"
 					+" FROM matchFinder A, matchFinder B"
 					+" WHERE (A.id=? AND B.id=? AND B.start <= A.end AND A.matched=?)"
 					+" AND (B.end >= A.start)";
-			List<Integer> params = asList(friendId, id, 0);
+			List<Integer> params = asList(userId, id, 0);
 			List<HashMap<String, Object>> result = queryHelper(query, params);
 			if (result != null) {
 				for (HashMap<String, Object> obj : result) {
 					JsonObject jsonObj = new JsonObject();
-					jsonObj.addProperty("FriendName", friend);						
+					jsonObj.addProperty("userName", user);						
 					jsonObj.addProperty("start", obj.get("start").toString());
 					jsonObj.addProperty("end", obj.get("end").toString());
 					jsonArray.add(jsonObj);
@@ -855,7 +856,13 @@ public class NexusDB {
 		return jsonArray;
 	}
 	
-	// TODO: javadocs info here
+	/**
+	 * Updates the matchFinder table. One entry at a time.
+	 * @param username String
+	 * @param startDate Timestamp
+	 * @param endDate Timestamp
+	 * @throws Exception if username is not found from calling recordExists.
+	 */
 	public void updateMatchFinder(String username, Timestamp startDate, Timestamp endDate) throws Exception {
 		String insert = "INSERT INTO matchFinder (id,start,end) VALUES(?,?,?)";
 		List<Object> params = asList(getUserId(username), startDate, endDate);
@@ -877,10 +884,10 @@ public class NexusDB {
 	}
 	/**
 	 * Retrieves the list of messages from one user to another.
-	 * @param fromUser
-	 * @param toUser
-	 * @return List
-	 * @throws Exception
+	 * @param fromUser String
+	 * @param toUser String
+	 * @return List of HashMaps with the messages between the users.
+	 * @throws Exception If the user does not exist in the users table.
 	 */
 	public List<HashMap<String,Object>> getMessages(String fromUser, String toUser) throws Exception{
 		String query = "select "
@@ -896,6 +903,26 @@ public class NexusDB {
 		
 		return queryHelper(query,asList(fromId,toId,fromId,toId)); 
 	}
+	
+	/**
+	 * Gets all the users from the users table except the username that is passed to the method.
+	 * @param username String
+	 * @return List<String> of all names from the user table, but the username is not collected.
+	 * @throws SQLException If the result of the query is empty.
+	 */
+	private List<String> getAllOtherUsers(String username) throws SQLException {
+		String query = "select name from users where name<>?;";
+		List<Object> params = asList(username);
+		
+		List<HashMap<String,Object>> result = queryHelper(query,params);
+		
+		List<String> users = new ArrayList<String>();
+
+		for (HashMap<String,Object> obj : result)
+			users.add((String)obj.get("name"));
+		return users;
+	}
+	
 	/**
 	 * Takes in a database statement and a list of PreparedStatement
 	 * 	 parameters for the statement
