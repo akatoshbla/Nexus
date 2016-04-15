@@ -13,6 +13,7 @@
                 startTime: $scope.startTime,
                 finishTime: $scope.finishTime
             }
+            console.log(jsonObject)
             $http.post('http://comp490.duckdns.org/matchFinder', jsonObject).success(function (response) {
              
                 console.log(response);
