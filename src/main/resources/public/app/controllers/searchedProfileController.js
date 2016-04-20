@@ -2,6 +2,8 @@
 
     var searchedProfileController = function ($scope, $http) {
 
+        $scope.friendExist = "";
+
         //add friend to user database
         $scope.addFriend = function(){
 
