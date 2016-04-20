@@ -107,6 +107,11 @@
             })
         };
 
+        //friend display
+
+        $scope.friendDisplay = function(){
+            
+        }
 
         $scope.currentGame = [
             {
