@@ -1,7 +1,20 @@
 (function () {
 
     var searchedProfileController = function ($scope, $http) {
-     
+
+        //add friend to user database
+        $scope.addFriend = function(){
+
+        }
+
+        //checks if this profile is a friend or not a friend and show button
+        $scope.friendCheck = function(){
+
+        }
+
+        $scope.friendSearch = function(){
+
+        }
 
 
     };
