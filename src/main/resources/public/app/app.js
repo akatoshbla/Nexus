@@ -25,7 +25,8 @@
             .when('/messages', {
                 controller: 'messageController',
                 templateUrl: 'app/views/messages.html'
-            }).when('/searchedProfile', {
+            })
+            .when('/searchedProfile', {
                 controller: 'searchedProfileController',
                 templateUrl: 'app/views/searchedProfile.html'
             })
