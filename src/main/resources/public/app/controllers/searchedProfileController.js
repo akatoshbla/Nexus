@@ -2,13 +2,12 @@
 
     var searchedProfileController = function ($scope, $http) {
 
-        //add friend to user database
-        $scope.addFriend = function(){
-
+        $scope.loadFriendProfile = function(){
+            $http.get('http://comp490.duckdns.org/profile')
         }
 
-        //checks if this profile is a friend or not a friend and show button
-        $scope.friendCheck = function(){
+        //add friend to user database
+        $scope.addFriend = function(){
 
         }
 
