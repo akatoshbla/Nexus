@@ -18,7 +18,16 @@
                 </div>
             </div>
             <div ng-if="tab.match" style="display:inline-block; min-height:290px;">
-                Matches go here
+                <span class="center">Matched games</span>
+                <table class="table">
+                    <tbody >
+                        <tr ng-repeat= "userMatches.matchFinderResults">
+                            <td>User: {{userMatches.matchFinderResults.userName}}</td>
+                            <td>Start: {{userMatches.matchFinderResults.start}}</td>
+                            <td>Finish: {{userMatches.matchFinderResults.end}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="modal-footer">
