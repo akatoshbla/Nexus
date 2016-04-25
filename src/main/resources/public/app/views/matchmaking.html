@@ -2,9 +2,10 @@
     <div class="modal-content center-block">
 
         <div class="modal-body center-block center ">
+            <button class="btn btn-dark btn-small margin" ng-click="chooseTab('matchmaking')">Matchmaking</button>
+            <button class="btn btn-dark btn-small margin" ng-click="chooseTab('matches')">Current Matches</button>
 
-
-            <div style="display:inline-block; min-height:290px;">
+            <div ng-if="tab.matchmaking" style="display:inline-block; min-height:290px;">
                 <span class="center">Choose a Date and Time you can play</span>
                 <uib-datepicker ng-model="date" class="well well-sm center" datepicker-options="inlineOptions"></uib-datepicker>
                 <div class="inline">
@@ -15,6 +16,9 @@
                     <span>Finish Time</span>
                     <uib-timepicker ng-model="finishTime" ng-change="changed()" hour-step="1" minute-step="15" show-meridian="ismeridian"></uib-timepicker>
                 </div>
+            </div>
+            <div ng-if="tab.match" style="display:inline-block; min-height:290px;">
+                Matches go here
             </div>
         </div>
         <div class="modal-footer">
