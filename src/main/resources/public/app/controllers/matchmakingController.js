@@ -2,7 +2,7 @@
 
     var matchmakingController = function ($scope, $http, $modalInstance, matchMakingService) {
         $http.get('http://comp490.duckdns.org/matchFinder').success(function (response) {
-         $scope.matches = response;   
+         $scope.userMatches = response;   
             
         });
         
