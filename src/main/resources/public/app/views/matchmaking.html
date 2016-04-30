@@ -21,10 +21,10 @@
                 <span class="center">Matched games</span>
                 <table class="table">
                     <tbody >
-                        <tr ng-repeat= "userMatches.matchFinderResults">
-                            <td>User: {{userMatches.matchFinderResults.userName}}</td>
-                            <td>Start: {{userMatches.matchFinderResults.start}}</td>
-                            <td>Finish: {{userMatches.matchFinderResults.end}}</td>
+                        <tr ng-repeat= "result in userMatches.matchFinderResults">
+                            <td>User: {{result.userName}}</td>
+                            <td>Start: {{result.start}}</td>
+                            <td>Finish: {{result.end}}</td>
                         </tr>
                     </tbody>
                 </table>
