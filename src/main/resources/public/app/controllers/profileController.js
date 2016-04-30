@@ -88,7 +88,8 @@
           
             //function that is run at controller launch to get profile data
             $http.get('http://comp490.duckdns.org/profile').success(function (response) {
-              console.log(response);
+              //console.log(response);
+                //check if this user is already a friend 
                 $rootScope.profile = {
                     join: response.joined,
                     lastSeen: response.lastOnline,
@@ -105,8 +106,21 @@
 
                 }
             })
+
         };
 
+        //friend display
+
+        $scope.friendDisplay = function(){
+            $http.get('http://comp490.duckdns.org/friendsList/' + username).success(function(res){
+                console.log(res);
+                $rootScope.friends = {
+                    friendName: res.friendName,
+                    friendLink: res.friendLink,
+                    friendPic: res.friendPic
+                }
+            })
+        }
 
         $scope.currentGame = [
             {
@@ -128,23 +142,6 @@
 
         ]
             //favgame object?....
-        $scope.friends = [
-            {
-                friendName: 'Liltwix',
-                friendLink: '',
-                friendPic: '/profile/alexhall.jpg'
-            },
-            {
-                friendName: 'akatoshbla',
-                friendLink: '',
-                friendPic: '/profile/davidknopp.jpg'
-            },
-            {
-                friendName: 'whitenoize',
-                friendLink: '',
-                friendPic: '/profile/bendluzak.jpg'
-            }
-        ]
 
         $scope.gamePlay = [
             {
