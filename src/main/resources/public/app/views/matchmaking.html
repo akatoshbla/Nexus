@@ -5,7 +5,7 @@
             <button class="btn btn-dark btn-small margin" ng-click="chooseTab('matchmaking')">Matchmaking</button>
             <button class="btn btn-dark btn-small margin" ng-click="chooseTab('matches')">Current Matches</button>
 
-            <div ng-if="tab.matchmaking" style="display:inline-block; min-height:290px;">
+            <div ng-show="tab.matchmaking" style="display:inline-block; min-height:290px;">
                 <span class="center">Choose a Date and Time you can play</span>
                 <uib-datepicker ng-model="date" class="well well-sm center" datepicker-options="inlineOptions"></uib-datepicker>
                 <div class="inline">
@@ -33,7 +33,7 @@
         <div class="modal-footer">
 
 
-            <button type="button" ng-click="sendMatchDate()" class="btn btn-dark">Submit</button>
+            <button type="button" ng-click="sendMatchDate(date, finishTime, startTime)" class="btn btn-dark">Submit</button>
             <button type="button" class="btn btn-default" ng-click="close()">Close</button>
 
             <p class="text-danger">{{error}}</p>
