@@ -25,7 +25,7 @@ public class CreateServiceTest {
         System.out.println("createResult method test results:");
         System.out.println();
 
-        JsonObject test = createService.createResult("{\"username\":\"test\",\"password\":\"123\"}");
+        JsonObject test = createService.createResultr("{\"username\":\"test\",\"password\":\"123\"}");
         assertEquals(false, test.get("result").getAsBoolean());
 
         System.out.println();
@@ -36,7 +36,7 @@ public class CreateServiceTest {
         /*Tests createResult method in the CreateService class.
         * Checks to make sure that an object returns a Json.*/
 
-        JsonObject test1 = createService.createResult("{\"username\":\"test1\",\"password\":\"test123\"}");
+        JsonObject test1 = createService.createResultr("{\"username\":\"test1\",\"password\":\"test123\"}");
         assertThat(test1, instanceOf(JsonObject.class));
 
     }
