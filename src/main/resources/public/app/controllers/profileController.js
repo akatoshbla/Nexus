@@ -115,9 +115,9 @@
             $http.get('http://comp490.duckdns.org/friendsList/' + username).success(function(res){
                 console.log(res);
                 $rootScope.friends = {
-                    friendName: res.friendName,
-                    friendLink: res.friendLink,
-                    friendPic: res.friendPic
+                    friendName: res.friends,
+                    //friendLink: res.friendLink,
+                    //friendPic: res.friendPic
                 }
             })
         }
