@@ -161,6 +161,7 @@
             }
         ]
         $scope.LoadProfile();
+        $scope.friendDisplay();
 
 
     };
