@@ -22,9 +22,9 @@
 
         $scope.sendMatchDate = function (date, finishTime, startTime) {
             var jsonObject = {
-                date: date,
-                startTime: startTime,
-                finishTime: finishTime
+                date: '\'' + date + '\'',
+                startTime:'\'' + startTime+ '\'',
+                finishTime: '\'' + finishTime + '\''
             }
             console.log(jsonObject)
             $http.post('http://comp490.duckdns.org/matchFinder', jsonObject).success(function (response) {
