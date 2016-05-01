@@ -9,9 +9,11 @@ import bsh.StringUtil;
 import com.google.gson.JsonElement;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
@@ -363,23 +365,42 @@ public class ProfileService
 		
 		if (username != null) {
 			JsonObject jsonObject = new Gson().fromJson(body, JsonObject.class);
+			String unparsedDate = jsonObject.get("date").getAsString();
 			String unparsedStartDate = jsonObject.get("startTime").getAsString();
 			String unparsedEndDate = jsonObject.get("finishTime").getAsString();
 
-			SimpleDateFormat jsonParse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			SimpleDateFormat jsonParse = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss", Locale.US);
 			SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat formatDateOnly = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formatTimeOnly = new SimpleDateFormat("HH:mm:ss");
+			
+			java.util.Date jsonDate = jsonParse.parse(unparsedDate);
+			String parsedDate = formatDate.format(jsonDate);
+			Timestamp date = Timestamp.valueOf(parsedDate);
+			String matchDate = formatDateOnly.format(date);
+//			System.out.println(matchDate);
 			
 			java.util.Date jsonStartDate = jsonParse.parse(unparsedStartDate);
 			String parsedStartDate = formatDate.format(jsonStartDate);
-
+			Timestamp startDateTime = Timestamp.valueOf(parsedStartDate);
+			String matchStartTime = formatTimeOnly.format(startDateTime);
+//			System.out.println(matchStartTime);		
+					
 			java.util.Date jsonEndDate = jsonParse.parse(unparsedEndDate);
 			String parsedEndDate = formatDate.format(jsonEndDate);
-			System.out.println(parsedStartDate);
-			System.out.println(parsedEndDate);
-			Timestamp startDateTime = Timestamp.valueOf(parsedStartDate);
-			Timestamp endDateTime = Timestamp.valueOf(parsedEndDate);
+			Timestamp endDateTime = Timestamp.valueOf(parsedEndDate);			
+			String matchEndTime = formatTimeOnly.format(endDateTime);
+//			System.out.println(matchEndTime);
 			
-			db.updateMatchFinder(username, startDateTime, endDateTime);
+			String startTimeString = matchDate + " " + matchStartTime;
+			String endTimeString = matchDate + " " + matchEndTime;
+			Timestamp startTimestamp = Timestamp.valueOf(startTimeString);
+			Timestamp endTimestamp = Timestamp.valueOf(endTimeString);
+			
+//			System.out.println(startTimestamp);
+//			System.out.println(endTimestamp);
+			
+			db.updateMatchFinder(username, startTimestamp, endTimestamp);
 			jsonobj.addProperty("result", true);
 			jsonobj.add("matchFinderResults", db.getMatchFinderResults(username));
 			
