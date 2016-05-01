@@ -112,7 +112,7 @@
         //friend display
 
         $scope.friendDisplay = function(){
-            $http.get('http://comp490.duckdns.org/friendsList/' + username).success(function(res){
+            $http.get('http://comp490.duckdns.org/friendsList/').success(function(res){
                 console.log(res);
                 $rootScope.friends = {
                     friendName: res.friends,
