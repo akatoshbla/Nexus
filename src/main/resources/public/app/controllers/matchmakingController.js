@@ -20,11 +20,11 @@
             $modalInstance.dismiss('cancel');
         };
 
-        $scope.sendMatchDate = function () {
+        $scope.sendMatchDate = function (date, finishTime, startTime) {
             var jsonObject = {
-                date: $scope.date,
-                startTime: $scope.startTime,
-                finishTime: $scope.finishTime
+                date: '\'' + date + '\'',
+                startTime:'\'' + startTime+ '\'',
+                finishTime: '\'' + finishTime + '\''
             }
             console.log(jsonObject)
             $http.post('http://comp490.duckdns.org/matchFinder', jsonObject).success(function (response) {
