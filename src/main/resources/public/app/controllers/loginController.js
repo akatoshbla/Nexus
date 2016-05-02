@@ -137,6 +137,18 @@
             };
 
             $scope.searchUser = function (user) {
+
+                if($rootScope.username == user)
+                {
+                    $rootScope.friendExist = false;
+                }
+                else if($rootScope.username == undefined){
+                    $rootScope.friendExist = false;
+                }
+                else{
+                    $rootScope.friendExist = true;
+                }
+                $rootScope.searchedUser = user;
                 console.log('in searchUser()');
                 $http.get('http://comp490.duckdns.org/profile/' + user).success(function (response) {
                     console.log(response);
@@ -155,13 +167,30 @@
                         profilePic: response.avatar
 
                     }
+
+                    $http.get('http://comp490.duckdns.org/friendsList/' + user).success(function(res) {
+                        console.log(res);
+                        $rootScope.friends = res;
+                    })
                     console.log($rootScope.profile);
                       
             $location.path("/searchedProfile");
                 })
             };
-          
-        
+
+            $scope.addFriend = function(){
+                //console.log(user);
+                //console.log($rootScope.userName);
+                var friendJson = {
+                    from: $rootScope.username,
+                    to: $rootScope.searchedUser
+                }
+
+                console.log(friendJson);
+                $http.post('http://comp490.duckdns.org/friendRequest', friendJson).success(function(res){
+                    console.log(res);
+                })
+            }
 
     };
 

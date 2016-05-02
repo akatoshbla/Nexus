@@ -4,19 +4,19 @@
             <div class="col-xs-10 col-sm-10">
                 <h1 class="">{{ profile.userName }}</h1>
             </div>
-            <div  class="col-xs-2 col-sm-2">
+            <div class="col-xs-2 col-sm-2">
                 <div class="pull-right">
                     <div class="img-square img-responsive profile-pic">
                         <img id="profilePicSize" title="profile image" src="{{ profile.profilePic }}">
-                   
+
 
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6 col-sm-6">
-                    <button ng-show="friendExist" ng-click="addFriend()" type="button" class="btn btn-success" ng-click="open()">Friend Me!</button>
-                    <button type="button" class="btn btn-info" ng-click="open()">Send me a message</button>
+                    <button ng-show="friendExist" ng-click="addFriend()" type="button" class="btn btn-success">Add Friend</button>
+                    <button type="button" class="btn btn-info" ng-click="open()">Send message</button>
                     <br>
                 </div>
             </div>
@@ -35,19 +35,19 @@
                     <!--left col-->
                     <div>
                         <ul class="list-group">
-                            
+
                             <li class="list-group-item text-right"><span class="pull-left"><strong
-                            class="">Joined</strong></span> {{ profile.join }}
+                                    class="">Joined</strong></span> {{ profile.join }}
 
                             </li>
                             <li class="list-group-item text-right"><span class="pull-left"><strong class="">Last
-                        seen</strong></span> {{ profile.lastSeen }}
+                                seen</strong></span> {{ profile.lastSeen }}
                             </li>
                             <li class="list-group-item text-right"><span class="pull-left"><strong class="">Real
-                        name</strong></span> {{ profile.realName }}
+                                name</strong></span> {{ profile.realName }}
                             </li>
                             <li class="list-group-item text-right"><span class="pull-left"><strong
-                            class="">Level: </strong></span> {{ profile.forumLvl }}
+                                    class="">Level: </strong></span> {{ profile.forumLvl }}
 
                             </li>
                         </ul>
@@ -56,7 +56,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Current Games
                         </div>
-                        <div class="panel-body" ng-repeat="currGame in profile.currentGames"><i style="color:green" class="fa fa-check-square"></i>
+                        <div class="panel-body" ng-repeat="currGame in profile.currentGames"><i style="color:green"
+                                                                                                class="fa fa-check-square"></i>
                             <a href="{{currGame.gameLinks}}"> {{currGame.name}}</a>
 
                         </div>
@@ -72,7 +73,7 @@
                         profile.likes }}
                     </li-->
                         <li class="list-group-item text-right"><span class="pull-left"><strong
-                            class="">Posts</strong></span> {{ profile.posts }}
+                                class="">Posts</strong></span> {{ profile.posts }}
                         </li>
                         <!--li class="list-group-item text-right"><span class="pull-left"><strong
                             class="">Followers</strong></span> {{ profile.followers }}
@@ -89,7 +90,7 @@
                 </div>
                 <!--/col-3-->
                 <div class="col-xs-9 col-sm-9" contenteditable="false" style="">
-                    <div class="panel panel-default" >
+                    <div class="panel panel-default">
                         <div class="panel-heading">About {{ profile.userName }}</div>
                         <div class="panel-body">
                             <p>{{ profile.description }}</p>
@@ -119,17 +120,17 @@
                         <div class="panel-heading" contenteditable="false">Friends</div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-xs-4 col-md-4" ng-repeat="friends in friends">
-                                    <div class="thumbnail">
-                                        <a ng-href="{{ friends.friendName}}">
-                                            <img id="friendPicSize" src="images/{{friends.friendPic}}"></a>
+                                <div class="col-xs-4 col-md-4" ng-repeat="friend in friends.friends">
+                                    <!--<div class="friendpics">-->
+                                    <a ng-href="{{ friend}}"> </a>
+                                    <!--<img id="friendPicSize" src="images/{{friends.friendPic}}"></a>-->
 
-                                        <div class="caption">
-                                            <h3>
-                                            {{ friends.friendName}}
+                                    <div class="caption">
+                                        <h3>
+                                            {{ friend}}
                                         </h3>
-                                        </div>
                                     </div>
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
